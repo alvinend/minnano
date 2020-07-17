@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "southern-ivy-283011",
+  "private_key_id": "6904928a7429c8d2dc529d5e723a5ad43650a935",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCXwdtLlXB9ZjG3\nr+9nGbU6PgTYd0Eh/QLVUcdnqeH+5uWvksWkDjZaZmsP5is9M6BU8j9IpREYW2Ms\nx6SZclT4QJ2YnWMw5MypLQGqfIUlZoKy2zpCzVyxLMYW2PznR5JXIOnmM2sSJjgD\nVNf7P22MEMc62b2O3i0VCjHGA0G4ibChwQPZa7cArxzhhuTWCEoioXrbX3TRhB1u\ngszPVSItRsvr37tkBeE0Vqxnhg8S5YQujq2SEe719L6vaBJxa+u7zfS7mCz7uuvM\nIqlJQhqjfoj1lyScijD7piEnlKpSysgW+yBRZV7e5heksybkTGo8wWonWvT7PvRY\n1Aso7DRlAgMBAAECgf97mOeCJ7P2bcUQVbolvkpbpSdNJdNmWypzkqdVRodJk8R9\nuow9kVWzSrbnvA57ShDLHoFsKQRDUirzzaXBU9zgU8AHDCg9KhuFraItuDy4uUS5\nZtOMlLVpl42+DfvsYd5OGABn/Hi3z2jPTcqaVo5iBUg+Jhi8wzb0a9kd7IkaQcgR\nrA6TU9Xs8GYDj7a/jIin18UFEC2lTCt4zHSBy+FToBbsWwrV06h6M7IxKajTSwPS\nvaMxDMBPy2PJothXH0mXWE/A8RoVJIB6SFHEsSB1YAACLdARd93EXLWt6azBOB9r\nRZV8IO6GHg4gCJQzTtAieS7lxkzpDPsb53f55acCgYEA1QX/em61BXRrlKuo3J5u\nSeSXguHsqWoSZitLz+QiONrkI8QzanevX5Wf3+WlctBBZ6bWOeFwlVc7ORvBlYyW\neDyjNH4RbxiqlyLL1PjPdTGq33NMUpuEQQYtW9xVce2PfK2AZZ8GFRKkLz7+4AWq\n/vUlUfEgyVJvOzluWc+Q9NsCgYEAtl+mXsDNhGwA1QG7/MljoXL8je/UxtmpMbar\nGz0nYrmD6StsgweCt0VBVE+10a9ceu3t6QeTTOXhytj9f/4LUXhAW3ArcliiVlsG\nCuPFpxoJH4XBhjCQJbGpTE2NXaNd0uqHniRMXAch4zAvbAfmxjV0agUqlGklzcyp\nIJ0NH78CgYA+AVTvyjGeuNhnmd+499SaZZNEYYaFeX6Jhqi2hmz/p5coYf+lSdke\nNWsnvKx/0uZ2yTUp+9jNX2q5oL6kTRuvO9c1fEyOzds5ysMR5qpcLmzSRbk9gk7o\nrmediXDFjKRrYgUxjywyDg8EQY3mnz+6npiSVWF5uCjwUDMyqRxEaQKBgQCel5kW\n5vURhdZHZYWzcvIH8PV8/KV88sT2bVJokoqQiKEUgGWRoFNkyn3gMpz7JlL2t7df\nIO5QPcxXWNFBn4r6IudcXLP7cOZi0C72A1LbWIG8ftVmuw5vKQr/RqV7W1h41Ohw\ndkJM+QrYBQwIFurxTITauXloq/Nq/uHIcap7AwKBgQCv3fAmBczf2I2vPfxGXS1W\nYoBAvbKz0quA+aZMLvQrA7d4XEe/67WEZ+mueqKJjSq7mVPPhGdUE2FrQYSgk+A9\nl815R/aVY1H15iHwJH7GJJEuMW/4yJd59K3sGu+dFRJaE6k7NtqbR7v4zvB3lct9\nuv8bVL2phto5I4S0p96SnQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "minnano@southern-ivy-283011.iam.gserviceaccount.com",
+  "client_id": "100387578113858700547",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/minnano%40southern-ivy-283011.iam.gserviceaccount.com"
+}

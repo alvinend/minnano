@@ -7,12 +7,22 @@ const users = require('./routes/api/users')
 const customer = require('./routes/api/customer')
 const staff = require('./routes/api/staff')
 const admin = require('./routes/api/admin')
+const multer = require('multer')
 
 const app = express();
 
+const multerMid = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
+})
+
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.json())
+app.use(multerMid.single('file'))
+app.disable('x-powered-by')
 
 // DB Config
 const db = require('./config/keys').mongoURI;
@@ -34,7 +44,6 @@ app.use('/api/users', users)
 app.use('/api/customer', customer)
 app.use('/api/staff', staff)
 app.use('/api/admin', admin)
-
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

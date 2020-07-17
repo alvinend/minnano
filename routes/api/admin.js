@@ -10,6 +10,7 @@ const validateCategoryInput = require('../../validation/category')
 const validateLayoutInput = require('../../validation/layout')
 
 const getLayout = require('../../helpers/getLayout')
+const uploadImage = require('../../helpers/image')
 
 // @route   GET api/admin/test
 // @desc    Tests post route
@@ -195,5 +196,21 @@ router.put(
     }
   }
 )
+
+
+router.post('/image', async (req, res) => {
+  try {
+    const myFile = req.file
+    const imageUrl = await uploadImage(myFile)
+    res
+      .status(200)
+      .json({
+        message: "Upload was successful",
+        data: imageUrl
+      })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
+})
 
 module.exports = router;
