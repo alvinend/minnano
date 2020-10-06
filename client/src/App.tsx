@@ -2,8 +2,7 @@ import React from 'react'
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom"
 import Signin from './components/pages/auth/Signin'
 import AdminRoutes from './routes/AdminRoutes'
@@ -12,6 +11,7 @@ import CustomerRoutes from './routes/CustomerRoutes'
 import MainMenu from './components/pages/auth/MainMenu'
 
 const App = () => {
+  // eslint-disable-next-line
   const [isAuth, setIsAuth] = React.useState(true)
 
   return isAuth ? (

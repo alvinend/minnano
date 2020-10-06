@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const cart = require('../../helpers/cart')
+const orderCarts = require('../../helpers/orderCarts')
 
 // @route   GET api/staff/test
 // @desc    Tests post route
@@ -13,20 +13,20 @@ router.get(
   '/order',
   (req, res) => {
     try {
-      return res.status(200).json({ cart: cart.get() })
+      return res.status(200).json({ orderCarts: orderCarts.get() })
     } catch (err) {
       return res.status(400).json(err)
     }
   }
 )
 
-// @route   DELETE api/staff/order/:cartid
+// @route   DELETE api/staff/order/:orderCartsid
 // @desc    Delete Current Cart
 router.delete(
-  '/order/:cartid',
+  '/order/:orderCartsid',
   (req, res) => {
     try {
-      return res.status(200).json({ cart: cart.remove(req.params.cartid) })
+      return res.status(200).json({ orderCarts: orderCarts.remove(req.params.orderCartsid) })
     } catch (err) {
       return res.status(400).json(err)
     }

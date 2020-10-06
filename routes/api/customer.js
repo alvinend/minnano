@@ -8,7 +8,7 @@ const Category = require('../../models/Category')
 const Item = require('../../models/Item')
 
 const { v4: uuidv4 } = require('uuid')
-const cart = require('../../helpers/cart')
+const orderCarts = require('../../helpers/orderCarts')
 
 // @route   GET api/customer/test
 // @desc    Tests post route
@@ -41,10 +41,14 @@ router.post(
   '/order',
   (req, res) => {
     try {
-      return res.status(200).json({ cart: cart.add({
-        id: uuidv4(),
-        items: req.body.items
-      }) })
+      return res.status(200).json({
+        orderCarts: orderCarts.add({
+          id: uuidv4(),
+          cart: req.body.cart,
+          number: req.body.number
+        }),
+        sentnumber: req.body.number
+      })
     } catch (err) {
       return res.status(400).json(err)
     }

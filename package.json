@@ -1,5 +1,5 @@
 {
-  "name": "devconnector",
+  "name": "minnano",
   "version": "1.0.0",
   "description": "Social network for developers",
   "main": "server.js",
@@ -9,7 +9,7 @@
     "client": "cd client && yarn start",
     "dev": "concurrently \"yarn run server\" \"yarn run client\""
   },
-  "author": "Brad Traversy",
+  "author": "Endratno Alvin",
   "license": "MIT",
   "dependencies": {
     "@google-cloud/storage": "^5.1.2",
@@ -22,6 +22,9 @@
     "multer": "^1.4.2",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "react-icons": "^3.10.0",
+    "react-use": "^15.3.2",
+    "styled-components": "^5.1.1",
     "uuid": "^8.2.0",
     "validator": "^9.4.1"
   },
