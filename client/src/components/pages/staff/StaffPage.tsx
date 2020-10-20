@@ -191,7 +191,7 @@ const StaffPage: React.FC<iStaffPage> = ({
         onSubmit={handleOnSubmit}
         onCancel={handleAlertCancel}
       >
-        {alertNumber}
+        <>Apakah Orderan Nomor <b>{alertNumber}</b> Sudah Selesai?</>
       </AlertModal>
       <Title>Pesanan</Title>
       <InnerContainer>

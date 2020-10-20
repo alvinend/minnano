@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { color } from '../atoms/color'
 import { IoMdCheckmarkCircle, IoMdCloseCircle } from 'react-icons/io'
+import { Button, ButtonPrimary } from 'components/atoms/button'
 
 const ModalWrapper = styled.div`
   position: fixed;
@@ -49,9 +50,9 @@ const Overlay = styled.div<{ type: string }>`
   }
 `
 
-const Modal = styled.div<{ type: string }>`
-  width: 600px;
-  height: 200px;
+const StyledModal = styled.div<{ type: string }>`
+  width: 50vw;
+  max-height: 90vh;
   padding: 20px;
   background-color: ${color.white};
   font-size: 24px;
@@ -89,27 +90,22 @@ const Modal = styled.div<{ type: string }>`
 
 const ButtonContainer = styled.div`
   display: flex;
-  font-size: 60px;
   margin-top: 30px;
-  justify-content: space-around;
-
-  & div:first-child {
-    color: ${color.green};
-  }
-
-  & div:last-child {
-    color: ${color.red};
+  justify-content: flex-end;
+  
+  & > button:first-child {
+    margin-right: 10px;
   }
 `
 
-type iAlertModal = {
+type iModal = {
   isShowing: boolean
   onSubmit: () => void
   onCancel: () => void
-  children: JSX.Element | string
+  children: JSX.Element | string | JSX.Element[]
 }
 
-export const AlertModal: React.FC<iAlertModal> = ({
+export const Modal: React.FC<iModal> = ({
   isShowing,
   onSubmit,
   onCancel,
@@ -131,13 +127,13 @@ export const AlertModal: React.FC<iAlertModal> = ({
   return isShowing ? (
     <ModalWrapper>
       <Overlay onClick={handleCloseModal} type={animationType}/>
-      <Modal type={animationType}>
+      <StyledModal type={animationType}>
         {children}
         <ButtonContainer>
-          <div onClick={onSubmit}><IoMdCheckmarkCircle /></div>
-          <div onClick={handleCloseModal}><IoMdCloseCircle /></div>
+          <Button onClick={handleCloseModal}>キャンセル</Button>
+          <ButtonPrimary onClick={onSubmit}>アイテム詳細変更</ButtonPrimary>
         </ButtonContainer>
-      </Modal>
+      </StyledModal>
     </ModalWrapper>
   ) : null
 }

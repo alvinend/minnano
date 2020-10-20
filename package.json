@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@google-cloud/storage": "^5.1.2",
+    "@types/react-select": "^3.0.22",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
@@ -23,6 +24,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "react-icons": "^3.10.0",
+    "react-select": "^3.1.0",
     "react-use": "^15.3.2",
     "styled-components": "^5.1.1",
     "uuid": "^8.2.0",

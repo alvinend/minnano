@@ -13,7 +13,6 @@ const CategoryWrapper = styled.div`
 const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   width: 90%;
   height: calc(100vh - 40px);
   margin: 20px 0;
@@ -52,7 +51,7 @@ const NumberDispaly = styled.div`
 const DescWrapper = styled.div`
   display: flex;
   width: 90%;
-  margin: 40px;
+  margin: 20px 30px 0 30px;
   font-size: 24px;
 
   & div:first-child {
@@ -65,7 +64,7 @@ const DescWrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   display:flex;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
 
   & > div {
@@ -84,8 +83,8 @@ const ButtonGroup = styled.div`
   margin-left: 30px;
 
   & button {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border: 2px #eee solid;
     background: ${color.lightGray};
     color: ${color.black};

@@ -31,7 +31,9 @@ const App = () => {
         </Route>
       </Switch>
     </Router>
-  ) : <Signin />
+  ) : <Signin
+    setIsAuth={setIsAuth}
+  />
 }
 
 export default App;
