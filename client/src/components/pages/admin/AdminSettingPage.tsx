@@ -1,6 +1,5 @@
 import { color } from 'components/atoms/color'
 import { AdminInput } from 'components/atoms/input/AdminInput'
-import { Input } from 'components/atoms/Input'
 import * as React from 'react'
 import styled from 'styled-components'
 import { ButtonPrimary } from 'components/atoms/button'

@@ -39,7 +39,7 @@ const CustomerRoutes: React.FC = () => {
         setIsLoading(true)
         const res = await axios.post('/api/customer/order', { cart, number })
         history.push('/customer/final')
-        setCartNumber(res.data.sentnumber)
+        setCartNumber(res.data.label)
         setIsLoading(false)
       } catch (e) {
 

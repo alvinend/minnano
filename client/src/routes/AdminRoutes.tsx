@@ -3,7 +3,7 @@ import { AdminCategoryPage } from 'components/pages/admin/AdminCategoryPage'
 import { AdminItemPage } from 'components/pages/admin/AdminItemPage'
 import { AdminSettingPage } from 'components/pages/admin/AdminSettingPage'
 import { AdminSidebar } from 'components/pages/admin/AdminSidebar'
-import { Cart, Category, Item } from 'models/common'
+import { Category, Item } from 'models/common'
 import * as React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
@@ -21,7 +21,7 @@ const AdminRoutes = () => {
   React.useEffect(
     () => {
       const init = async () => {
-        setIsLoading(true)
+        setIsLoading(!isLoading)
         const res = await axios.get('/api/customer/info')
         setCategories(res.data.categories)
         // setLayout(res.data.layout)
@@ -31,7 +31,7 @@ const AdminRoutes = () => {
 
       init()
     },
-    []
+    [isLoading]
   )
 
   const updateItem = React.useCallback(

@@ -47,7 +47,7 @@ const InnerContainer = styled.div`
   }
 `
 
-const OrderBox = styled.div<{ number: number }>`
+const OrderBox = styled.div<{ number: string }>`
   position: relative;
   width: 400px;
   height: auto;
@@ -146,8 +146,8 @@ const StaffPage: React.FC<iStaffPage> = ({
 
   const handleDeleteOrder = React.useCallback(
     cart => () => {
-      setAlertId(cart.id)
-      setAlertNumber(cart.number)
+      setAlertId(cart._id)
+      setAlertNumber(cart.label)
       deleteOrder(alertId)
     },
     [deleteOrder, alertId]
@@ -176,7 +176,7 @@ const StaffPage: React.FC<iStaffPage> = ({
         () => {
           triggerFetch()
         },
-        1000
+        5000
       )
 
       return () => { clearInterval(fetchInterval) }
@@ -197,7 +197,7 @@ const StaffPage: React.FC<iStaffPage> = ({
       <InnerContainer>
         {orderCarts.map(
           orderCart => (
-            <OrderBox key={orderCart.id} number={orderCart.number}>
+            <OrderBox key={orderCart._id} number={orderCart.label}>
               <OrderBoxInner>
                 <ListOrderContainer>
                   {orderCart.cart.map(

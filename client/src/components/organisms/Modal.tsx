@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { color } from '../atoms/color'
-import { IoMdCheckmarkCircle, IoMdCloseCircle } from 'react-icons/io'
 import { Button, ButtonPrimary } from 'components/atoms/button'
 
 const ModalWrapper = styled.div`

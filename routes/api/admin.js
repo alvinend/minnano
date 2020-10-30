@@ -11,6 +11,7 @@ const validateLayoutInput = require('../../validation/layout')
 
 const getLayout = require('../../helpers/getLayout')
 const uploadImage = require('../../helpers/image')
+const passport = require('passport')
 
 // @route   GET api/admin/test
 // @desc    Tests post route
@@ -20,7 +21,11 @@ router.get('/test', (req, res) => res.json({ msg: 'Admin Works' }));
 // @desc    Create new category
 router.post(
   '/category',
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No Permission' })
+    }
 
     const { errors, isValid } = validateCategoryInput(req.body)
 
@@ -42,8 +47,11 @@ router.post(
 // @desc    Create new item
 router.post(
   '/item',
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No Permission' })
+    }
     const { errors, isValid } = await validateItemInput(req.body)
 
     if (!isValid) {
@@ -64,7 +72,11 @@ router.post(
 // @desc    Delete specific item
 router.delete(
   '/category/:categoryid',
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No Permission' })
+    }
     try {
       const respond = {}
       if (req.params.categoryid) {
@@ -84,7 +96,11 @@ router.delete(
 // @desc    Delete specific item
 router.delete(
   '/item/:itemid',
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No Permission' })
+    }
     try {
       const respond = {}
       if (req.params.itemid) {
@@ -104,7 +120,11 @@ router.delete(
 // @desc    Edit specific category
 router.put(
   '/category/:categoryid',
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No Permission' })
+    }
     const { errors, isValid } = validateCategoryInput(req.body)
 
     if (!isValid) {
@@ -134,7 +154,11 @@ router.put(
 // @desc    Edit specific item
 router.put(
   '/item/:itemid',
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No Permission' })
+    }
     const { errors, isValid } = await validateItemInput(req.body)
 
     if (!isValid) {
@@ -162,20 +186,30 @@ router.put(
 
 // @route   GET api/admin/layout
 // @desc    Get Layout Setting
-router.get('/layout', async (req, res) => {
-  try {
-    const layout = await getLayout()
-    return res.status(200).json(layout)
-  } catch (err) {
-    return res.status(400).json(err)
-  }
+router.get(
+  '/layout',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No Permission' })
+    }
+    try {
+      const layout = await getLayout()
+      return res.status(200).json(layout)
+    } catch (err) {
+      return res.status(400).json(err)
+    }
 })
 
 // @route   PUT api/admin/layout
 // @desc    Edit Layout Setting
 router.put(
   '/layout',
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No Permission' })
+    }
     const { errors, isValid } = validateLayoutInput(req.body)
 
     if (!isValid) {
@@ -200,6 +234,7 @@ router.put(
 
 router.post('/image', async (req, res) => {
   try {
+    
     const myFile = req.file
     const imageUrl = await uploadImage(myFile)
     res

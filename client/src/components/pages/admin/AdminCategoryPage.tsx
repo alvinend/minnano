@@ -115,7 +115,7 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
       updateCategory(editingCategory as Category)
       setEditingCategory(null)
     },
-    [editingCategory]
+    [editingCategory, updateCategory]
   )
 
   const handleEditCategory = React.useCallback(
@@ -170,7 +170,7 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
       await createCategory(creatingCategory)
       setIsCreatingCategory(false)
     },
-    [creatingCategory]
+    [creatingCategory, createCategory]
   )
 
   return (
@@ -190,7 +190,7 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
                 <React.Fragment key={category._id}>
                   <TableItem>{category.name}</TableItem>
                   <TableItem>{category.desc}</TableItem>
-                  <TableItem>{<img src={category.imagelink} />}</TableItem>
+                  <TableItem>{<img src={category.imagelink} alt="item"/>}</TableItem>
                   <TableItem>
                     <span onClick={() => handleEditCategory({...category})}><RiEditBoxLine /></span>
                     <span onClick={() => setDeletingCategory({...category})}><IoIosTrash /></span>

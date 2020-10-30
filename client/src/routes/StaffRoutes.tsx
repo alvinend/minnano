@@ -14,7 +14,7 @@ const StaffRoutes: React.FC = () => {
       const init = async () => {
         setIsLoading(true)
         const res = await axios.get('/api/staff/order')
-        setOrderCarts(res.data.orderCarts)
+        setOrderCarts(res.data)
         setIsLoading(false)
       }
       init()
@@ -25,7 +25,7 @@ const StaffRoutes: React.FC = () => {
   const triggerFetch = React.useCallback(
     async () => {
       const res = await axios.get('/api/staff/order')
-      setOrderCarts(res.data.orderCarts)
+      setOrderCarts(res.data)
     },
     []
   )
@@ -33,7 +33,7 @@ const StaffRoutes: React.FC = () => {
   const deleteOrder = React.useCallback(
     async cartid => {
       const res = await axios.delete(`/api/staff/order/${cartid}`)
-      setOrderCarts(res.data.orderCarts)
+      setOrderCarts(res.data)
     },
     []
   )

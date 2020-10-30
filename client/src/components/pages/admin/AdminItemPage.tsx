@@ -4,34 +4,9 @@ import styled from 'styled-components'
 import { ButtonPrimary } from 'components/atoms/button'
 import { RiEditBoxLine } from 'react-icons/ri'
 import { Category, Item } from 'models/common'
-import { Modal } from 'components/organisms/Modal'
-import { AdminInput } from 'components/atoms/input/AdminInput'
-import Select from 'react-select'
-import axios from 'axios'
 import { IoIosTrash } from 'react-icons/io'
 import { AlertModal } from 'components/organisms/AlertModal'
-import { createNonNullExpression } from 'typescript'
-
-const InputTitle = styled.h3`
-  font-size: 18px;
-`
-
-const InputDesc = styled.p`
-  font-size: 12px;
-  margin: 5px 0 15px 0;
-`
-
-const InputGroup = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
-const InputDescGroup = styled.div`
-  flex-shrink: 0;
-  margin-right: 30px;
-  text-align: left;
-`
+import { AdminItemModal } from 'components/organisms/AdminItemModal'
 
 const AdminItemPageContainer = styled.div`
   padding: 40px 0 40px 120px;
@@ -82,17 +57,6 @@ const TableItem = styled.div`
   }
 `
 
-const ModalTitle = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-`
-
-const StyledSelect = styled(Select)`
-  width: 445px;
-  text-align: left;
-`
-
 type iAdminItemPage = {
   items: Item[]
   categories: Category[]
@@ -130,7 +94,7 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
       updateItem(editingItem as Item)
       setEditingItem(null)
     },
-    [editingItem]
+    [editingItem, updateItem]
   )
 
   const handleEditItem = React.useCallback(
@@ -215,7 +179,7 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
       await createItem(creatingItem)
       setIsCreatingItem(false)
     },
-    [creatingItem]
+    [creatingItem, createItem]
   )
 
   return (
@@ -237,7 +201,7 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
                 <React.Fragment key={item._id}>
                   <TableItem>{item.name}</TableItem>
                   <TableItem>{item.desc}</TableItem>
-                  <TableItem>{<img src={item.imagelink} />}</TableItem>
+                  <TableItem>{<img src={item.imagelink} alt="item"/>}</TableItem>
                   <TableItem>{item.price}</TableItem>
                   <TableItem>{getCategoryName(item.categoryid)}</TableItem>
                   <TableItem>
@@ -252,72 +216,15 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
       </AdminItemPageContainer>
 
       {/* 編集モーダル */}
-      <Modal
+      <AdminItemModal
         isShowing={!!editingItem}
         onSubmit={handleConfirmEditing}
         onCancel={handleCancelEditing}
-      >
-        <ModalTitle>アイテム詳細編集</ModalTitle>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>アイテム名</InputTitle>
-            <InputDesc>品物の名前、メインに表示される</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="アイテム名"
-            value={editingItem?.name}
-            name="name"
-            onChange={handleChangeEditingItem}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>説明</InputTitle>
-            <InputDesc>何の品物かの説明</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="説明"
-            value={editingItem?.desc}
-            name="desc"
-            onChange={handleChangeEditingItem}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>画像</InputTitle>
-            <InputDesc>商品の画像</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="画像"
-            value={editingItem?.imagelink}
-            name="imagelink"
-            onChange={handleChangeEditingItem}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>価格</InputTitle>
-            <InputDesc>品物の価格（円単位）</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="価格"
-            value={editingItem?.price}
-            name="price"
-            onChange={handleChangeEditingItem}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>カテゴリ</InputTitle>
-            <InputDesc>アイテムのカテゴリ</InputDesc>
-          </InputDescGroup>
-          <StyledSelect
-            options={categoryOptions}
-            value={categoryOptions.find(option => option.value === editingItem?.categoryid)}
-            onChange={handleChangeEditingItemCategory}
-          />
-        </InputGroup>
-      </Modal>
+        itemData={editingItem}
+        onChangeItem={handleChangeEditingItem}
+        categoryOptions={categoryOptions}
+        onChangeItemCategory={handleChangeEditingItemCategory}
+      />
 
       {/* 削除モーダル */}
       <AlertModal
@@ -329,72 +236,15 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
       </AlertModal>
 
       {/* 作成モーダル */}
-      <Modal
+      <AdminItemModal
         isShowing={isCreatingItem}
         onSubmit={handleConfirmCreatingItem}
         onCancel={handleCancelCreatingItem}
-      >
-        <ModalTitle>アイテム詳細編集</ModalTitle>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>アイテム名</InputTitle>
-            <InputDesc>品物の名前、メインに表示される</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="アイテム名"
-            value={creatingItem?.name}
-            name="name"
-            onChange={handleChangeCreatingItem}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>説明</InputTitle>
-            <InputDesc>何の品物かの説明</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="説明"
-            value={creatingItem?.desc}
-            name="desc"
-            onChange={handleChangeCreatingItem}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>画像</InputTitle>
-            <InputDesc>商品の画像</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="画像"
-            value={creatingItem?.imagelink}
-            name="imagelink"
-            onChange={handleChangeCreatingItem}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>価格</InputTitle>
-            <InputDesc>品物の価格（円単位）</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="価格"
-            value={creatingItem?.price}
-            name="price"
-            onChange={handleChangeCreatingItem}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>カテゴリ</InputTitle>
-            <InputDesc>アイテムのカテゴリ</InputDesc>
-          </InputDescGroup>
-          <StyledSelect
-            options={categoryOptions}
-            value={categoryOptions.find(option => option.value === creatingItem?.categoryid)}
-            onChange={handleChangeCreatingItemCategory}
-          />
-        </InputGroup>
-      </Modal>
+        itemData={creatingItem}
+        onChangeItem={handleChangeCreatingItem}
+        categoryOptions={categoryOptions}
+        onChangeItemCategory={handleChangeCreatingItemCategory}
+      />
     </>
   )
 }

@@ -2,11 +2,17 @@ export type Item = {
   _id: string
   id: string
   name: string
-  desc?: string,
-  imagelink?: string,
-  price: number,
-  stock?: number,
+  desc?: string
+  imagelink?: string
+  price: number
+  stock?: number
   categoryid: string
+  subitems: {
+    id: string,
+    name: string,
+    desc?: string,
+    price: number
+  }[]
 }
 
 export type Category = {
@@ -22,7 +28,7 @@ export type Cart = {
 }[]
 
 export type OrderCarts = {
-    id: string
-    cart: Cart
-    number: number
+  _id: string
+  cart: Cart
+  label: string
 }[]
