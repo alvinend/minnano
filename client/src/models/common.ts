@@ -32,3 +32,8 @@ export type OrderCarts = {
   cart: Cart
   label: string
 }[]
+
+export type User = {
+  email: string,
+  role: string
+}

@@ -27,7 +27,7 @@ const StyledLink = styled(Link)`
   height: 300px;
   padding: 0 10px;
   background-color: ${color.primary};
-  font-size: 60px;
+  font-size: 46px;
   font-weight: bold;
   color: ${color.white};
   text-decoration: none;
@@ -44,9 +44,9 @@ const MainMenu = () => {
   return (
     <MainMenuContainer>
       <LinkContainer>
-        <StyledLink to="/customer">Customer Page</StyledLink>
-        <StyledLink to="/staff">Staff Page</StyledLink>
-        <StyledLink to="/admin">Admin Page</StyledLink>
+        <StyledLink to="/customer">顧客画面</StyledLink>
+        <StyledLink to="/staff">スタッフ画面</StyledLink>
+        <StyledLink to="/admin">管理者画面</StyledLink>
       </LinkContainer>
     </MainMenuContainer>
   )

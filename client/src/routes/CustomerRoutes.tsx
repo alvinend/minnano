@@ -8,6 +8,7 @@ import {
 import axios from 'axios'
 import { Loading } from '../components/atoms/Loading'
 import { Cart, Category, Item } from '../models/common'
+import { notifyAxiosError } from 'models/notification'
 
 const CustomerRoutes: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([])
@@ -42,7 +43,7 @@ const CustomerRoutes: React.FC = () => {
         setCartNumber(res.data.label)
         setIsLoading(false)
       } catch (e) {
-
+        notifyAxiosError(e)
       }
     },
     [cart, history]
@@ -51,12 +52,16 @@ const CustomerRoutes: React.FC = () => {
   React.useEffect(
     () => {
       const init = async () => {
-        setIsLoading(true)
-        const res = await axios.get('/api/customer/info')
-        setCategories(res.data.categories)
-        // setLayout(res.data.layout)
-        setItems(res.data.items)
-        setIsLoading(false)
+        try {
+          setIsLoading(true)
+          const res = await axios.get('/api/customer/info')
+          setCategories(res.data.categories)
+          // setLayout(res.data.layout)
+          setItems(res.data.items)
+          setIsLoading(false)
+        } catch (e) {
+          notifyAxiosError(e)
+        }
       }
 
       init()

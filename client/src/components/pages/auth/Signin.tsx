@@ -1,4 +1,5 @@
 import { Button } from 'components/atoms/button'
+import { User } from 'models/common'
 import React from 'react'
 import styled from 'styled-components'
 import { color } from '../../atoms/color'
@@ -22,11 +23,11 @@ const Title = styled.div`
 
 
 type iSignin = {
-  setIsAuth: React.Dispatch<React.SetStateAction<boolean>>
+  signin: (user: any) => void
 }
 
 const Signin:React.FC<iSignin> = ({
-  setIsAuth
+  signin
 }) => {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -47,27 +48,30 @@ const Signin:React.FC<iSignin> = ({
 
   const handleSignin = React.useCallback(
     () => {
-      setIsAuth(true)
+      signin({
+        email,
+        password
+      })
     },
-    [setIsAuth]
+    [signin, email, password]
   )
 
   return (
     <SignupContainer>
-      <Title>Please Sign in</Title>
+      <Title>MinannO</Title>
       <Input
-        label="Email"
+        label="メール"
         value={email}
         onChange={handleEmailInput}
         type="email"
       />
       <Input
-        label="Password"
+        label="パスワード"
         value={password}
         onChange={handlePasswordInput}
         type="password"
       />
-      <Button onClick={handleSignin}>Sign In</Button>
+      <Button onClick={handleSignin}>サインイン</Button>
     </SignupContainer>
   )
 }
