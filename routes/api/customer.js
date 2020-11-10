@@ -51,7 +51,6 @@ router.post(
         label
       })
       await order.save()
-      console.log(order)
       return res.status(200).json(order)
     } catch (err) {
       return res.status(400).json(err)

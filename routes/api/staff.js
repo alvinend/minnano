@@ -49,7 +49,6 @@ router.delete(
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
-      console.log(req.params.orderCartsid)
       await Order.findByIdAndDelete(req.params.orderCartsid)
       const orders = await Order.find()
 

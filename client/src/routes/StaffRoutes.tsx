@@ -4,7 +4,6 @@ import { StaffPage } from '../components/pages/staff/StaffPage'
 import { Loading } from '../components/atoms/Loading'
 import axios from 'axios'
 import { OrderCarts } from '../models/common'
-import { toast } from 'react-toastify'
 import { notifyAxiosError } from 'models/notification'
  
 const StaffRoutes: React.FC = () => {

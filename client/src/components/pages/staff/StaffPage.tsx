@@ -16,7 +16,8 @@ const StaffPageWrapper = styled.div`
 `
 
 const Title = styled.h1`
-  font-size: 32px;
+  font-size: 24px;
+  font-weight: 900;
   color: ${color.black};
 `
 
@@ -27,7 +28,6 @@ const InnerContainer = styled.div`
   align-content: flex-start;
   width: 90%;
   height: calc(100vh - 84px);
-  margin: 20px 0;
   padding: 30px 30px 0 30px;
   background-color: ${color.secondary};
   border: 2px ${color.gray} solid;
@@ -139,7 +139,7 @@ const StaffPage: React.FC<iStaffPage> = ({
 
   const totalPrice = React.useCallback(
     (cart: Cart) => cart.length && cart
-      .map(cartItem => cartItem.item.price * cartItem.quantity)
+      .map(cartItem => cartItem?.item?.price && cartItem?.item?.price * cartItem?.quantity)
       .reduce((a, b) => a + b),
     []
   )
@@ -149,7 +149,7 @@ const StaffPage: React.FC<iStaffPage> = ({
       setAlertId(cart._id)
       setAlertNumber(cart.label)
     },
-    [deleteOrder, alertId]
+    []
   )
 
   const handleOnSubmit = React.useCallback(
@@ -190,26 +190,26 @@ const StaffPage: React.FC<iStaffPage> = ({
         onSubmit={handleOnSubmit}
         onCancel={handleAlertCancel}
       >
-        <>Apakah Orderan Nomor <b>{alertNumber}</b> Sudah Selesai?</>
+        <>注文 <b>{alertNumber}</b> 完了しますか?</>
       </AlertModal>
-      <Title>Pesanan</Title>
+      <Title>注文</Title>
       <InnerContainer>
         {orderCarts.map(
           orderCart => (
             <OrderBox key={orderCart._id} number={orderCart.label}>
               <OrderBoxInner>
                 <ListOrderContainer>
-                  {orderCart.cart.map(
+                  {orderCart?.cart?.map(
                     cartItem => (
-                      <ListOrder key={cartItem.item._id}>
-                        <span>{cartItem.item.name}</span>
-                        <span>{cartItem.quantity}x</span>
+                      <ListOrder key={cartItem?.item?._id}>
+                        <span>{cartItem?.item?.name}</span>
+                        <span>{cartItem?.quantity}x</span>
                       </ListOrder>
                     )
                   )}
                 </ListOrderContainer>
                 <OrderBoxActionContainer>
-                  <span>Rp {totalPrice(orderCart.cart)}</span>
+                  <span>{totalPrice(orderCart?.cart).toLocaleString()}円</span>
                   <div onClick={handleDeleteOrder(orderCart)}><IoMdCheckmarkCircle  /></div>
                 </OrderBoxActionContainer>
               </OrderBoxInner>

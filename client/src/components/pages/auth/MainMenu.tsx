@@ -3,7 +3,6 @@ import { color } from 'components/atoms/color'
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import Cookies from 'js-cookie'
 
 const MainMenuContainer = styled.div`
   display: flex;

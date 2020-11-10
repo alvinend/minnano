@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Category, Item } from 'models/common'
+import { Category } from 'models/common'
 import { Modal } from 'components/organisms/Modal'
 import { AdminInput } from 'components/atoms/input/AdminInput'
 

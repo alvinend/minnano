@@ -54,7 +54,6 @@ const App = () => {
     () => {
       const checkToken = async () => {
         const token = Cookies.get('jwt')
-        console.log(token)
         if (token) {
           try {
             axios.defaults.headers.common['Authorization'] = token
@@ -75,8 +74,6 @@ const App = () => {
     () => user?.role === 'admin',
     [user]
   )
-
-  console.log(user)
 
   return <>
     <ToastContainer />

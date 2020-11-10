@@ -149,8 +149,7 @@ const NumberPage:React.FC<iNumberPage> = ({
       <InnerContainer>
         <DescWrapper>
           <div>
-            Masukan Nomer Meja disini. Makanan akan segera diproses setelah melakukan pesanan <br />
-            Prediksi waktu sekitar 15 menit
+            順番カードを取り、こちらに入力してください。そちらの番号呼ばれたら、カウンタまでお越しください。
           </div>
           <NumberDispaly>{number}</NumberDispaly>
         </DescWrapper>

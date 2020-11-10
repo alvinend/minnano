@@ -4,7 +4,6 @@ import { Modal } from 'components/organisms/Modal'
 import { AdminInput } from 'components/atoms/input/AdminInput'
 import Select from 'react-select'
 import { Item } from 'models/common'
-import { color } from 'components/atoms/color'
 
 const InputTitle = styled.h3`
   font-size: 18px;
@@ -36,19 +35,6 @@ const ModalTitle = styled.div`
 const StyledSelect = styled(Select)`
   width: 445px;
   text-align: left;
-`
-
-const SubItemContainer = styled.div`
-  background-color: ${color.gray};
-  margin-top: 20px;
-  padding: 20px;
-  text-align: left;
-`
-
-const SubItemTitle = styled.h3`
-  font-size: 18px;
-  font-weight: bolder;
-  margin-bottom: 20px;
 `
 
 type iAdminItemModal = {
@@ -149,46 +135,6 @@ export const AdminItemModal: React.FC<iAdminItemModal> = ({
           onChange={onChangeItemCategory}
         />
       </InputGroup>
-
-      {/* <SubItemContainer>
-        <SubItemTitle>サブアイテム</SubItemTitle>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>サブアイテム名</InputTitle>
-            <InputDesc>サブアイテムの名前</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="サブアイテム名"
-            value={itemData?.price}
-            name="price"
-            onChange={onChangeItem}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>価格</InputTitle>
-            <InputDesc>品物の価格（円単位）</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="価格"
-            value={itemData?.price}
-            name="price"
-            onChange={onChangeItem}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>価格</InputTitle>
-            <InputDesc>品物の価格（円単位）</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="価格"
-            value={itemData?.price}
-            name="price"
-            onChange={onChangeItem}
-          />
-        </InputGroup>
-      </SubItemContainer> */}
     </Modal>
   )
 }

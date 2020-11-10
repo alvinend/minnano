@@ -1,5 +1,3 @@
-import { color } from 'components/atoms/color'
-import { AdminInput } from 'components/atoms/input/AdminInput'
 import * as React from 'react'
 import styled from 'styled-components'
 import { Button, Card, Form, Input, Select, Table, Space } from 'antd'
@@ -55,6 +53,7 @@ export const AdminUserPage = () => {
     () => {
       fetchUsers()
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
 
@@ -82,7 +81,7 @@ export const AdminUserPage = () => {
         notifyAxiosError(e)
       }
     },
-    [editingUser]
+    [editingUser, fetchUsers]
   )
 
   const onFinish = React.useCallback(
@@ -95,19 +94,19 @@ export const AdminUserPage = () => {
         notifyAxiosError(e)
       }
     },
-    []
+    [fetchUsers]
   )
 
   const handleDeletingUser = React.useCallback(
     (uuid: string) => {
-      setDeletingUser(users.find(user => user._id == uuid)!)
+      setDeletingUser(users.find(user => String(user._id) === String(uuid))!)
     },
     [users]
   )
 
   const handleEditingUser = React.useCallback(
     (uuid: string) => {
-      setEditingUser(users.find(user => user._id == uuid)!)
+      setEditingUser(users.find(user => String(user._id) === String(uuid))!)
     },
     [users]
   )
@@ -123,7 +122,7 @@ export const AdminUserPage = () => {
         notifyAxiosError(e)
       }
     },
-    [deletingUser]
+    [deletingUser, fetchUsers]
   )
 
   const handleCancelAction = React.useCallback(
@@ -157,7 +156,7 @@ export const AdminUserPage = () => {
         ),
       },
     ],
-    [handleDeletingUser]
+    [handleDeletingUser, handleEditingUser]
   )
 
   return (
@@ -230,14 +229,14 @@ export const AdminUserPage = () => {
         onSubmit={handleDeleteUser}
         onCancel={handleCancelAction}
       >
-        <>アイテム<b>{deletingUser?.email}</b>削除しますか？</>
+        <>ユーザ<b>{deletingUser?.email}</b>削除しますか？</>
       </AlertModal>
       <Modal
         isShowing={!!editingUser}
         onCancel={handleCancelAction}
         onSubmit={() => void 0}
         submitButtonProps={{
-          children: 'abcd',
+          children: 'ユーザを編集する',
           type: 'submit',
           form: 'edit-user'
         }}

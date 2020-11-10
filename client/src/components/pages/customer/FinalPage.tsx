@@ -81,10 +81,10 @@ const FinalPage: React.FC<iFinalPage> = ({
 
   return (
     <FinalWrapper type={animationType}>
-      <h2>Terima Kasih</h2>
-      Pesanan Anda telah kami terima<br />
+      <h2>ありがとうございます</h2>
+      注文承りました<br />
       <h1>"{cartNumber}"</h1>
-      Mohon Ditunggu Sebentar
+      少々お待ちください
     </FinalWrapper>
   )
 }

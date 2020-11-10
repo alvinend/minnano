@@ -4,32 +4,9 @@ import styled from 'styled-components'
 import { ButtonPrimary } from 'components/atoms/button'
 import { RiEditBoxLine } from 'react-icons/ri'
 import { Category, Item } from 'models/common'
-import { Modal } from 'components/organisms/Modal'
-import { AdminInput } from 'components/atoms/input/AdminInput'
 import { IoIosTrash } from 'react-icons/io'
 import { AlertModal } from 'components/organisms/AlertModal'
 import { AdminCategoryModal } from 'components/organisms/AdminCategoryModal'
-
-const InputTitle = styled.h3`
-  font-size: 18px;
-`
-
-const InputDesc = styled.p`
-  font-size: 12px;
-  margin: 5px 0 15px 0;
-`
-
-const InputGroup = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
-const InputDescGroup = styled.div`
-  flex-shrink: 0;
-  margin-right: 30px;
-  text-align: left;
-`
 
 const AdminCategoryPageContainer = styled.div`
   padding: 40px 0 40px 120px;
@@ -79,12 +56,6 @@ const TableItem = styled.div`
   }
 `
 
-const ModalTitle = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-`
-
 type iAdminCategoryPage = {
   categories: Category[]
   updateCategory: (editingCategory: Category) => void
@@ -131,7 +102,7 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
       await updateCategory(editingCategory as Category)
       setEditingCategory(null)
     },
-    [editingCategory, updateCategory, image]
+    [editingCategory, updateCategory, image, uploadImage]
   )
 
   const handleEditCategory = React.useCallback(
@@ -196,7 +167,7 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
       setCreatingCategory({} as Item)
       setIsCreatingCategory(false)
     },
-    [creatingCategory, createCategory, image]
+    [creatingCategory, createCategory, image, uploadImage]
   )
 
   return (

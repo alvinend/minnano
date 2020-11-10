@@ -7,22 +7,6 @@ const enterpriseName = process.env.ENTERPRISE_NAME
 const s3 = new AWS.S3()
 var fs = require('fs');
 
-s3.getObject({ Bucket: 'thebucketofalvinend', Key: 'test-access/index.html' }, function(err, data) {
-  if (err) {
-    console.log("Error", err);
-  } else {
-    console.log("Success", data);
-  }
-})
-
-s3.putObject({ Bucket: 'thebucketofalvinend', Body: 'aaa' ,Key: 'test-accessa/index.html' }, function(err, data) {
-  if (err) {
-    console.log("Error", err);
-  } else {
-    console.log("Success", data);
-  }
-})
-
 // @route   GET api/aws/test
 // @desc    Tests post route
 // @access  Admin Only

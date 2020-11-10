@@ -38,6 +38,7 @@ const AdminRoutes = () => {
 
       init()
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
 
@@ -141,7 +142,6 @@ const AdminRoutes = () => {
         const data = new FormData()
         data.append('file', imageFile)
         const res = await axios.post(`/api/aws/image`, data)
-        console.log(res?.data?.url)
         return res?.data?.url
       } catch (e) {
         notifyAxiosError(e)

@@ -1,5 +1,4 @@
 import { Button } from 'components/atoms/button'
-import { User } from 'models/common'
 import React from 'react'
 import styled from 'styled-components'
 import { color } from '../../atoms/color'

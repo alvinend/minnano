@@ -36,23 +36,20 @@ const CategoryItem = styled.div<{ isSelected: boolean }>`
   ${({isSelected}) => isSelected && 'font-weight: bold;'}
 `
 
-const CategoryDesc = styled.div`
+const CategorySelector = styled.div`
   display: flex;
   align-items: center;
   width: 90%;
-  padding: 20px 35px;
-  background-color: ${color.primary};
-  color: ${color.white};
   border-radius: 5px;
+  position: relative;
 
   & img {
+    width: 80px;
     height: 80px;
-    margin-right: 40px;
-  }
-  
-  & span {
-    font-size: 28px;
-    font-weight: bold;
+    margin-right: 15px;
+    object-fit: cover;
+    border: 2px ${color.gray} solid;
+    border-radius: 5px;
   }
 `
 
@@ -61,13 +58,26 @@ const ItemWrapper = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   width: 90%;
-  height: calc(100vh - 272px);
-  margin: 20px 0;
+  height: calc(100vh - 132px);
   padding: 0 5px;
   background-color: ${color.secondary};
   border: 2px ${color.gray} solid;
   border-radius: 5px;
   overflow: auto;
+`
+const CategoryDesc = styled.div`
+  left: 0;
+  top: 50%;
+  display: flex;
+
+  & div {
+    width: 180px;
+  }
+
+  & h1 {
+    font-size: 16px;
+    font-weight: 900;
+  }
 `
 
 const ItemCard = styled.div<{ index: number }>`
@@ -75,7 +85,7 @@ const ItemCard = styled.div<{ index: number }>`
   flex-direction: column;
   align-items: center;
   width: 300px;
-  height: 300px;
+  min-height: 300px;
   margin: 8px;
   padding: 20px;
   border: 2px ${color.gray} solid;
@@ -324,22 +334,27 @@ const CatalogPage: React.FC<iCatalogPage> = ({
         animationType={cartAnimationType}
         onClickConfirmed={handleConfirmed}
       />}
-      <CategoryBar>
-        {categories.map(category => (
-          <CategoryItem
-            key={category._id}
-            onClick={() => handleCategoryClick(category)}
-            isSelected={selectedCategory._id === category._id}
-          >
-            {category.name}
-          </CategoryItem>
-        ))}
-      </CategoryBar>
 
-      <CategoryDesc>
-        <img src={`${selectedCategory.imagelink}`} alt="Category" />
-        <span>{selectedCategory.name} | {selectedCategory.desc}</span>
-      </CategoryDesc>
+      <CategorySelector>
+        <CategoryDesc>
+          <img src={`${selectedCategory.imagelink}`} alt="Category" />
+          <div>
+            <h1>{selectedCategory.name}</h1>
+            <p>{selectedCategory.desc}</p>
+          </div>
+        </CategoryDesc>
+        <CategoryBar>
+          {categories.map(category => (
+            <CategoryItem
+              key={category._id}
+              onClick={() => handleCategoryClick(category)}
+              isSelected={selectedCategory._id === category._id}
+            >
+              {category.name}
+            </CategoryItem>
+          ))}
+        </CategoryBar>
+      </CategorySelector>
 
       <ItemWrapper>
         {
@@ -353,7 +368,7 @@ const CatalogPage: React.FC<iCatalogPage> = ({
                 <img src={`${item.imagelink}`} alt="Item"/>
                 <h2>{item.name}</h2>
                 <p>{item.desc}</p>
-                <span>Rp. {item.price}</span>
+                <span><b>{item.price.toLocaleString()}円</b></span>
               </ItemCard>
             )
           )

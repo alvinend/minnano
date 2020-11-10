@@ -1,7 +1,6 @@
 const Cloud = require('@google-cloud/storage')
 const path = require('path')
 const serviceKey = path.join(__dirname, '../config/gcpkey.json')
-console.log(serviceKey)
 const { Storage } = Cloud
 const gc = new Storage({
   keyFilename: serviceKey,
@@ -28,7 +27,6 @@ module.exports = (file) => new Promise((resolve, reject) => {
   })
   blobStream.on('finish', () => {
     const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
-    console.log(`https://storage.googleapis.com/${bucket.name}/${blob.name}`)
     resolve(publicUrl)
   })
   .on('error', err => {

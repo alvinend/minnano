@@ -1,4 +1,3 @@
-import { color } from 'components/atoms/color'
 import { AdminInput } from 'components/atoms/input/AdminInput'
 import * as React from 'react'
 import styled from 'styled-components'

@@ -105,7 +105,7 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
       await updateItem(editingItem as Item)
       setEditingItem(null)
     },
-    [editingItem, updateItem, image]
+    [editingItem, updateItem, image, uploadImage]
   )
 
   const handleEditItem = React.useCallback(
@@ -192,7 +192,6 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
     async () => {
       if (image) {
         const url = await uploadImage(image)
-        console.log(url)
         creatingItem.imagelink = url
         setImage(null)
       }
@@ -201,7 +200,7 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
       setCreatingItem({} as Item)
       setIsCreatingItem(false)
     },
-    [creatingItem, createItem, image]
+    [creatingItem, createItem, image, uploadImage]
   )
 
   return (

@@ -212,17 +212,17 @@ export const CartOverlay: React.FC<iCartOverlay> = ({
                 x{cartItem.quantity}
                 <button onClick={() => handleAddItem(index)}><TiPlusOutline/></button>
               </Quantitiy>
-              <ItemPrice>Rp. {cartItem.quantity * cartItem.item.price}</ItemPrice>
+              <ItemPrice>{(cartItem.quantity * cartItem.item.price).toLocaleString()}円</ItemPrice>
               </div>
             )
           )}
         </ItemWrapper>
         <TotalPriceContainer>
-          <TotalPriceDesc>Total</TotalPriceDesc>
+          <TotalPriceDesc>合計金額</TotalPriceDesc>
           <TotalPrice>
-            <span>Rp. {totalPrice}</span>
-            <button onClick={onClickBack}>Kembali</button>
-            <button disabled={!cart.length} onClick={onClickConfirmed}>Lanjut</button>
+            <span>{totalPrice.toLocaleString()}円</span>
+            <button onClick={onClickBack}>戻る</button>
+            <button disabled={!cart.length} onClick={onClickConfirmed}>次へ</button>
           </TotalPrice>
         </TotalPriceContainer>
       </OverlayInnerContainer>
