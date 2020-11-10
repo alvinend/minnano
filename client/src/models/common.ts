@@ -39,3 +39,19 @@ export type User = {
   role: string
   password: string
 }
+
+export type Layout = {
+  storename: string
+  confirmation: {
+    button: string
+    desc: string
+  }
+  picking: {
+    desc: string
+  }
+  final: {
+    button: string
+    desc: string
+    main: string
+  }
+}

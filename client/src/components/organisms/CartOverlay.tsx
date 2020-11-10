@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { TiShoppingCart, TiPlusOutline, TiMinusOutline } from 'react-icons/ti'
 import { color } from '../atoms/color'
-import { Cart } from '../../models/common'
+import { Cart, Layout } from '../../models/common'
 
 const Overlay = styled.div<{ type: string }>`
   display: flex;
@@ -56,10 +56,14 @@ const OverlayInnerContainer = styled.div`
 
 const IconContainer = styled.div`
   width: 100%;
-  padding-bottom: 15px 0;
   font-size: 72px;
   border-bottom: 5px #eee dotted;
   text-align: center;
+
+  & div {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
 `
 
 const ItemWrapper = styled.div`
@@ -162,6 +166,7 @@ type iCartOverlay = {
   onClickBack: () => void
   onClickConfirmed: () => void
   animationType: string
+  layout: Layout
 }
 
 export const CartOverlay: React.FC<iCartOverlay> = ({
@@ -170,7 +175,8 @@ export const CartOverlay: React.FC<iCartOverlay> = ({
   totalPrice,
   onClickBack,
   onClickConfirmed,
-  animationType
+  animationType,
+  layout
 }) => {
   const handleAddItem = React.useCallback(
     (index: number) => {
@@ -198,7 +204,10 @@ export const CartOverlay: React.FC<iCartOverlay> = ({
   return (
     <Overlay type={animationType}>
       <OverlayInnerContainer>
-        <IconContainer><TiShoppingCart /></IconContainer>
+        <IconContainer>
+          <TiShoppingCart />
+          <div>{layout.confirmation.desc}</div>
+        </IconContainer>
         <ItemWrapper>
           {!cart.length && 'Cart is Empty'}
           {cart.map(
@@ -222,7 +231,7 @@ export const CartOverlay: React.FC<iCartOverlay> = ({
           <TotalPrice>
             <span>{totalPrice.toLocaleString()}円</span>
             <button onClick={onClickBack}>戻る</button>
-            <button disabled={!cart.length} onClick={onClickConfirmed}>次へ</button>
+            <button disabled={!cart.length} onClick={onClickConfirmed}>{layout.confirmation.button}</button>
           </TotalPrice>
         </TotalPriceContainer>
       </OverlayInnerContainer>

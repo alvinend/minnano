@@ -6,7 +6,7 @@ import { CartOverlay } from '../../organisms/CartOverlay'
 import { TiShoppingCart } from 'react-icons/ti'
 import { GrClose } from 'react-icons/gr'
 import { useFirstMountState } from 'react-use'
-import { Cart, Item, Category } from '../../../models/common'
+import { Cart, Item, Category, Layout } from '../../../models/common'
 
 const CategoryWrapper = styled.div`
   display: flex;
@@ -223,6 +223,7 @@ type iCatalogPage = {
   cart: Cart
   setCart: React.Dispatch<any>
   totalPrice: number
+  layout: Layout
 }
 
 const CatalogPage: React.FC<iCatalogPage> = ({
@@ -230,7 +231,8 @@ const CatalogPage: React.FC<iCatalogPage> = ({
   items,
   cart,
   setCart,
-  totalPrice
+  totalPrice,
+  layout
 }) => {
   const [selectedCategory, setSelectedCategory] = React.useState(categories[0])
   const [selectedItems, setSetSelectedItems] = React.useState<Item[]>([])
@@ -333,6 +335,7 @@ const CatalogPage: React.FC<iCatalogPage> = ({
         onClickBack={handleHideCart}
         animationType={cartAnimationType}
         onClickConfirmed={handleConfirmed}
+        layout={layout}
       />}
 
       <CategorySelector>

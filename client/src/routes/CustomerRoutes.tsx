@@ -7,12 +7,12 @@ import {
 } from '../components/pages/customer'
 import axios from 'axios'
 import { Loading } from '../components/atoms/Loading'
-import { Cart, Category, Item } from '../models/common'
+import { Cart, Category, Item, Layout } from '../models/common'
 import { notifyAxiosError } from 'models/notification'
 
 const CustomerRoutes: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([])
-  // const [layout, setLayout] = useState({})
+  const [layout, setLayout] = useState<Layout>({} as Layout)
   const [cart, setCart] = useState<Cart>([])
   const [cartNumber, setCartNumber] = useState<string>('')
   const [items, setItems] = useState<Item[]>([])
@@ -56,6 +56,7 @@ const CustomerRoutes: React.FC = () => {
           setIsLoading(true)
           const res = await axios.get('/api/customer/info')
           setCategories(res.data.categories)
+          setLayout(res.data.layout)          
           // setLayout(res.data.layout)
           setItems(res.data.items)
           setIsLoading(false)
@@ -74,12 +75,14 @@ const CustomerRoutes: React.FC = () => {
       <Route path="/customer/number">
         <NumberPage
           onSendOrder={handleSendOrder}
+          layout={layout}
         />
       </Route>
       <Route path="/customer/final">
         <FinalPage
           cartNumber={cartNumber}
           resetState={resetState}
+          layout={layout}
         />
       </Route>
       <Route path="/">
@@ -89,6 +92,7 @@ const CustomerRoutes: React.FC = () => {
           cart={cart}
           setCart={setCart}
           totalPrice={totalPrice}
+          layout={layout}
         />
       </Route>
     </Switch>

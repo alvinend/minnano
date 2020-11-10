@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { color } from '../../atoms/color'
 import { useHistory } from 'react-router-dom'
+import { Layout } from 'models/common'
 
 const FinalWrapper = styled.div<{ type: string}>`
   display: flex;
@@ -53,11 +54,13 @@ const FinalWrapper = styled.div<{ type: string}>`
 type iFinalPage = {
   cartNumber: string
   resetState: () => void
+  layout: Layout
 }
 
 const FinalPage: React.FC<iFinalPage> = ({
   cartNumber,
-  resetState
+  resetState,
+  layout
 }) => {
   const [animationType, setAnimationType] = React.useState('in')
   const history = useHistory()
@@ -79,12 +82,16 @@ const FinalPage: React.FC<iFinalPage> = ({
     [history, resetState]
   )
 
+  const finalLayout = React.useMemo(
+    () => layout.final,
+    [layout]
+  )
+
   return (
     <FinalWrapper type={animationType}>
-      <h2>ありがとうございます</h2>
-      注文承りました<br />
+      <h2>{finalLayout.main}</h2>
       <h1>"{cartNumber}"</h1>
-      少々お待ちください
+      {finalLayout.desc}
     </FinalWrapper>
   )
 }

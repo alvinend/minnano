@@ -1,3 +1,4 @@
+import { Layout } from 'models/common'
 import React from 'react'
 import styled from 'styled-components'
 import { color } from '../../atoms/color'
@@ -118,10 +119,12 @@ const ButtonGroup = styled.div`
 
 type iNumberPage = {
   onSendOrder: (number: string) => void
+  layout: Layout
 }
 
 const NumberPage:React.FC<iNumberPage> = ({
-  onSendOrder
+  onSendOrder,
+  layout
 }) => {
 
   const [number, setNumber] = React.useState('')
@@ -149,6 +152,7 @@ const NumberPage:React.FC<iNumberPage> = ({
       <InnerContainer>
         <DescWrapper>
           <div>
+            {layout.picking.desc}
             順番カードを取り、こちらに入力してください。そちらの番号呼ばれたら、カウンタまでお越しください。
           </div>
           <NumberDispaly>{number}</NumberDispaly>
