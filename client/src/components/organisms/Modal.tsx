@@ -102,13 +102,15 @@ type iModal = {
   onSubmit: () => void
   onCancel: () => void
   children: JSX.Element | string | JSX.Element[]
+  submitButtonProps?: any
 }
 
 export const Modal: React.FC<iModal> = ({
   isShowing,
   onSubmit,
   onCancel,
-  children
+  children,
+  submitButtonProps = null
 }) => {
   const [animationType, setAnimationType] = React.useState('in')
 
@@ -130,7 +132,16 @@ export const Modal: React.FC<iModal> = ({
         {children}
         <ButtonContainer>
           <Button onClick={handleCloseModal}>キャンセル</Button>
-          <ButtonPrimary onClick={onSubmit}>アイテム詳細変更</ButtonPrimary>
+          {submitButtonProps ?
+            <ButtonPrimary
+              { ...submitButtonProps }
+            /> :
+            <ButtonPrimary
+              onClick={onSubmit}
+            >
+              アイテム詳細変更
+            </ButtonPrimary>
+          }
         </ButtonContainer>
       </StyledModal>
     </ModalWrapper>

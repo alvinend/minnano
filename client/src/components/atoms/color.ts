@@ -8,5 +8,6 @@ export const color = {
   black: '#333',
   red: 'red',
   green: 'green',
-  lightGreen: 'lightgreen'
+  lightGreen: 'lightgreen',
+  adminBackground: '#ECECEC'
 }

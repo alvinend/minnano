@@ -15,6 +15,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { notifyAxiosError, notifySuccess } from 'models/notification'
 import Cookies from 'js-cookie'
+import 'antd/dist/antd.css'
 
 const App = () => {
   // eslint-disable-next-line
@@ -41,6 +42,14 @@ const App = () => {
     []
   )
 
+  const handleSignOut = React.useCallback(
+    () => {
+      Cookies.remove('jwt')
+      setUser(null)
+    },
+    []
+  )
+
   React.useEffect(
     () => {
       const checkToken = async () => {
@@ -62,6 +71,13 @@ const App = () => {
     []
   )
 
+  const isAdmin = React.useMemo(
+    () => user?.role === 'admin',
+    [user]
+  )
+
+  console.log(user)
+
   return <>
     <ToastContainer />
     {!!user ? (
@@ -77,7 +93,7 @@ const App = () => {
             <CustomerRoutes />
           </Route>
           <Route path="/">
-            <MainMenu />
+            <MainMenu onSignOut={handleSignOut} isAdmin={isAdmin}/>
           </Route>
         </Switch>
       </Router>

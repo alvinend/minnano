@@ -8,6 +8,7 @@ import { Modal } from 'components/organisms/Modal'
 import { AdminInput } from 'components/atoms/input/AdminInput'
 import { IoIosTrash } from 'react-icons/io'
 import { AlertModal } from 'components/organisms/AlertModal'
+import { AdminCategoryModal } from 'components/organisms/AdminCategoryModal'
 
 const InputTitle = styled.h3`
   font-size: 18px;
@@ -32,9 +33,7 @@ const InputDescGroup = styled.div`
 
 const AdminCategoryPageContainer = styled.div`
   padding: 40px 0 40px 120px;
-  background-color: #202124;
-  width: 100%;
-  color: ${color.white};
+  width: calc(100% - 350px);
 `
 
 const HeadTitle = styled.h1`
@@ -51,11 +50,13 @@ const OuterTableWrapper = styled.div`
 
 const TableWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, fit-content(100%));
+  grid-template-columns: repeat(4, auto);
   grid-auto-flow: row;
-  width: 90%;
-  min-width: 800px;
+  width: 100%;
+  min-width: 100%;
   margin-bottom: 30px;
+  justify-items: stretch;
+  align-items: stretch;
 `
 
 const TableHeader = styled.div`
@@ -68,7 +69,6 @@ const TableHeader = styled.div`
 const TableItem = styled.div`
   padding: 20px 30px;
   border-bottom: 1px solid ${color.secondary};
-  max-width: 300px;
 
   & img {
     width: 100px;
@@ -90,18 +90,28 @@ type iAdminCategoryPage = {
   updateCategory: (editingCategory: Category) => void
   deleteCategory: (deletingCategory: Category) => void
   createCategory: (creatingCategory: Category) => void
+  uploadImage: (imageFile: any) => Promise<any>
 }
 
 export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
   categories,
   updateCategory,
   deleteCategory,
-  createCategory
+  createCategory,
+  uploadImage
 }) => {
   const [editingCategory, setEditingCategory] = React.useState<Category | null>(null)
   const [deletingCategory, setDeletingCategory] = React.useState<Category | null>(null)
   const [creatingCategory, setCreatingCategory] = React.useState<Category>({} as Item)
   const [isCreatingCategory, setIsCreatingCategory] = React.useState<boolean>(false)
+  const [image, setImage] = React.useState<any>(null)
+
+  const changeImage = React.useCallback(
+    file => {
+      setImage(file)
+    },
+    []
+  )
 
   const handleCancelEditing = React.useCallback(
     () => {
@@ -112,10 +122,16 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
 
   const handleConfirmEditing = React.useCallback(
     async () => {
-      updateCategory(editingCategory as Category)
+      if (image) {
+        const url = await uploadImage(image)
+        editingCategory!.imagelink = url
+        setImage(null)
+      }
+
+      await updateCategory(editingCategory as Category)
       setEditingCategory(null)
     },
-    [editingCategory, updateCategory]
+    [editingCategory, updateCategory, image]
   )
 
   const handleEditCategory = React.useCallback(
@@ -161,16 +177,26 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
   )
 
   const handleCancelCreatingCategory = React.useCallback(
-    () => setIsCreatingCategory(false),
+    () => {
+      setCreatingCategory({} as Item)
+      setIsCreatingCategory(false)
+    },
     []
   )
 
   const handleConfirmCreatingCategory = React.useCallback(
     async () => {
+      if (image) {
+        const url = await uploadImage(image)
+        creatingCategory!.imagelink = url
+        setImage(null)
+      }
+
       await createCategory(creatingCategory)
+      setCreatingCategory({} as Item)
       setIsCreatingCategory(false)
     },
-    [creatingCategory, createCategory]
+    [creatingCategory, createCategory, image]
   )
 
   return (
@@ -202,49 +228,14 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
       </AdminCategoryPageContainer>
 
       {/* 編集モーダル */}
-      <Modal
+      <AdminCategoryModal
         isShowing={!!editingCategory}
         onSubmit={handleConfirmEditing}
         onCancel={handleCancelEditing}
-      >
-        <ModalTitle>カテゴリ詳細編集</ModalTitle>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>カテゴリ名</InputTitle>
-            <InputDesc>品物の名前、メインに表示される</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="カテゴリ名"
-            value={editingCategory?.name}
-            name="name"
-            onChange={handleChangeEditingCategory}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>説明</InputTitle>
-            <InputDesc>何のカテゴリかの説明</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="説明"
-            value={editingCategory?.desc}
-            name="desc"
-            onChange={handleChangeEditingCategory}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>画像</InputTitle>
-            <InputDesc>カテゴリの画像</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="画像"
-            value={editingCategory?.imagelink}
-            name="imagelink"
-            onChange={handleChangeEditingCategory}
-          />
-        </InputGroup>
-      </Modal>
+        onChangeCategory={handleChangeEditingCategory}
+        categoryData={editingCategory}
+        changeImage={changeImage}
+      />
 
       {/* 削除モーダル */}
       <AlertModal
@@ -256,49 +247,14 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
       </AlertModal>
 
       {/* 作成モーダル */}
-      <Modal
+      <AdminCategoryModal
         isShowing={isCreatingCategory}
         onSubmit={handleConfirmCreatingCategory}
         onCancel={handleCancelCreatingCategory}
-      >
-        <ModalTitle>アイテム詳細編集</ModalTitle>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>アイテム名</InputTitle>
-            <InputDesc>品物の名前、メインに表示される</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="アイテム名"
-            value={creatingCategory?.name}
-            name="name"
-            onChange={handleChangeCreatingCategory}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>説明</InputTitle>
-            <InputDesc>何のカテゴリかの説明</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="説明"
-            value={creatingCategory?.desc}
-            name="desc"
-            onChange={handleChangeCreatingCategory}
-          />
-        </InputGroup>
-        <InputGroup>
-          <InputDescGroup>
-            <InputTitle>画像</InputTitle>
-            <InputDesc>商品の画像</InputDesc>
-          </InputDescGroup>
-          <AdminInput
-            placeholder="画像"
-            value={creatingCategory?.imagelink}
-            name="imagelink"
-            onChange={handleChangeCreatingCategory}
-          />
-        </InputGroup>
-      </Modal>
+        onChangeCategory={handleChangeCreatingCategory}
+        categoryData={creatingCategory}
+        changeImage={changeImage}
+      />
     </>
   )
 }

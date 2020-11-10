@@ -12,6 +12,7 @@ const validateLoginInput = require('../../validation/login');
 
 // Load User model
 const User = require('../../models/User');
+const { findOneAndDelete } = require('../../models/User');
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -37,7 +38,6 @@ router.post(
       return res.status(400).json(errors);
     }
 
-    console.log(req.body)
     const newUser = new User({
       email: req.body.email,
       password: req.body.password,
@@ -113,9 +113,103 @@ router.get(
   (req, res) => {
     res.json({
       id: req.user.id,
-      email: req.user.email
+      email: req.user.email,
+      role: req.user.role
     });
   }
-);
+)
+
+// @route   GET api/users/list
+// @desc    Return user list
+// @access  Admin Only
+router.get(
+  '/list',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No Permission' })
+    }
+
+    const users = await User.find()
+
+    res.json({
+      users
+    })
+  }
+)
+
+// @route   PUT api/users/:id
+// @desc    Edit Current User
+// @access  Admin only
+router.put(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No Permission' })
+    }
+
+    const { errors, isValid } = validateRegisterInput(req.body);
+
+    // Check Validation
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    const email = req.body.email;
+
+    // Find user by email
+    const user = await User.findOne({ email })
+
+    // Check for user
+    if (user && user._id != req.params.id) {
+      errors.email = 'Email is used on another account';
+      return res.status(404).json(errors);
+    }
+
+    const updatedUser = await User.findOne(
+      { _id: req.params.id }
+    )
+
+    updatedUser.email = email
+    updatedUser.role = req.body.role
+
+    if (updatedUser.password != req.body.password) {
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(updatedUser.password, salt, (err, hash) => {
+          if (err) throw err;
+          updatedUser.password = hash
+          updatedUser
+            .save()
+            .then(user => res.json(user))
+            .catch(err => console.log(err))
+        })
+      })
+    } else {
+      const resUser = await updatedUser.save()
+      res.json(resUser)
+    }
+
+  }
+)
+
+// @route   DELETE api/users/:id
+// @desc    Delete user
+// @access  Admin Only
+router.delete(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'No Permission' })
+    }
+
+    const user = await User.findOneAndDelete(
+      { _id: req.params.id }
+    )
+
+    res.json(user)
+  }
+)
 
 module.exports = router;

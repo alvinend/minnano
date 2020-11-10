@@ -1,7 +1,9 @@
+import { Button } from 'antd'
 import { color } from 'components/atoms/color'
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import Cookies from 'js-cookie'
 
 const MainMenuContainer = styled.div`
   display: flex;
@@ -10,13 +12,21 @@ const MainMenuContainer = styled.div`
   justify-content: center;
   height: 100vh;
   background-color: ${color.secondary};
+
+  & button {
+    margin-top: 50px;
+  }
 `
 
 const LinkContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  width: 980px;
+  justify-content: center;
+  width: 80%;
+
+  & a {
+    margin: 20px;
+  }
 `
 
 const StyledLink = styled(Link)`
@@ -40,14 +50,30 @@ const StyledLink = styled(Link)`
   }
 `
 
-const MainMenu = () => {
+type iMainMenu = {
+  onSignOut: () => void
+  isAdmin: boolean
+}
+
+const MainMenu: React.FC<iMainMenu> = ({
+  onSignOut,
+  isAdmin
+}) => {
   return (
     <MainMenuContainer>
       <LinkContainer>
         <StyledLink to="/customer">顧客画面</StyledLink>
         <StyledLink to="/staff">スタッフ画面</StyledLink>
-        <StyledLink to="/admin">管理者画面</StyledLink>
+        {isAdmin && <StyledLink to="/admin">管理者画面</StyledLink>}
       </LinkContainer>
+      <Button
+        size="large"
+        danger={true}
+        type="primary"
+        onClick={onSignOut}
+      >
+        ログアウト
+      </Button>
     </MainMenuContainer>
   )
 }

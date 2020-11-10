@@ -2,14 +2,17 @@ import axios from 'axios'
 import { AdminCategoryPage } from 'components/pages/admin/AdminCategoryPage'
 import { AdminItemPage } from 'components/pages/admin/AdminItemPage'
 import { AdminSettingPage } from 'components/pages/admin/AdminSettingPage'
+import { AdminUserPage } from 'components/pages/admin/AdminUserPage'
 import { AdminSidebar } from 'components/pages/admin/AdminSidebar'
 import { Category, Item } from 'models/common'
 import * as React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
+import { notifyAxiosError, notifySuccess } from 'models/notification'
 
 const AdminRoutesContainer = styled.div`
   display: flex;
+  background-color: #ECECEC;
 `
 
 const AdminRoutes = () => {
@@ -21,87 +24,141 @@ const AdminRoutes = () => {
   React.useEffect(
     () => {
       const init = async () => {
-        setIsLoading(!isLoading)
-        const res = await axios.get('/api/customer/info')
-        setCategories(res.data.categories)
-        // setLayout(res.data.layout)
-        setItems(res.data.items)
-        setIsLoading(false)
+        try {
+          setIsLoading(!isLoading)
+          const res = await axios.get('/api/customer/info')
+          setCategories(res.data.categories)
+          // setLayout(res.data.layout)
+          setItems(res.data.items)
+          setIsLoading(false)
+        } catch (e) {
+          notifyAxiosError(e)
+        }
       }
 
       init()
     },
-    [isLoading]
+    []
   )
 
   const updateItem = React.useCallback(
     async (editingItem:Item) => {
-      const res = await axios.put(`/api/admin/item/${editingItem?._id}`, editingItem)
-      const newItem:Item = res.data
-      const index = items.findIndex(item => item._id === newItem._id)
-      items[index] = newItem
-      setItems([...items])
+      try {
+        const res = await axios.put(`/api/admin/item/${editingItem?._id}`, editingItem)
+        const newItem:Item = res.data
+        const index = items.findIndex(item => item._id === newItem._id)
+        items[index] = newItem
+        setItems([...items])
+        notifySuccess('アイテムの更新が成功しました')
+      } catch (e) {
+        notifyAxiosError(e)
+      }
     },
     [items]
   )
 
   const updateCategory = React.useCallback(
     async (editingCategory:Category) => {
-      const res = await axios.put(`/api/admin/category/${editingCategory?._id}`, editingCategory)
-      const newCategory:Category = res.data
-      const index = categories.findIndex(category => category._id === newCategory._id)
-      categories[index] = newCategory
-      setCategories([...categories])
+      try {
+        const res = await axios.put(`/api/admin/category/${editingCategory?._id}`, editingCategory)
+        const newCategory:Category = res.data
+        const index = categories.findIndex(category => category._id === newCategory._id)
+        categories[index] = newCategory
+        setCategories([...categories])
+        notifySuccess('カテゴリの更新が成功しました')
+      } catch (e) {
+        notifyAxiosError(e)
+      }
     },
     [categories]
   )
 
   const deleteItem = React.useCallback(
     async (deletingItem: Item) => {
-      const res = await axios.delete(`/api/admin/item/${deletingItem?._id}`)
-      const deletedItem= res.data
-      const index = items.findIndex(item => item._id === deletedItem._id)
-      items.splice(index, 1)
-      setItems([...items])
+      try {
+        const res = await axios.delete(`/api/admin/item/${deletingItem?._id}`)
+        const deletedItem= res.data
+        const index = items.findIndex(item => item._id === deletedItem._id)
+        items.splice(index, 1)
+        setItems([...items])
+        notifySuccess('アイテムの削除が成功しました')
+      } catch (e) {
+        notifyAxiosError(e)
+      }
     },
     [items]
   )
 
   const deleteCategory = React.useCallback(
     async (deletingCategory: Category) => {
-      const res = await axios.delete(`/api/admin/category/${deletingCategory?._id}`)
-      const deletedCategory = res.data
-      const index = categories.findIndex(category => category._id === deletedCategory._id)
-      categories.splice(index, 1)
-      setCategories([...categories])
+      try {
+        const res = await axios.delete(`/api/admin/category/${deletingCategory?._id}`)
+        const deletedCategory = res.data
+        const index = categories.findIndex(category => category._id === deletedCategory._id)
+        categories.splice(index, 1)
+        setCategories([...categories])
+        notifySuccess('カテゴリの削除が成功しました')
+      } catch (e) {
+        notifyAxiosError(e)
+      }
     },
     [categories]
   )
 
   const createItem = React.useCallback(
     async (creatingItem: Item) => {
-      const res = await axios.post(`/api/admin/item`, creatingItem)
-      const createdItem = res.data
-      items.unshift(createdItem)
-      setItems([...items])
+      try {
+        const res = await axios.post(`/api/admin/item`, creatingItem)
+        const createdItem = res.data
+        items.unshift(createdItem)
+        setItems([...items])
+        notifySuccess('アイテムの作成が成功しました')
+      } catch (e) {
+        notifyAxiosError(e)
+      }
     },
     [items]
   )
 
   const createCategory = React.useCallback(
     async (creatingCategory: Category) => {
-      const res = await axios.post(`/api/admin/category`, creatingCategory)
-      const createdCategory = res.data
-      categories.unshift(createdCategory)
-      setCategories([...categories])
+      try {
+        const res = await axios.post(`/api/admin/category`, creatingCategory)
+        const createdCategory = res.data
+        categories.unshift(createdCategory)
+        setCategories([...categories])
+        notifySuccess('カテゴリの作成が成功しました')
+      } catch (e) {
+        notifyAxiosError(e)
+      }
     },
     [categories]
+  )
+
+  const uploadImage = React.useCallback(
+    async (imageFile: any) => {
+      try {
+        const data = new FormData()
+        data.append('file', imageFile)
+        const res = await axios.post(`/api/aws/image`, data)
+        console.log(res?.data?.url)
+        return res?.data?.url
+      } catch (e) {
+        notifyAxiosError(e)
+        return 'error'
+      }
+    },
+    []
   )
 
 
   return (
     <AdminRoutesContainer>
       <Switch>
+      <Route path="/admin/users">
+        <AdminSidebar page="users" />
+        <AdminUserPage />
+      </Route>
       <Route path="/admin/settings">
         <AdminSidebar page="settings" />
         <AdminSettingPage/>
@@ -113,6 +170,7 @@ const AdminRoutes = () => {
           updateCategory={updateCategory}
           createCategory={createCategory}
           deleteCategory={deleteCategory}
+          uploadImage={uploadImage}
         />
       </Route>
       <Route path="/admin/items">
@@ -123,6 +181,7 @@ const AdminRoutes = () => {
           updateItem={updateItem}
           deleteItem={deleteItem}
           createItem={createItem}
+          uploadImage={uploadImage}
         />
       </Route>
       <Route path="/">

@@ -62,6 +62,7 @@ type iAdminItemModal = {
     value: string
   }[]
   onChangeItemCategory: (selectedCategory: any) => void
+  changeImage: (file: any) => void
 }
 
 export const AdminItemModal: React.FC<iAdminItemModal> = ({
@@ -71,12 +72,20 @@ export const AdminItemModal: React.FC<iAdminItemModal> = ({
   itemData,
   onChangeItem,
   categoryOptions,
-  onChangeItemCategory
+  onChangeItemCategory,
+  changeImage
 }) => {
+
+  const handleChangeFile = React.useCallback(
+    e => {
+      changeImage(e?.target?.files[0])
+    },
+    [changeImage]
+  )
 
   return (
     <Modal
-      isShowing={true}
+      isShowing={isShowing}
       onSubmit={onSubmit}
       onCancel={onCancel}
     >
@@ -112,9 +121,9 @@ export const AdminItemModal: React.FC<iAdminItemModal> = ({
         </InputDescGroup>
         <AdminInput
           placeholder="画像"
-          value={itemData?.imagelink}
           name="imagelink"
-          onChange={onChangeItem}
+          onChange={handleChangeFile}
+          type="file"
         />
       </InputGroup>
       <InputGroup>
@@ -141,7 +150,7 @@ export const AdminItemModal: React.FC<iAdminItemModal> = ({
         />
       </InputGroup>
 
-      <SubItemContainer>
+      {/* <SubItemContainer>
         <SubItemTitle>サブアイテム</SubItemTitle>
         <InputGroup>
           <InputDescGroup>
@@ -179,7 +188,7 @@ export const AdminItemModal: React.FC<iAdminItemModal> = ({
             onChange={onChangeItem}
           />
         </InputGroup>
-      </SubItemContainer>
+      </SubItemContainer> */}
     </Modal>
   )
 }

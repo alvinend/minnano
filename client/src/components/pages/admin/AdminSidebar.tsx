@@ -6,6 +6,7 @@ import {
   GoVersions,
   GoTools
 } from 'react-icons/go'
+import { FaUserFriends } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
 const SidebarContainer = styled.div`
@@ -37,8 +38,7 @@ const SidebarItem = styled(Link)<{ selected?: boolean }>`
   padding: 25px 30px;
   color: ${({ selected }) => selected ? color.black : color.white};
   font-size: 18px;
-  background-color: ${({ selected }) => selected && color.lightGreen};
-  border-radius: 0 30px 30px 0;
+  background-color: ${({ selected }) => selected && color.primary};
   font-weight: bold;
   text-decoration: none;
   
@@ -74,6 +74,11 @@ export const AdminSidebar: React.FC<iAdminSidebar> = ({
         <SidebarItem selected={page === 'settings'} to="/admin/settings">
           <GoTools />
           設定
+        </SidebarItem>
+
+        <SidebarItem selected={page === 'users'} to="/admin/users">
+          <FaUserFriends />
+          ユーザ
         </SidebarItem>
       </SidebarItemContainer>
     </SidebarContainer>

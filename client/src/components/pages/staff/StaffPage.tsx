@@ -148,7 +148,6 @@ const StaffPage: React.FC<iStaffPage> = ({
     cart => () => {
       setAlertId(cart._id)
       setAlertNumber(cart.label)
-      deleteOrder(alertId)
     },
     [deleteOrder, alertId]
   )

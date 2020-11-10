@@ -1,8 +1,8 @@
 import { toast } from 'react-toastify'
 
 export const notifyAxiosError = (e: any) => {
-  const error = e.response.data 
-  const message = error[Object.keys(error)[0]]
+  const error = e?.response?.data 
+  const message = error?.[Object.keys(error)[0]]
 
   if (typeof message === "string") {
     toast.error(message)
