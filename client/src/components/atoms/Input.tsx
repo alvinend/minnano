@@ -9,10 +9,10 @@ const InputContainer  = styled.div`
 
 const InputLabel = styled.span`
   position: absolute;
-	top: 20px;
+	top: 0px;
 	left: 16px;
 	color: rgba(19, 19, 21, 0.6);
-  transition: top .2s;
+  transition: all .2s;
 `
 
 const HelperText = styled.span`

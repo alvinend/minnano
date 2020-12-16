@@ -209,7 +209,7 @@ const StaffPage: React.FC<iStaffPage> = ({
                   )}
                 </ListOrderContainer>
                 <OrderBoxActionContainer>
-                  <span>{totalPrice(orderCart?.cart).toLocaleString()}円</span>
+                  <span>{!!totalPrice && totalPrice(orderCart?.cart).toLocaleString()}円</span>
                   <div onClick={handleDeleteOrder(orderCart)}><IoMdCheckmarkCircle  /></div>
                 </OrderBoxActionContainer>
               </OrderBoxInner>

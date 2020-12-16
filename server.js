@@ -52,7 +52,11 @@ app.use('/api/admin', admin)
 app.use('/api/aws', aws)
 const port = process.env.PORT || 5000;
 
-app.get('/', (req,res) => {
+app.get('/test-var/:name', (req,res) => {
+  res.send(process.env[req.params.name])
+})
+
+app.get('(/*)?', (req,res) => {
   res.sendFile(path.join(__dirname, './client/build/index.html'));
 })
 
