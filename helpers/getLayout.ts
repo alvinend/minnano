@@ -1,10 +1,10 @@
-const Setting = require('../models/Setting')
+import { Setting } from 'models/Setting'
 
-module.exports = async function getLayout() {
+export default async () => {
   try {
     const settings = await Setting.findOne({ name: 'layout' })
     if (!settings || (typeof settings === 'object' && Object.keys(settings).length === 0)) {
-      const newSetting = new Setting
+      const newSetting = new Setting()
       const newSettings = await newSetting.save()
       return newSettings.layout
     } else {

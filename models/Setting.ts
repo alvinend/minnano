@@ -1,5 +1,26 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose, { Schema, Document } from 'mongoose'
+
+export type ISetting = {
+  name: string
+  layout: {
+    storename: string
+    confirmation: {
+      desc: string
+      button: string
+    }
+    picking: {
+      desc: string
+    },
+    final: {
+      main: string,
+      desc: string,
+      button: string
+    }
+  }
+}
+
+type ISettingModel = ISetting & Document
+
 
 // Create Schema
 const SettingSchema = new Schema({
@@ -39,10 +60,10 @@ const SettingSchema = new Schema({
       },
       button: {
         type: String,
-        default: 'メイン画面に戻る' 
+        default: 'メイン画面に戻る'
       }
     }
   }
-});
+})
 
-module.exports = User = mongoose.model('settings', SettingSchema);
+export const Setting = mongoose.model<ISettingModel>('settings', SettingSchema)

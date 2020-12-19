@@ -1,10 +1,9 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express'
+import { Item } from 'models/Item'
+import { Order } from 'models/Order'
+import passport from 'passport'
 
-const orderCarts = require('../../helpers/orderCarts');
-const Item = require('../../models/Item');
-const Order = require('../../models/Order');
-const passport = require('passport')
+const router = Router()
 
 // @route   GET api/staff/test
 // @desc    Tests post route
@@ -59,4 +58,4 @@ router.delete(
   }
 )
 
-module.exports = router;
+export const staffRouter = router

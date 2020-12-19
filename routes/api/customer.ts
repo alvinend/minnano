@@ -1,12 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const passport = require('passport');
+import { Router } from 'express'
 
 // Load Model
-const Setting = require('../../models/Setting')
-const Category = require('../../models/Category')
-const Item = require('../../models/Item')
-const Order = require('../../models/Order');
+import { Setting } from '../../models/Setting'
+import { Category } from '../../models/Category'
+import { Item } from '../../models/Item'
+import { Order } from '../../models/Order'
+
+const router = Router();
 
 // @route   GET api/customer/test
 // @desc    Tests post route
@@ -20,11 +20,11 @@ router.get(
     try {
       const categories = await Category.find()
       const items = await Item.find()
-      const layout = await Setting.findOne({ name: 'layout' })
-      res.json({ 
+      const setting = await Setting.findOne({ name: 'layout' })
+      res.json({
         categories,
         items,
-        layout: layout.layout
+        layout: setting!.layout
       })
     } catch (err) {
       res.status(500).json(err)
@@ -38,10 +38,10 @@ router.post(
   '/order',
   async (req, res) => {
     try {
-      const cart = req.body.cart.map(cart => {
+      const cart = req.body.cart.map((data: any) => {
         return {
-          item: cart.item._id,
-          count: cart.quantity
+          item: data.item._id,
+          count: data.quantity
         }
       })
 
@@ -58,4 +58,4 @@ router.post(
   }
 )
 
-module.exports = router;
+export const customerRouter = router

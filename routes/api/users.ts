@@ -1,18 +1,18 @@
-const express = require('express');
-const router = express.Router();
-const gravatar = require('gravatar');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const keys = require('../../config/keys');
-const passport = require('passport');
+import { Router } from 'express'
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+import passport from 'passport'
+
+import { keys } from 'config/keys'
 
 // Load Input Validation
-const validateRegisterInput = require('../../validation/register');
-const validateLoginInput = require('../../validation/login');
+import { validateRegisterInput } from 'validation/register'
+import { validateLoginInput } from 'validation/login'
 
 // Load User model
-const User = require('../../models/User');
-const { findOneAndDelete } = require('../../models/User');
+import { User } from 'models/User'
+
+const router = Router()
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -44,14 +44,14 @@ router.post(
       role: req.body.role
     })
 
-    bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.genSalt(10, (_, salt) => {
       bcrypt.hash(newUser.password, salt, (err, hash) => {
         if (err) throw err;
         newUser.password = hash;
         newUser
           .save()
-          .then(user => res.json(user))
-          .catch(err => console.log(err));
+          .then(resUser => res.json(resUser))
+          .catch(error => console.log(error));
       })
     })
   }
@@ -83,7 +83,7 @@ router.post('/login', async (req, res) => {
   bcrypt.compare(password, user.password).then(isMatch => {
     if (isMatch) {
       // User Matched
-      const payload = { id: user.id, name: user.name, avatar: user.avatar }; // Create JWT Payload
+      const payload = { id: user.id }; // Create JWT Payload
 
       // Sign Token
       jwt.sign(
@@ -111,11 +111,14 @@ router.get(
   '/current',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    // @ts-ignore
+    const { id, email, role } = req.user
+
     res.json({
-      id: req.user.id,
-      email: req.user.email,
-      role: req.user.role
-    });
+      id,
+      email,
+      role
+    })
   }
 )
 
@@ -126,7 +129,8 @@ router.get(
   '/list',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    if (req.user.role !== 'admin') {
+    // @ts-ignore
+    if (req.user?.role !== 'admin') {
       return res.status(403).json({ error: 'No Permission' })
     }
 
@@ -145,6 +149,7 @@ router.put(
   '/:id',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    // @ts-ignore
     if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'No Permission' })
     }
@@ -171,22 +176,22 @@ router.put(
       { _id: req.params.id }
     )
 
-    updatedUser.email = email
-    updatedUser.role = req.body.role
+    updatedUser!.email = email
+    updatedUser!.role = req.body.role
 
-    if (updatedUser.password != req.body.password) {
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(updatedUser.password, salt, (err, hash) => {
+    if (updatedUser!.password != req.body.password) {
+      bcrypt.genSalt(10, (_, salt) => {
+        bcrypt.hash(updatedUser!.password, salt, (err, hash) => {
           if (err) throw err;
-          updatedUser.password = hash
-          updatedUser
+          updatedUser!.password = hash
+          updatedUser!
             .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err))
+            .then(resUser => res.json(resUser))
+            .catch(error => console.log(error))
         })
       })
     } else {
-      const resUser = await updatedUser.save()
+      const resUser = await updatedUser!.save()
       res.json(resUser)
     }
 
@@ -200,6 +205,7 @@ router.delete(
   '/:id',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    // @ts-ignore
     if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'No Permission' })
     }
@@ -212,4 +218,4 @@ router.delete(
   }
 )
 
-module.exports = router;
+export const userRouter = router

@@ -1,17 +1,17 @@
-const express = require('express')
-const router = express.Router()
+import { Router } from 'express'
 
-const Setting = require('../../models/Setting')
-const Category = require('../../models/Category')
-const Item = require('../../models/Item')
+import { Setting } from 'models/Setting'
+import { Category } from 'models/Category'
+import { Item } from 'models/Item'
 
-const validateItemInput = require('../../validation/item')
-const validateCategoryInput = require('../../validation/category')
-const validateLayoutInput = require('../../validation/layout')
+import { validateItemInput } from 'validation/item'
+import { validateCategoryInput } from 'validation/category'
+import { validateLayoutInput } from 'validation/layout'
 
-const getLayout = require('../../helpers/getLayout')
-const uploadImage = require('../../helpers/image')
-const passport = require('passport')
+import getLayout from 'helpers/getLayout'
+import passport from 'passport'
+
+const router = Router()
 
 // @route   GET api/admin/test
 // @desc    Tests post route
@@ -23,6 +23,7 @@ router.post(
   '/category',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    // @ts-ignore
     if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'No Permission' })
     }
@@ -49,6 +50,7 @@ router.post(
   '/item',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    // @ts-ignore
     if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'No Permission' })
     }
@@ -74,16 +76,17 @@ router.delete(
   '/category/:categoryid',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    // @ts-ignore
     if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'No Permission' })
     }
     try {
-      const respond = {}
+      const respond = {} as any
       if (req.params.categoryid) {
         const deletedCategory = await Category.findOneAndDelete({ _id: req.params.categoryid })
         return res.status(200).json(deletedCategory)
       } else {
-        repond.error = 'Please Specify Category Id'
+        respond.error = 'Please Specify Category Id'
         return res.status(400).json(respond)
       }
     } catch (err) {
@@ -98,16 +101,17 @@ router.delete(
   '/item/:itemid',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    // @ts-ignore
     if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'No Permission' })
     }
     try {
-      const respond = {}
+      const respond = {} as any
       if (req.params.itemid) {
         const deletedItem = await Item.findOneAndDelete({ _id: req.params.itemid })
         return res.status(200).json(deletedItem)
       } else {
-        repond.error = 'Please Specify Item Id'
+        respond.error = 'Please Specify Item Id'
         return res.status(400).json(respond)
       }
     } catch (err) {
@@ -122,6 +126,7 @@ router.put(
   '/category/:categoryid',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    // @ts-ignore
     if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'No Permission' })
     }
@@ -132,7 +137,7 @@ router.put(
     }
 
     try {
-      const respond = {}
+      const respond = {} as any
       if (req.params.categoryid) {
         const updatedCategory = await Category.findOneAndUpdate(
           { _id: req.params.categoryid },
@@ -141,7 +146,7 @@ router.put(
         )
         return res.status(200).json(updatedCategory)
       } else {
-        repond.error = 'Please Specify Category Id'
+        respond.error = 'Please Specify Category Id'
         return res.status(400).json(respond)
       }
     } catch (err) {
@@ -156,6 +161,7 @@ router.put(
   '/item/:itemid',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    // @ts-ignore
     if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'No Permission' })
     }
@@ -166,7 +172,7 @@ router.put(
     }
 
     try {
-      const respond = {}
+      const respond = {} as any
       if (req.params.itemid) {
         const updatedItem = await Item.findOneAndUpdate(
           { _id: req.params.itemid },
@@ -175,7 +181,7 @@ router.put(
         )
         return res.status(200).json(updatedItem)
       } else {
-        repond.error = 'Please Specify Item Id'
+        respond.error = 'Please Specify Item Id'
         return res.status(400).json(respond)
       }
     } catch (err) {
@@ -190,6 +196,7 @@ router.get(
   '/layout',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    // @ts-ignore
     if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'No Permission' })
     }
@@ -207,6 +214,7 @@ router.put(
   '/layout',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    // @ts-ignore
     if (req.user.role !== 'admin') {
       return res.status(403).json({ error: 'No Permission' })
     }
@@ -224,28 +232,11 @@ router.put(
         { new: true }
       )
 
-      return res.status(200).json(settings.layout)
+      return res.status(200).json(settings!.layout)
     } catch (err) {
       return res.status(400).json(err)
     }
   }
 )
 
-
-router.post('/image', async (req, res) => {
-  try {
-    
-    const myFile = req.file
-    const imageUrl = await uploadImage(myFile)
-    res
-      .status(200)
-      .json({
-        message: "Upload was successful",
-        data: imageUrl
-      })
-  } catch (error) {
-    res.status(400).json({ error })
-  }
-})
-
-module.exports = router;
+export const adminRouter = router

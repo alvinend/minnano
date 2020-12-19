@@ -1,17 +1,23 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
-const passport = require('passport')
+import express from 'express'
+import mongoose from 'mongoose'
+import bodyParser from 'body-parser'
+import passport from 'passport'
+import dotenv from 'dotenv'
+import multer from 'multer'
+import path from 'path'
+
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
+  dotenv.config()
 }
-const users = require('./routes/api/users')
-const customer = require('./routes/api/customer')
-const staff = require('./routes/api/staff')
-const admin = require('./routes/api/admin')
-const aws = require('./routes/api/aws')
-const multer = require('multer')
-const path = require('path')
+
+import { userRouter } from 'routes/api/users'
+import { customerRouter } from 'routes/api/customer'
+import { staffRouter } from 'routes/api/staff'
+import { adminRouter } from 'routes/api/admin'
+import { awsRouter } from 'routes/api/aws'
+
+import { keys } from 'config/keys'
+import { passportConfig } from 'config/passport'
 
 const app = express()
 
@@ -29,7 +35,7 @@ app.use(multerMid.single('file'))
 app.disable('x-powered-by')
 
 // DB Config
-const db = require('./config/keys').mongoURI;
+const db = keys.mongoURI;
 
 // Connect to MongoDB
 mongoose
@@ -42,14 +48,14 @@ app.use(passport.initialize());
 app.use(express.static(path.join(__dirname, './client/build')));
 
 // Passport Config
-require('./config/passport')(passport);
+passportConfig(passport);
 
 // Use Routes
-app.use('/api/users', users)
-app.use('/api/customer', customer)
-app.use('/api/staff', staff)
-app.use('/api/admin', admin)
-app.use('/api/aws', aws)
+app.use('/api/users', userRouter)
+app.use('/api/customer', customerRouter)
+app.use('/api/staff', staffRouter)
+app.use('/api/admin', adminRouter)
+app.use('/api/aws', awsRouter)
 const port = process.env.PORT || 5000;
 
 app.get('/test-var/:name', (req,res) => {

@@ -1,10 +1,17 @@
-const Validator = require('validator');
-const isEmpty = require('./is-empty');
+import Validator from 'validator'
+import { isEmpty } from 'validation/isEmpty'
 
-const Category = require('../models/Category')
+import { Category } from 'models/Category'
+import { IItem } from 'models/Item';
 
-module.exports = async function validateItemInput(data) {
-  let errors = {};
+type IItemError = {
+  name: string
+  categoryid: string
+  price: string
+}
+
+export const validateItemInput = async(data: IItem) => {
+  const errors = {} as IItemError
 
   data.name = !isEmpty(data.name) ? data.name : '';
   data.categoryid = !isEmpty(data.categoryid) ? data.categoryid : '';
@@ -33,4 +40,4 @@ module.exports = async function validateItemInput(data) {
     errors,
     isValid: isEmpty(errors)
   }
-};
+}
