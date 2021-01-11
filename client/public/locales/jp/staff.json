@@ -1,0 +1,13 @@
+{
+  "USD": "円",
+  "Order Number": "注文番号",
+  "Do you want to complete it?": "完了しますか",
+  "Order": "注文",
+  "Table": "テーブル",
+  "Processing": "調理中",
+  "Waiting": "待機",
+  "Completed": "完成",
+  "Idle": "アイドル",
+  "Started": "開始した",
+  "Pending": "保留中"
+}

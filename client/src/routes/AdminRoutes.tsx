@@ -4,7 +4,7 @@ import { AdminItemPage } from 'components/pages/admin/AdminItemPage'
 import { AdminSettingPage } from 'components/pages/admin/AdminSettingPage'
 import { AdminUserPage } from 'components/pages/admin/AdminUserPage'
 import { AdminSidebar } from 'components/pages/admin/AdminSidebar'
-import { Category, Item } from 'models/common'
+import { Category, Item, Subitem } from 'models/common'
 import * as React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
@@ -43,12 +43,15 @@ const AdminRoutes = () => {
   )
 
   const updateItem = React.useCallback(
-    async (editingItem:Item) => {
+    async (editingItem: Item) => {
       try {
+        console.log(editingItem)
         const res = await axios.put(`/api/admin/item/${editingItem?._id}`, editingItem)
-        const newItem:Item = res.data
+        const newItem: Item = res.data
         const index = items.findIndex(item => item._id === newItem._id)
-        items[index] = newItem
+        const oldItem = items[index]
+        items[index] = { ...oldItem, ...newItem }
+        console.log(items[index])
         setItems([...items])
         notifySuccess('アイテムの更新が成功しました')
       } catch (e) {
@@ -59,10 +62,10 @@ const AdminRoutes = () => {
   )
 
   const updateCategory = React.useCallback(
-    async (editingCategory:Category) => {
+    async (editingCategory: Category) => {
       try {
         const res = await axios.put(`/api/admin/category/${editingCategory?._id}`, editingCategory)
-        const newCategory:Category = res.data
+        const newCategory: Category = res.data
         const index = categories.findIndex(category => category._id === newCategory._id)
         categories[index] = newCategory
         setCategories([...categories])
@@ -78,7 +81,7 @@ const AdminRoutes = () => {
     async (deletingItem: Item) => {
       try {
         const res = await axios.delete(`/api/admin/item/${deletingItem?._id}`)
-        const deletedItem= res.data
+        const deletedItem = res.data
         const index = items.findIndex(item => item._id === deletedItem._id)
         items.splice(index, 1)
         setItems([...items])
@@ -151,42 +154,121 @@ const AdminRoutes = () => {
     []
   )
 
+  const updateSubitem = React.useCallback(
+    async (editingSubitem: Subitem) => {
+      try {
+        const res = await axios.put(`/api/admin/subitem/${editingSubitem._id}`, editingSubitem)
+        const newSubitem: Subitem = res.data
+        const index = items.findIndex(item => item._id === newSubitem.itemid)
+        const parentItem = items[index]
+
+        parentItem.subitems = [
+          ...parentItem.subitems.filter(subitem => subitem._id !== newSubitem._id),
+          newSubitem
+        ]
+
+        items[index] = parentItem
+
+        setItems([...items])
+        notifySuccess('サブアイテムの更新が成功しました')
+
+        return parentItem.subitems
+      } catch (e) {
+        notifyAxiosError(e)
+      }
+    },
+    [items]
+  )
+
+  const deleteSubitem = React.useCallback(
+    async (deletingSubitem: Subitem) => {
+      try {
+        await axios.delete(`/api/admin/subitem/${deletingSubitem._id}`)
+        const index = items.findIndex(item => item._id === deletingSubitem.itemid)
+
+        const parentItem = items[index]
+        const newSubitems = parentItem.subitems.filter(subitem => subitem._id !== deletingSubitem._id)
+
+        items[index] = {
+          ...parentItem,
+          subitems: newSubitems
+        }
+
+        setItems([...items])
+        notifySuccess('サブアイテムの削除が成功しました')
+
+        return newSubitems
+      } catch (e) {
+        notifyAxiosError(e)
+      }
+    },
+    [items]
+  )
+
+  const createSubitem = React.useCallback(
+    async (subitem: Subitem) => {
+      try {
+        const res = await axios.post(`/api/admin/subitem/item/${subitem.itemid}`, subitem)
+        const newSubitem: Subitem = res.data
+        const index = items.findIndex(item => item._id === newSubitem.itemid)
+        const parentItem = items[index]
+
+        parentItem.subitems.push(newSubitem)
+        const newSubitems = parentItem.subitems
+
+        items[index] = parentItem
+
+        setItems([...items])
+        notifySuccess('サブアイテムの削除が成功しました')
+
+        return newSubitems
+      } catch (e) {
+        notifyAxiosError(e)
+      }
+    },
+    [items]
+  )
+
 
   return (
     <AdminRoutesContainer>
       <Switch>
-      <Route path="/admin/users">
-        <AdminSidebar page="users" />
-        <AdminUserPage />
-      </Route>
-      <Route path="/admin/settings">
-        <AdminSidebar page="settings" />
-        <AdminSettingPage/>
-      </Route>
-      <Route path="/admin/categories">
-        <AdminSidebar page="categories" />
-        <AdminCategoryPage
-          categories={categories}
-          updateCategory={updateCategory}
-          createCategory={createCategory}
-          deleteCategory={deleteCategory}
-          uploadImage={uploadImage}
-        />
-      </Route>
-      <Route path="/admin/items">
-      <AdminSidebar page="items" />
-        <AdminItemPage
-          items={items}
-          categories={categories}
-          updateItem={updateItem}
-          deleteItem={deleteItem}
-          createItem={createItem}
-          uploadImage={uploadImage}
-        />
-      </Route>
-      <Route path="/">
-        <Redirect to="/admin/items" />
-      </Route>
+        <Route path="/admin/users">
+          <AdminSidebar page="users" />
+          <AdminUserPage />
+        </Route>
+        <Route path="/admin/settings">
+          <AdminSidebar page="settings" />
+          <AdminSettingPage />
+        </Route>
+        <Route path="/admin/categories">
+          <AdminSidebar page="categories" />
+          <AdminCategoryPage
+            categories={categories}
+            updateCategory={updateCategory}
+            createCategory={createCategory}
+            deleteCategory={deleteCategory}
+            uploadImage={uploadImage}
+          />
+        </Route>
+        <Route path="/admin/items">
+          <AdminSidebar page="items" />
+          <AdminItemPage
+            items={items}
+            categories={categories}
+            updateItem={updateItem}
+            deleteItem={deleteItem}
+            createItem={createItem}
+            uploadImage={uploadImage}
+
+            createSubitem={createSubitem}
+            updateSubitem={updateSubitem}
+            deleteSubitem={deleteSubitem}
+          />
+        </Route>
+        <Route path="/">
+          <Redirect to="/admin/items" />
+        </Route>
       </Switch>
     </AdminRoutesContainer>
   )

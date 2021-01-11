@@ -14,7 +14,7 @@ const Overlay = styled.div<{ type: string }>`
   background-color: rgba(0, 0, 0, 0.9);
   z-index: 10;
   color: #eee;
-  animation: ${({ type }) => type === 'in' ? 
+  animation: ${({ type }) => type === 'in' ?
     'scale-in-ver-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both' :
     type === 'out' && 'scale-out-ver-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both'
   };
@@ -191,7 +191,7 @@ export const CartOverlay: React.FC<iCartOverlay> = ({
     (index: number) => {
       let newCart = cart
       if (newCart[index].quantity === 1) {
-        newCart.splice(index, 1) 
+        newCart.splice(index, 1)
       } else {
         newCart[index].quantity -= 1
       }
@@ -213,15 +213,19 @@ export const CartOverlay: React.FC<iCartOverlay> = ({
           {cart.map(
             (cartItem, index) => (
               <div
-                key={`${cartItem.item.id}-${index}`}
+                key={`${cartItem.item._id}-${index}`}
               >
-                <ItemName>{cartItem.item.name}</ItemName>
-              <Quantitiy>
-                <button onClick={() => handleDeleteItem(index)}><TiMinusOutline/></button>
+                <ItemName>
+                  {/* @ts-ignore */}
+                  {!!cartItem.item.itemName && `${cartItem.item.itemName} - `}
+                  {cartItem.item.name}
+                </ItemName>
+                <Quantitiy>
+                  <button onClick={() => handleDeleteItem(index)}><TiMinusOutline /></button>
                 x{cartItem.quantity}
-                <button onClick={() => handleAddItem(index)}><TiPlusOutline/></button>
-              </Quantitiy>
-              <ItemPrice>{(cartItem.quantity * cartItem.item.price).toLocaleString()}円</ItemPrice>
+                  <button onClick={() => handleAddItem(index)}><TiPlusOutline /></button>
+                </Quantitiy>
+                <ItemPrice>{(cartItem.quantity * cartItem.item.price).toLocaleString()}円</ItemPrice>
               </div>
             )
           )}

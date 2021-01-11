@@ -1,6 +1,7 @@
 import { Button } from 'antd'
 import { color } from 'components/atoms/color'
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -58,12 +59,14 @@ const MainMenu: React.FC<iMainMenu> = ({
   onSignOut,
   isAdmin
 }) => {
+  const { t } = useTranslation('mainmenu')
+
   return (
     <MainMenuContainer>
       <LinkContainer>
-        <StyledLink to="/customer">顧客画面</StyledLink>
-        <StyledLink to="/staff">スタッフ画面</StyledLink>
-        {isAdmin && <StyledLink to="/admin">管理者画面</StyledLink>}
+        <StyledLink to="/customer">{t('CustomerLinkLabel')}</StyledLink>
+        <StyledLink to="/staff">{t('StaffLinkLabel')}</StyledLink>
+        {isAdmin && <StyledLink to="/admin">{t('AdminLinkLabel')}</StyledLink>}
       </LinkContainer>
       <Button
         size="large"
@@ -71,7 +74,7 @@ const MainMenu: React.FC<iMainMenu> = ({
         type="primary"
         onClick={onSignOut}
       >
-        ログアウト
+        {t('LogoutButton')}
       </Button>
     </MainMenuContainer>
   )

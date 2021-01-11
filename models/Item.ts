@@ -8,12 +8,13 @@ export type IItem = {
   price?: number
   stock?: number
   categoryid: string
+  subitemids: string[]
 }
 
 type IItemModel = IItem & Document
 
 // Create Schema
-const ItemSchema = new Schema({
+const ItemSchema = new Schema<IItem>({
   name: {
     type: String,
     required: true
@@ -25,6 +26,10 @@ const ItemSchema = new Schema({
   categoryid: {
     type: String,
     required: true
+  },
+  subitemids: {
+    type: [String],
+    default: []
   }
 })
 

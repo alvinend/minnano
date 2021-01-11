@@ -1,9 +1,12 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { Modal } from 'components/organisms/Modal'
+import { AdminSubItemModal } from 'components/organisms/AdminSubItemModal'
 import { AdminInput } from 'components/atoms/input/AdminInput'
 import Select from 'react-select'
-import { Item } from 'models/common'
+import { Item, Subitem } from 'models/common'
+import { Button } from 'components/atoms/button'
+import { useTranslation } from 'react-i18next'
 
 const InputTitle = styled.h3`
   font-size: 18px;
@@ -22,6 +25,7 @@ const InputGroup = styled.div`
 
 const InputDescGroup = styled.div`
   flex-shrink: 0;
+  width: 300px;
   margin-right: 30px;
   text-align: left;
 `
@@ -33,7 +37,7 @@ const ModalTitle = styled.div`
 `
 
 const StyledSelect = styled(Select)`
-  width: 445px;
+  width: 100%;
   text-align: left;
 `
 
@@ -49,6 +53,11 @@ type iAdminItemModal = {
   }[]
   onChangeItemCategory: (selectedCategory: any) => void
   changeImage: (file: any) => void
+
+  type: 'create' | 'update'
+  updateSubitem?: (editingSubitem: Subitem) => Promise<Subitem[] | undefined>
+  deleteSubitem?: (deletingSubitem: Subitem) => Promise<Subitem[] | undefined>
+  createSubitem?: (creatingSubitem: Subitem) => Promise<Subitem[] | undefined>
 }
 
 export const AdminItemModal: React.FC<iAdminItemModal> = ({
@@ -59,8 +68,20 @@ export const AdminItemModal: React.FC<iAdminItemModal> = ({
   onChangeItem,
   categoryOptions,
   onChangeItemCategory,
-  changeImage
+  changeImage,
+
+  type,
+  updateSubitem,
+  deleteSubitem,
+  createSubitem
 }) => {
+  const [isShowingSub, setIsShowingSub] = React.useState(false)
+  const { t: rawT } = useTranslation('admin')
+
+  const t = React.useCallback(
+    (str: string) => rawT(`ItemPage.${str}`),
+    [rawT]
+  )
 
   const handleChangeFile = React.useCallback(
     e => {
@@ -69,72 +90,108 @@ export const AdminItemModal: React.FC<iAdminItemModal> = ({
     [changeImage]
   )
 
+  const isModalShowing = React.useMemo(
+    () => isShowing && !isShowingSub,
+    [isShowing, isShowingSub]
+  )
+
+  const handleCancelSubItem = React.useCallback(
+    () => {
+      setIsShowingSub(false)
+      onCancel()
+    },
+    [onCancel]
+  )
+
+  const handleOpenSubItem = React.useCallback(
+    () => {
+      setIsShowingSub(true)
+    },
+    []
+  )
+
   return (
-    <Modal
-      isShowing={isShowing}
-      onSubmit={onSubmit}
-      onCancel={onCancel}
-    >
-      <ModalTitle>アイテム詳細編集</ModalTitle>
-      <InputGroup>
-        <InputDescGroup>
-          <InputTitle>アイテム名</InputTitle>
-          <InputDesc>品物の名前、メインに表示される</InputDesc>
-        </InputDescGroup>
-        <AdminInput
-          placeholder="アイテム名"
-          value={itemData?.name}
-          name="name"
-          onChange={onChangeItem}
-        />
-      </InputGroup>
-      <InputGroup>
-        <InputDescGroup>
-          <InputTitle>説明</InputTitle>
-          <InputDesc>何の品物かの説明</InputDesc>
-        </InputDescGroup>
-        <AdminInput
-          placeholder="説明"
-          value={itemData?.desc}
-          name="desc"
-          onChange={onChangeItem}
-        />
-      </InputGroup>
-      <InputGroup>
-        <InputDescGroup>
-          <InputTitle>画像</InputTitle>
-          <InputDesc>商品の画像</InputDesc>
-        </InputDescGroup>
-        <AdminInput
-          placeholder="画像"
-          name="imagelink"
-          onChange={handleChangeFile}
-          type="file"
-        />
-      </InputGroup>
-      <InputGroup>
-        <InputDescGroup>
-          <InputTitle>価格</InputTitle>
-          <InputDesc>品物の価格（円単位）</InputDesc>
-        </InputDescGroup>
-        <AdminInput
-          placeholder="価格"
-          value={itemData?.price}
-          name="price"
-          onChange={onChangeItem}
-        />
-      </InputGroup>
-      <InputGroup>
-        <InputDescGroup>
-          <InputTitle>カテゴリ</InputTitle>
-          <InputDesc>アイテムのカテゴリ</InputDesc>
-        </InputDescGroup>
-        <StyledSelect
-          options={categoryOptions}
-          value={categoryOptions.find(option => option.value === itemData?.categoryid)}
-          onChange={onChangeItemCategory}
-        />
-      </InputGroup>
-    </Modal>
+    <>
+      <Modal
+        isShowing={isModalShowing}
+        onSubmit={onSubmit}
+        onCancel={onCancel}
+      >
+        <ModalTitle>{t('Edit Item Details')}</ModalTitle>
+        <InputGroup>
+          <InputDescGroup>
+            <InputTitle>{t('Item Name')}</InputTitle>
+            <InputDesc>{t('Name of Item, Will mainly be display')}</InputDesc>
+          </InputDescGroup>
+          <AdminInput
+            placeholder={t('Item Name')}
+            value={itemData?.name}
+            name="name"
+            onChange={onChangeItem}
+          />
+        </InputGroup>
+        <InputGroup>
+          <InputDescGroup>
+            <InputTitle>{t('Description')}</InputTitle>
+            <InputDesc>{t('Description of what the item is')}</InputDesc>
+          </InputDescGroup>
+          <AdminInput
+            placeholder={t('Description')}
+            value={itemData?.desc}
+            name="desc"
+            onChange={onChangeItem}
+          />
+        </InputGroup>
+        <InputGroup>
+          <InputDescGroup>
+            <InputTitle>{t('Image')}</InputTitle>
+            <InputDesc>{t('Product image')}</InputDesc>
+          </InputDescGroup>
+          <AdminInput
+            placeholder={t('Image')}
+            name="imagelink"
+            onChange={handleChangeFile}
+            type="file"
+          />
+        </InputGroup>
+        <InputGroup>
+          <InputDescGroup>
+            <InputTitle>{t('Price')}</InputTitle>
+            <InputDesc>{t('Price of goods (in dollar)')}</InputDesc>
+          </InputDescGroup>
+          <AdminInput
+            placeholder={t('Price')}
+            value={itemData?.price}
+            name="price"
+            onChange={onChangeItem}
+          />
+        </InputGroup>
+        <InputGroup>
+          <InputDescGroup>
+            <InputTitle>{t('Category')}</InputTitle>
+            <InputDesc>{t('Item category')}</InputDesc>
+          </InputDescGroup>
+          <StyledSelect
+            options={categoryOptions}
+            value={categoryOptions.find(option => option.value === itemData?.categoryid)}
+            onChange={onChangeItemCategory}
+          />
+        </InputGroup>
+        {
+          type === 'update' ?
+            <Button onClick={handleOpenSubItem}>{t('Edit Sub-item')}</Button> : <></>
+        }
+      </Modal>
+
+      <AdminSubItemModal
+        isShowing={isShowingSub}
+        onCancel={handleCancelSubItem}
+        subitems={itemData?.subitems!}
+        createSubitem={createSubitem!}
+        updateSubitem={updateSubitem!}
+        deleteSubitem={deleteSubitem!}
+        itemid={itemData?._id!}
+      />
+    </>
   )
 }

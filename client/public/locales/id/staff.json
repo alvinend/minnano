@@ -1,0 +1,13 @@
+{
+  "USD": "IDR",
+  "Order Number": "Nomor Pesanan",
+  "Do you want to complete it?": "Apakah benar pesanan ini selesai?",
+  "Order": "Pesanan",
+  "Table": "Meja",
+  "Processing": "Membuat",
+  "Waiting": "Menunggu",
+  "Completed": "Selesai",
+  "Idle": "Kosong",
+  "Started": "Memesan",
+  "Pending": "Pending"
+}

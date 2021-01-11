@@ -15,6 +15,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { notifyAxiosError, notifySuccess } from 'models/notification'
 import Cookies from 'js-cookie'
+import { useTranslation } from 'react-i18next'
 import 'antd/dist/antd.css'
 
 const App = () => {
@@ -34,7 +35,6 @@ const App = () => {
         setUser(user as User)
         Cookies.set('jwt', token)
         notifySuccess('ログイン成功しました')
-        
       } catch (e) {
         notifyAxiosError(e)
       }
@@ -70,9 +70,19 @@ const App = () => {
     []
   )
 
+  const { i18n } = useTranslation()
+
   const isAdmin = React.useMemo(
     () => user?.role === 'admin',
     [user]
+  )
+
+  React.useEffect(
+    () => {
+      i18n.changeLanguage('id')
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   )
 
   return <>
@@ -90,13 +100,13 @@ const App = () => {
             <CustomerRoutes />
           </Route>
           <Route path="/">
-            <MainMenu onSignOut={handleSignOut} isAdmin={isAdmin}/>
+            <MainMenu onSignOut={handleSignOut} isAdmin={isAdmin} />
           </Route>
         </Switch>
       </Router>
     ) : <Signin
-      signin={signin}
-    />}
+        signin={signin}
+      />}
   </>
 }
 

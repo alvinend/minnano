@@ -10,7 +10,6 @@ const opts = {
 }
 
 export const passportConfig = (passport:PassportStatic) => {
-  console.log('ccctesttest')
   passport.use(
     new Strategy(opts, (jwtPayload, done) => {
       User.findById(jwtPayload.id)

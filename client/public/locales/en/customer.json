@@ -1,0 +1,21 @@
+{
+  "ModeSelectorPage": {
+    "Please enter the table number": "Please enter the table number",
+    "Table": "Table",
+    "Takeaway": "Takeaway",
+    "Select this if you want to enable multiple orders in one session": "Select this if you want to enable multiple orders in one session",
+    "Enter the table number and press \"OK\"": "Enter the table number and press \"OK\"",
+    "Select this if you want this machine to accept a single order": "Select this if you want this machine to accept a single order"
+  },
+  "IdlePage": {
+    "Table Number": "Table Number"
+  },
+  "CatalogPage": {
+    "USD": "USD",
+    "Total Price": "Total Price",
+    "Order": "Order"
+  },
+  "WaitingPage": {
+    "Table Number": "Table Number"
+  }
+}

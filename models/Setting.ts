@@ -4,17 +4,30 @@ export type ISetting = {
   name: string
   layout: {
     storename: string
+    currency: string // Yen
     confirmation: {
-      desc: string
       button: string
+      desc: string
     }
     picking: {
       desc: string
-    },
+      tableOverlay: {
+        backButton: string // Back
+        finishButton: string // Bill
+      }
+    }
     final: {
-      main: string,
-      desc: string,
       button: string
+      desc: string
+      main: string
+    }
+    idle: {
+      greeting: string // Welcome to
+      startButton: string // Start Order
+    }
+    waiting: {
+      closing: string // Thank You
+      instruction: string // Please proceed to cash register. Don't forget to take your belongings with you.
     }
   }
 }
@@ -31,36 +44,70 @@ const SettingSchema = new Schema({
   layout: {
     storename: {
       type: String,
-      default: '店の名前'
+      default: 'Store Name'
+    },
+    currency: {
+      type: String,
+      default: 'USD'
     },
     confirmation: {
       desc: {
         type: String,
-        default: '注文を確認してください'
+        default: 'Please check your order'
       },
       button: {
         type: String,
-        default: '注文確定'
+        default: 'Place Order'
       }
     },
     picking: {
       desc: {
         type: String,
-        default: '番号カードを取り、入力してください'
+        default: 'Pick a number, and wait for a call'
+      },
+      tableOverlay: {
+        backButton: {
+          type: String,
+          default: 'Back'
+        },
+        finishButton: {
+          type: String,
+          default: 'Bill'
+        }
       }
     },
     final: {
       main: {
         type: String,
-        default: 'ありがとうございました'
+        default: 'Thank you for your order'
       },
       desc: {
         type: String,
-        default: '少々お待ちください。'
+        default: 'Please wait a moment'
       },
       button: {
         type: String,
-        default: 'メイン画面に戻る'
+        default: 'Back to main menu'
+      }
+    },
+    idle: {
+      greeting: {
+        type: String,
+        default: 'Welcome to'
+      },
+      startButton: {
+        type: String,
+        default: 'Start Order'
+      }
+    },
+    waiting: {
+      closing: {
+        type: String,
+        default: 'Thank You'
+      },
+      instruction: {
+        type: String,
+        default: 'Please proceed to cash register. Don\'t forget to take your belongings with you.'
       }
     }
   }

@@ -3,10 +3,11 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { ButtonPrimary } from 'components/atoms/button'
 import { RiEditBoxLine } from 'react-icons/ri'
-import { Category, Item } from 'models/common'
+import { Category, Item, Subitem } from 'models/common'
 import { IoIosTrash } from 'react-icons/io'
 import { AlertModal } from 'components/organisms/AlertModal'
 import { AdminItemModal } from 'components/organisms/AdminItemModal'
+import { useTranslation } from 'react-i18next'
 
 const AdminItemPageContainer = styled.div`
   padding: 40px 0 40px 120px;
@@ -58,6 +59,10 @@ type iAdminItemPage = {
   deleteItem: (deletingItem: Item) => void
   createItem: (creatingItem: Item) => void
   uploadImage: (imageFile: any) => Promise<any>
+
+  updateSubitem: (editingSubitem: Subitem) => Promise<Subitem[] | undefined>
+  deleteSubitem: (deletingSubitem: Subitem) => Promise<Subitem[] | undefined>
+  createSubitem: (creatingSubitem: Subitem) => Promise<Subitem[] | undefined>
 }
 
 export const AdminItemPage:React.FC<iAdminItemPage> = ({
@@ -66,13 +71,23 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
   updateItem,
   deleteItem,
   createItem,
-  uploadImage
+  uploadImage,
+
+  updateSubitem,
+  deleteSubitem,
+  createSubitem
 }) => {
   const [editingItem, setEditingItem] = React.useState<Item | null>(null)
   const [deletingItem, setDeletingItem] = React.useState<Item | null>(null)
   const [creatingItem, setCreatingItem] = React.useState<Item>({} as Item)
   const [isCreatingItem, setIsCreatingItem] = React.useState<boolean>(false)
   const [image, setImage] = React.useState<any>(null)
+  const { t: rawT } = useTranslation('admin')
+
+  const t = React.useCallback(
+    (str: string) => rawT(`ItemPage.${str}`),
+    [rawT]
+  )
 
   const getCategoryName = React.useCallback(
     id => categories.find(category => category._id === id)?.name,
@@ -207,17 +222,19 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
     <>
       <AdminItemPageContainer>
         <HeadTitle>
-          アイテムリスト
-          <ButtonPrimary onClick={() => setIsCreatingItem(true)}>新規追加</ButtonPrimary>
+          {t('Items List')}
+          <ButtonPrimary onClick={() => setIsCreatingItem(true)}>
+            {t('Add Item')}
+          </ButtonPrimary>
         </HeadTitle>
         <OuterTableWrapper>
           <TableWrapper>
-              <TableHeader>アイテム名</TableHeader>
-              <TableHeader>説明</TableHeader>
-              <TableHeader>画像</TableHeader>
-              <TableHeader>価格</TableHeader>
-              <TableHeader>カテゴリ</TableHeader>
-              <TableHeader>アクション</TableHeader>
+              <TableHeader>{t('Item Name')}</TableHeader>
+              <TableHeader>{t('Description')}</TableHeader>
+              <TableHeader>{t('Image')}</TableHeader>
+              <TableHeader>{t('Price')}</TableHeader>
+              <TableHeader>{t('Category')}</TableHeader>
+              <TableHeader>{t('Action')}</TableHeader>
               {items.map(item => (
                 <React.Fragment key={item._id}>
                   <TableItem>{item.name}</TableItem>
@@ -245,6 +262,10 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
         categoryOptions={categoryOptions}
         onChangeItemCategory={handleChangeEditingItemCategory}
         changeImage={changeImage}
+        type="update"
+        updateSubitem={updateSubitem}
+        createSubitem={createSubitem}
+        deleteSubitem={deleteSubitem}
       />
 
       {/* 削除モーダル */}
@@ -253,7 +274,11 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
         onSubmit={handleConfirmDeleting}
         onCancel={handleCancelDeleting}
       >
-        <>アイテム<b>{deletingItem?.name}</b>削除しますか？</>
+        <>
+          {t('Item Name')}
+          <b>{deletingItem?.name}</b>
+          {t('Do you want to delete it?')}
+        </>
       </AlertModal>
 
       {/* 作成モーダル */}
@@ -266,6 +291,7 @@ export const AdminItemPage:React.FC<iAdminItemPage> = ({
         categoryOptions={categoryOptions}
         onChangeItemCategory={handleChangeCreatingItemCategory}
         changeImage={changeImage}
+        type="create"
       />
     </>
   )

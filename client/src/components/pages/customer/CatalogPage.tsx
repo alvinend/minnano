@@ -3,10 +3,13 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { color } from '../../atoms/color'
 import { CartOverlay } from '../../organisms/CartOverlay'
+import { SubmenuModal } from 'components/organisms/SubmenuModal'
 import { TiShoppingCart } from 'react-icons/ti'
 import { GrClose } from 'react-icons/gr'
 import { useFirstMountState } from 'react-use'
-import { Cart, Item, Category, Layout } from '../../../models/common'
+import { Cart, Item, Category, Layout, Table } from '../../../models/common'
+import { FaHistory } from 'react-icons/fa'
+import { TableOverlay } from 'components/organisms/TableOverlay'
 
 const CategoryWrapper = styled.div`
   display: flex;
@@ -32,8 +35,8 @@ const CategoryItem = styled.div<{ isSelected: boolean }>`
   padding: 10px 12px;
   margin: 0 20px;
   text-align: center;
-  ${({isSelected}) => isSelected && `border-bottom: 4px ${color.primary} solid;`}
-  ${({isSelected}) => isSelected && 'font-weight: bold;'}
+  ${({ isSelected }) => isSelected && `border-bottom: 4px ${color.primary} solid;`}
+  ${({ isSelected }) => isSelected && 'font-weight: bold;'}
 `
 
 const CategorySelector = styled.div`
@@ -144,19 +147,17 @@ const ItemCard = styled.div<{ index: number }>`
 }
 `
 
-const CartIcon = styled.div<{ isOpen: boolean, itemCount: number, type: string }>`
+const Icon = styled.div<{ isOpen: boolean, itemCount: number, type: string }>`
   position: fixed;
   display: flex;
-  right: 3%;
-  bottom: 3%;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   background-color: ${({ isOpen }) => isOpen ? color.red : color.black};
   color: ${color.white};
-  font-size: 32px;
+  font-size: 64px;
 	animation: ${({ type }) => type === 'in' ? 'puff-in-center 0.7s cubic-bezier(0.470, 0.000, 0.745, 0.715) both' : type === 'ping' && 'jello-horizontal 0.9s both'};
   z-index: 11;
 
@@ -217,6 +218,16 @@ const CartIcon = styled.div<{ isOpen: boolean, itemCount: number, type: string }
   }
 `
 
+const CartIcon = styled(Icon)`
+  right: 3%;
+  bottom: 3%;
+`
+
+const TableIcon = styled(Icon)`
+  right: 3%;
+  bottom: calc(3% + 140px);
+`
+
 type iCatalogPage = {
   categories: Category[]
   items: Item[]
@@ -224,6 +235,9 @@ type iCatalogPage = {
   setCart: React.Dispatch<any>
   totalPrice: number
   layout: Layout
+  onSendOrder: (number: string) => void
+  table: Table | undefined
+  onSetTableStatus: (status: string) => void
 }
 
 const CatalogPage: React.FC<iCatalogPage> = ({
@@ -232,11 +246,17 @@ const CatalogPage: React.FC<iCatalogPage> = ({
   cart,
   setCart,
   totalPrice,
-  layout
+  layout,
+  onSendOrder,
+  table,
+  onSetTableStatus
 }) => {
   const [selectedCategory, setSelectedCategory] = React.useState(categories[0])
   const [selectedItems, setSetSelectedItems] = React.useState<Item[]>([])
   const [isCartShowing, setIsCartShowing] = React.useState(false)
+  const [isTableShowing, setIsTableShowing] = React.useState(false)
+
+  const [subitemShowing, setSubitemShowing] = React.useState({} as Item)
   const [cartAnimationType, setCartAnimationType] = React.useState('in')
   const [cartIconAnimationType, setCartIconAnimationType] = React.useState('in')
   const isFirstMount = useFirstMountState()
@@ -251,25 +271,47 @@ const CatalogPage: React.FC<iCatalogPage> = ({
 
   const handleItemClick = React.useCallback(
     item => {
+      setSubitemShowing(item)
+    },
+    []
+  )
+
+  const handleSubitemCancel = React.useCallback(
+    () => {
+      setSubitemShowing({} as Item)
+    },
+    []
+  )
+
+  const handleAddCart = React.useCallback(
+    (addCart: Cart) => {
       let newCart = cart
-      const checkCart = cart.map(cartItem => cartItem.item._id)
-      if (checkCart.indexOf(item._id) === -1) {
-        newCart = cart.concat([{
-          item,
-          quantity: 1
-        }])
-      } else {
-        newCart[checkCart.indexOf(item._id)].quantity += 1
-      }
+      const checkCart = newCart.map(cartItem => cartItem.item._id)
+
+      addCart.forEach(
+        ({ item, quantity }) => {
+          const index = checkCart.indexOf(item._id)
+
+          if (index === -1) {
+            newCart.push({
+              item,
+              quantity
+            })
+          } else {
+            newCart[index].quantity += quantity
+          }
+        }
+      )
 
       setCart([...newCart])
+      setSubitemShowing({} as Item)
     },
     [cart, setCart]
   )
 
   React.useEffect(
     () => {
-      const selectedItems = items.filter(item =>item.categoryid === selectedCategory._id)
+      const selectedItems = items.filter(item => item.categoryid === selectedCategory._id)
       setSetSelectedItems(selectedItems)
     },
     [selectedCategory, items]
@@ -283,29 +325,57 @@ const CatalogPage: React.FC<iCatalogPage> = ({
     []
   )
 
-  const handleHideCart = React.useCallback(
+  const handleShowTable = React.useCallback(
+    () => {
+      setCartAnimationType('in')
+      setIsTableShowing(true)
+    },
+    []
+  )
+
+  const handleHideOverlay = React.useCallback(
     () => {
       setCartAnimationType('out')
       setTimeout(() => {
         setIsCartShowing(false)
+        setIsTableShowing(false)
       }, 500)
     },
     []
   )
 
   const handleConfirmed = React.useCallback(
-    () => {
-      setCartAnimationType('out')
-      setTimeout(() => {
-        history.push('/customer/number')
-      }, 500)
+    async () => {
+      if (table) {
+        setTimeout(() => {
+          onSendOrder(table.label)
+        }, 500)
+      } else {
+        setCartAnimationType('out')
+        setTimeout(() => {
+          history.push('/customer/number')
+        }, 500)
+      }
     },
-    [history]
+    [history, table, onSendOrder]
   )
 
   const itemCount = React.useMemo(
     () => cart.reduce((a, b) => a + b.quantity, 0),
     [cart]
+  )
+
+  const isOverlayShowing = React.useMemo(
+    () => (isTableShowing || isCartShowing),
+    [isTableShowing, isCartShowing]
+  )
+
+  const handleFinishTable = React.useCallback(
+    async () => {
+      await onSetTableStatus('pending')
+      history.push('/customer/pending')
+    },
+    [onSetTableStatus, history]
   )
 
   React.useEffect(
@@ -320,23 +390,43 @@ const CatalogPage: React.FC<iCatalogPage> = ({
   return (
     <CategoryWrapper>
       <CartIcon
-        onClick={isCartShowing ? handleHideCart : handleShowCart}
-        isOpen={isCartShowing}
+        onClick={isOverlayShowing ? handleHideOverlay : handleShowCart}
+        isOpen={isOverlayShowing}
         itemCount={itemCount}
         type={cartIconAnimationType}
         onAnimationEnd={() => setCartIconAnimationType('')}
       >
-        {isCartShowing ? <GrClose /> : <TiShoppingCart />}
+        {isOverlayShowing ? <GrClose /> : <TiShoppingCart />}
       </CartIcon>
       {isCartShowing && <CartOverlay
         cart={cart}
         setCart={setCart}
         totalPrice={totalPrice}
-        onClickBack={handleHideCart}
+        onClickBack={handleHideOverlay}
         animationType={cartAnimationType}
         onClickConfirmed={handleConfirmed}
         layout={layout}
       />}
+
+      {isTableShowing ?
+        <TableOverlay
+          layout={layout}
+          table={table!}
+          animationType={cartAnimationType}
+          onCancel={handleHideOverlay}
+          onFinish={handleFinishTable}
+        />
+        : (!isOverlayShowing && !!table) &&
+        <TableIcon
+          onClick={handleShowTable}
+          isOpen={false}
+          itemCount={0}
+          type={'ping'}
+        >
+          <FaHistory />
+        </TableIcon>
+      }
+
 
       <CategorySelector>
         <CategoryDesc>
@@ -368,15 +458,22 @@ const CatalogPage: React.FC<iCatalogPage> = ({
                 onClick={() => handleItemClick(item)}
                 index={index}
               >
-                <img src={`${item.imagelink}`} alt="Item"/>
+                <img src={`${item.imagelink}`} alt="Item" />
                 <h2>{item.name}</h2>
                 <p>{item.desc}</p>
-                <span><b>{item.price.toLocaleString()}円</b></span>
+                <span><b>{item.price.toLocaleString()}{layout?.currency}</b></span>
               </ItemCard>
             )
           )
         }
       </ItemWrapper>
+
+      <SubmenuModal
+        isShowing={!!subitemShowing?._id}
+        onSubmit={handleAddCart}
+        onCancel={handleSubitemCancel}
+        item={subitemShowing}
+      />
 
     </CategoryWrapper>
   )

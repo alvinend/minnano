@@ -8,6 +8,7 @@ import { RiEditBoxLine } from 'react-icons/ri'
 import { User } from 'models/common'
 import { AlertModal } from 'components/organisms/AlertModal'
 import { Modal } from 'components/organisms/Modal'
+import { useTranslation } from 'react-i18next'
 
 const AdminUserPageContainer = styled.div`
   padding: 40px 0 40px 120px;
@@ -36,6 +37,12 @@ export const AdminUserPage = () => {
   const [users, setUsers] = React.useState<User[]>([])
   const [deletingUser, setDeletingUser] = React.useState<User | null>(null)
   const [editingUser, setEditingUser] = React.useState<User | null>(null)
+  const { t: rawT } = useTranslation('admin')
+
+  const t = React.useCallback(
+    (str: string) => rawT(`UserPage.${str}`),
+    [rawT]
+  )
 
   const fetchUsers = React.useCallback(
     async () => {
@@ -63,11 +70,11 @@ export const AdminUserPage = () => {
         (user: any) => ({
           key: user._id,
           email: user.email,
-          role: user.role
+          role: t(`API.${user.role}`)
         })
       )
     },
-    [users]
+    [users, t]
   )
 
   const handleEditUser = React.useCallback(
@@ -86,7 +93,7 @@ export const AdminUserPage = () => {
 
   const onFinish = React.useCallback(
     async (values: any) => {
-      try{
+      try {
         await axios.post('/api/users/register', values)
         notifySuccess('ユーザの作成が成功しました')
         fetchUsers()
@@ -136,19 +143,19 @@ export const AdminUserPage = () => {
   const columns = React.useMemo(
     () => [
       {
-        title: 'メール',
+        title: t('Mail'),
         dataIndex: 'email',
         key: 'email'
       },
       {
-        title: 'ロール',
+        title: t('Role'),
         dataIndex: 'role',
         key: 'role'
       },
       {
-        title: 'アクション',
+        title: t('Action'),
         key: 'action',
-        render: (_text: string, record:any) => (
+        render: (_text: string, record: any) => (
           <Space size="middle">
             <span onClick={() => handleEditingUser(record.key)}><RiEditBoxLine /></span>
             <span onClick={() => handleDeletingUser(record.key)}><IoIosTrash /></span>
@@ -156,69 +163,69 @@ export const AdminUserPage = () => {
         ),
       },
     ],
-    [handleDeletingUser, handleEditingUser]
+    [handleDeletingUser, handleEditingUser, t]
   )
 
   return (
     <>
       <AdminUserPageContainer>
-        <HeadTitle>ユーザ</HeadTitle>
+        <HeadTitle>{t('User')}</HeadTitle>
         <InputGroup>
-          <InputTitle>ユーザ作成</InputTitle>
-          <InputDesc>メニュー波面に表示されます</InputDesc>
+          <InputTitle>{t('Create User')}</InputTitle>
+          <InputDesc>{t('Use for login and use application')}</InputDesc>
           <Form
             name="create-user"
             onFinish={onFinish}
           >
             <Form.Item
-              label="メール"
+              label={t('Mail')}
               name="email"
-              rules={[{ required: true, message: 'メールを入力してください' }]}
+              rules={[{ required: true, message: t('Please input your mail address') }]}
             >
               <Input />
             </Form.Item>
 
             <Form.Item
-              label="パスワード"
+              label={t('Password')}
               name="password"
-              rules={[{ required: true, message: 'パスワードを入力してください' }]}
+              rules={[{ required: true, message: t('Please enter your password') }]}
             >
               <Input.Password />
             </Form.Item>
 
             <Form.Item
-              label="パスワード確認"
+              label={t('Confirm Password')}
               name="password2"
-              rules={[{ required: true, message: 'パスワードを入力してください' }]}
+              rules={[{ required: true, message: t('Please enter your password') }]}
             >
               <Input.Password />
             </Form.Item>
 
             <Form.Item
-              label="ロール"
+              label={t('Role')}
               name="role"
-              rules={[{ required: true, message: 'ロールを選択してください' }]}
+              rules={[{ required: true, message: t('Please select user\'s role') }]}
             >
               <Select>
                 <Select.Option value="staff">
-                  Staff
+                  {t('Staff')}
                 </Select.Option>
                 <Select.Option value="admin">
-                  Admin
+                  {t('Admin')}
                 </Select.Option>
               </Select>
             </Form.Item>
 
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                ユーザ作成
+                {t('Create User')}
               </Button>
             </Form.Item>
           </Form>
         </InputGroup>
 
         <InputGroup>
-          <InputTitle>ユーザ一覧</InputTitle>
+          <InputTitle>{t('Users List')}</InputTitle>
           <Table columns={columns} dataSource={userData} />
         </InputGroup>
 
@@ -229,14 +236,18 @@ export const AdminUserPage = () => {
         onSubmit={handleDeleteUser}
         onCancel={handleCancelAction}
       >
-        <>ユーザ<b>{deletingUser?.email}</b>削除しますか？</>
+        <>
+          {t('User')}
+          <b>{deletingUser?.email}</b>
+          、{t('Do you want to delete it?')}
+        </>
       </AlertModal>
       <Modal
         isShowing={!!editingUser}
         onCancel={handleCancelAction}
         onSubmit={() => void 0}
         submitButtonProps={{
-          children: 'ユーザを編集する',
+          children: t('Edit user'),
           type: 'submit',
           form: 'edit-user'
         }}
@@ -251,40 +262,40 @@ export const AdminUserPage = () => {
           }}
         >
           <Form.Item
-            label="メール"
+            label={t('Mail')}
             name="email"
-            rules={[{ required: true, message: 'メールを入力してください' }]}
+            rules={[{ required: true, message: t('Please input your mail address') }]}
           >
             <Input />
           </Form.Item>
 
           <Form.Item
-            label="パスワード"
+            label={t('Password')}
             name="password"
-            rules={[{ required: true, message: 'パスワードを入力してください' }]}
+            rules={[{ required: true, message: t('Please enter your password') }]}
           >
             <Input.Password />
           </Form.Item>
 
           <Form.Item
-            label="パスワード確認"
+            label={t('Confirm Password')}
             name="password2"
-            rules={[{ required: true, message: 'パスワードを入力してください' }]}
+            rules={[{ required: true, message: t('Please enter your password') }]}
           >
             <Input.Password />
           </Form.Item>
 
           <Form.Item
-            label="ロール"
+            label={t('Role')}
             name="role"
-            rules={[{ required: true, message: 'ロールを選択してください' }]}
+            rules={[{ required: true, message: t('Please select user\'s role') }]}
           >
             <Select>
               <Select.Option value="staff">
-                Staff
+                {t('Staff')}
               </Select.Option>
               <Select.Option value="admin">
-                Admin
+                {t('Admin')}
               </Select.Option>
             </Select>
           </Form.Item>

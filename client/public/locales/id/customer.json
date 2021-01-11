@@ -1,0 +1,21 @@
+{
+  "ModeSelectorPage": {
+    "Please enter the table number": "Tolong masukan nomor meja",
+    "Table": "Meja",
+    "Takeaway": "Takeaway",
+    "Select this if you want to enable multiple orders in one session": "Pilih ini jika Anda ingin melakukan beberapa pesanan dalam satu sesi",
+    "Enter the table number and press \"OK\"": "Masukan nomor meja dan tekan \"OK\"",
+    "Select this if you want this machine to accept a single order": "Pilih ini jika ingin melakukan satu order pada satu waktu"
+  },
+  "IdlePage": {
+    "Table Number": "Nomor Meja"
+  },
+  "CatalogPage": {
+    "USD": "IDR",
+    "Total Price": "Harga Total",
+    "Order": "Pesanan"
+  },
+  "WaitingPage": {
+    "Table Number": "Nomor Meja"
+  }
+}

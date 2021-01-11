@@ -8,6 +8,7 @@ import {
 } from 'react-icons/go'
 import { FaUserFriends } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const SidebarContainer = styled.div`
   width: 280px;
@@ -55,6 +56,13 @@ type iAdminSidebar = {
 export const AdminSidebar: React.FC<iAdminSidebar> = ({
   page
 }) => {
+  const { t: rawT } = useTranslation('admin')
+
+  const t = React.useCallback(
+    (str: string) => rawT(`Sidebar.${str}`),
+    [rawT]
+  )
+
   return (
     <SidebarContainer>
       <SidebarLogo>
@@ -63,22 +71,22 @@ export const AdminSidebar: React.FC<iAdminSidebar> = ({
       <SidebarItemContainer>
         <SidebarItem selected={page === 'items'} to="/admin/items">
           <GoPackage />
-          アイテム
+          {t('Item')}
         </SidebarItem>
 
         <SidebarItem selected={page === 'categories'} to="/admin/categories">
           <GoVersions />
-          カテゴリ
+          {t('Category')}
         </SidebarItem>
 
         <SidebarItem selected={page === 'settings'} to="/admin/settings">
           <GoTools />
-          設定
+          {t('Settings')}
         </SidebarItem>
 
         <SidebarItem selected={page === 'users'} to="/admin/users">
           <FaUserFriends />
-          ユーザ
+          {t('User')}
         </SidebarItem>
       </SidebarItemContainer>
     </SidebarContainer>

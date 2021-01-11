@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { color } from '../../atoms/color'
 import { IoMdCheckmarkCircle } from 'react-icons/io'
 import { AlertModal } from '../../organisms/AlertModal'
-import { Cart, OrderCarts } from '../../../models/common'
+import { Cart, OrderCart } from '../../../models/common'
+import { useTranslation } from 'react-i18next'
 
 const StaffPageWrapper = styled.div`
   display: flex;
@@ -124,7 +125,7 @@ const OrderBoxActionContainer = styled.div`
 `
 
 type iStaffPage = {
-  orderCarts: OrderCarts
+  orderCarts: OrderCart[]
   deleteOrder: (alertId: string) => void
   triggerFetch: () => void
 }
@@ -190,7 +191,7 @@ const StaffPage: React.FC<iStaffPage> = ({
         onSubmit={handleOnSubmit}
         onCancel={handleAlertCancel}
       >
-        <>注文 <b>{alertNumber}</b> 完了しますか?</>
+        <>注文b <b>{alertNumber}</b> 完了しますか?</>
       </AlertModal>
       <Title>注文</Title>
       <InnerContainer>
@@ -210,7 +211,7 @@ const StaffPage: React.FC<iStaffPage> = ({
                 </ListOrderContainer>
                 <OrderBoxActionContainer>
                   <span>{!!totalPrice && totalPrice(orderCart?.cart).toLocaleString()}円</span>
-                  <div onClick={handleDeleteOrder(orderCart)}><IoMdCheckmarkCircle  /></div>
+                  <div onClick={handleDeleteOrder(orderCart)}><IoMdCheckmarkCircle /></div>
                 </OrderBoxActionContainer>
               </OrderBoxInner>
             </OrderBox>

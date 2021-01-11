@@ -1,14 +1,16 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
-import { StaffPage } from '../components/pages/staff/StaffPage'
+import { Switch, Route, Redirect } from 'react-router-dom'
+import { StaffOrderPage } from '../components/pages/staff/StaffOrderPage'
+import { StaffTablePage } from '../components/pages/staff/StaffTablePage'
 import { Loading } from '../components/atoms/Loading'
 import axios from 'axios'
-import { OrderCarts } from '../models/common'
+import { OrderCart } from '../models/common'
 import { notifyAxiosError } from 'models/notification'
- 
+
 const StaffRoutes: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(true)
-  const [orderCarts, setOrderCarts] = React.useState<OrderCarts>([])
+  // eslint-disable-next-line
+  const [orderCarts, setOrderCarts] = React.useState<OrderCart[]>([])
 
   React.useEffect(
     () => {
@@ -27,19 +29,6 @@ const StaffRoutes: React.FC = () => {
     []
   )
 
-  const triggerFetch = React.useCallback(
-    async () => {
-      try {
-        const res = await axios.get('/api/staff/order')
-        setOrderCarts(res.data)
-      } catch (e) {
-        notifyAxiosError(e)
-      }
-      
-    },
-    []
-  )
-
   const deleteOrder = React.useCallback(
     async cartid => {
       try {
@@ -54,12 +43,18 @@ const StaffRoutes: React.FC = () => {
 
   return isLoading ? <Loading /> : (
     <Switch>
-      <Route path="/staff">
-        <StaffPage
-          orderCarts={orderCarts}
-          triggerFetch={triggerFetch}
+      <Route path="/staff/order">
+        <StaffOrderPage
           deleteOrder={deleteOrder}
         />
+      </Route>
+
+      <Route path="/staff/table">
+        <StaffTablePage />
+      </Route>
+
+      <Route path="/staff">
+        <Redirect to="/staff/order" />
       </Route>
     </Switch>
   )

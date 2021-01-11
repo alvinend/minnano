@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { color } from '../../atoms/color'
 import { useHistory } from 'react-router-dom'
-import { Layout } from 'models/common'
+import { Layout, Table } from 'models/common'
 
-const FinalWrapper = styled.div<{ type: string}>`
+const FinalWrapper = styled.div<{ type: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,12 +55,14 @@ type iFinalPage = {
   cartNumber: string
   resetState: () => void
   layout: Layout
+  table: Table | undefined
 }
 
 const FinalPage: React.FC<iFinalPage> = ({
   cartNumber,
   resetState,
-  layout
+  layout,
+  table
 }) => {
   const [animationType, setAnimationType] = React.useState('in')
   const history = useHistory()
@@ -68,18 +70,18 @@ const FinalPage: React.FC<iFinalPage> = ({
   React.useEffect(
     () => {
       resetState()
-      
+
       setTimeout(
         () => setAnimationType('out'),
         3000
       )
 
       setTimeout(
-        () => history.push('/customer'),
+        () => history.push(table ? '/customer/catalog' : '/customer/idle'),
         3750
       )
     },
-    [history, resetState]
+    [history, resetState, table]
   )
 
   const finalLayout = React.useMemo(

@@ -1,0 +1,6 @@
+{
+  "CustomerLinkLabel": "顧客画面",
+  "StaffLinkLabel": "スタッフ画面",
+  "AdminLinkLabel": "管理者画面",
+  "LogoutButton": "ログアウト"
+}

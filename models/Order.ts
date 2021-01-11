@@ -7,6 +7,10 @@ export type IOrder = {
     count: string
   }[]
   label: string
+  status: 'processing' | 'waiting' | 'completed' | 'canceled'
+  tableid?: string
+  createdAt: Date
+  finishedAt: Date
 }
 
 type IOrderModel = IOrder & Document
@@ -23,8 +27,25 @@ const OrderSchema = new Schema({
       required: true
     }
   }],
-  // label = card number (C8) or table number (T2)
-  label: String
+  status: {
+    type: String,
+    default: 'processing'
+  },
+  tableid: {
+    type: String,
+    default: ''
+  },
+  label: {
+    type: String,
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: new Date()
+  },
+  finishedAt: {
+    type: Date
+  }
 })
 
 export const Order = mongoose.model<IOrderModel>('orders', OrderSchema)

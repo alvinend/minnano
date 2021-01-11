@@ -5,6 +5,8 @@ import { ButtonPrimary } from 'components/atoms/button'
 import { Card, Form, Spin } from 'antd'
 import axios from 'axios'
 import { notifyAxiosError, notifySuccess } from 'models/notification'
+import { Layout } from 'models/common'
+import { useTranslation } from 'react-i18next'
 
 const AdminSettingPageContainer = styled.div`
   padding: 40px 0 40px 120px;
@@ -31,7 +33,13 @@ const InputGroup = styled(Card)`
 
 export const AdminSettingPage = () => {
   const [isFetched, setIsFetched] = React.useState(false)
-  const [layoutSettings, setLayoutSettings] = React.useState<any>(null)
+  const [layoutSettings, setLayoutSettings] = React.useState<Layout>({} as Layout)
+  const { t: rawT } = useTranslation('admin')
+
+  const t = React.useCallback(
+    (str: string) => rawT(`SettingPage.${str}`),
+    [rawT]
+  )
 
   React.useEffect(
     () => {
@@ -50,19 +58,32 @@ export const AdminSettingPage = () => {
     async (values: any) => {
       try {
         const data = {
+          storename: values?.storename,
+          currency: values?.currency,
           confirmation: {
             desc: values?.confirmationDesc,
             button: values?.confirmationButton
           },
           picking: {
-            desc: values?.pickingDesc
+            desc: values?.pickingDesc,
+            tableOverlay: {
+              backButton: values?.pickingTableOverlayBackButton,
+              finishButton: values?.pickingTableOverlayFinishButton
+            }
           },
           final: {
             main: values?.finalMain,
             desc: values?.finalDesc,
             button: values?.finalButton
           },
-          storename: values?.storename
+          idle: {
+            greeting: values?.idleGreeting,
+            startButton: values?.idleStartButton
+          },
+          waiting: {
+            closing: values?.waitingClosing,
+            instruction: values?.waitingInstruction
+          }
         }
 
         const res = await axios.put('/api/admin/layout', data)
@@ -80,102 +101,150 @@ export const AdminSettingPage = () => {
       <Form
         initialValues={{
           storename: layoutSettings?.storename,
+          currency: layoutSettings?.currency,
           confirmationDesc: layoutSettings?.confirmation?.desc,
           confirmationButton: layoutSettings?.confirmation?.button,
           pickingDesc: layoutSettings?.picking?.desc,
+          pickingTableOverlayBackButton: layoutSettings?.picking?.tableOverlay?.backButton,
+          pickingTableOverlayFinishButton: layoutSettings?.picking?.tableOverlay?.finishButton,
           finalMain: layoutSettings?.final?.main,
           finalDesc: layoutSettings?.final?.desc,
-          finalButton: layoutSettings?.final?.button
+          idleGreeting: layoutSettings?.idle?.greeting,
+          idleStartButton: layoutSettings?.idle?.startButton,
+          waitingClosing: layoutSettings?.waiting?.closing,
+          waitingInstruction: layoutSettings?.waiting?.instruction
         }}
         onFinish={handleSubmit}
       >
-        <HeadTitle>設定</HeadTitle>
+        <HeadTitle>{t('Layout')}</HeadTitle>
         <InputGroup>
-          <InputTitle>店舗名</InputTitle>
-          <InputDesc>メニュー波面に表示されます</InputDesc>
+          <HeadTitle>{t('General')}</HeadTitle>
+          <InputTitle>{t('Store Name')}</InputTitle>
+          <InputDesc>{t('Your store name here')}</InputDesc>
           <Form.Item
             name="storename"
           >
             <AdminInput
-              placeholder="店舗名"
+              placeholder={t('Your store name here')}
             />
           </Form.Item>
-        </InputGroup>
 
-        <InputGroup>
-          <InputTitle>受け取り説明</InputTitle>
-          <InputDesc>番号入力画面に表示されます</InputDesc>
+          <InputTitle>{t('Currency')}</InputTitle>
+          <InputDesc>{t('Currency for pricing (exp Yen, USD)')}</InputDesc>
           <Form.Item
-            name="pickingDesc"
+            name="currency"
           >
             <AdminInput
-              placeholder="受け取り説明"
+              placeholder={t('Currency for pricing (exp: Yen, USD)')}
             />
           </Form.Item>
         </InputGroup>
 
         <InputGroup>
-          <InputTitle>確認依頼文言</InputTitle>
-          <InputDesc>購入確定前の確定文言</InputDesc>
+          <HeadTitle>{t('Idle Page')}</HeadTitle>
+          <InputTitle>{t('Greeting')}</InputTitle>
+          <InputDesc>{t('Will be shown on idle page')}</InputDesc>
+          <Form.Item
+            name="idleGreeting"
+          >
+            <AdminInput
+              placeholder={t('Will be shown on idle page')}
+            />
+          </Form.Item>
+
+          <InputTitle>{t('Start Button')}</InputTitle>
+          <InputDesc>{t('Mark the start of ordering process')}</InputDesc>
+          <Form.Item
+            name="idleStartButton"
+          >
+            <AdminInput
+              placeholder={t('Mark the start of ordering process')}
+            />
+          </Form.Item>
+        </InputGroup>
+
+        <InputGroup>
+          <HeadTitle>{t('Catalog Page')}</HeadTitle>
+
+          <InputTitle>{t('Order Overlay - Confirm Desc')}</InputTitle>
+          <InputDesc>{t('Descriptive text about confirmation of purchase')}</InputDesc>
           <Form.Item
             name="confirmationDesc"
           >
             <AdminInput
-              placeholder="確認依頼文言"
+              placeholder={t('Descriptive text about confirmation of purchase')}
             />
           </Form.Item>
-        </InputGroup>
 
-        <InputGroup>
-          <InputTitle>最終画面の受け取り</InputTitle>
-          <InputDesc>注文後の受け取り方法説明文</InputDesc>
-          <Form.Item
-            name="finalDesc"
-          >
-            <AdminInput
-              placeholder="最終画面の受け取り"
-            />
-          </Form.Item>
-        </InputGroup>
-
-        <InputGroup>
-          <InputTitle>最終画面挨拶</InputTitle>
-          <InputDesc>「ありがとうございます」などの挨拶</InputDesc>
-          <Form.Item
-            name="finalMain"
-          >
-            <AdminInput
-              placeholder="最終画面挨拶"
-            />
-          </Form.Item>
-        </InputGroup>
-
-        <InputGroup>
-          <InputTitle>注文確定ボタン</InputTitle>
-          <InputDesc>注文確定文言</InputDesc>
+          <InputTitle>{t('Order Overlay - Confirm Button')}</InputTitle>
+          <InputDesc>{t('Confirmation of purchase button text')}</InputDesc>
           <Form.Item
             name="confirmationButton"
           >
             <AdminInput
-              placeholder="注文確定ボタン"
+              placeholder={t('Confirmation of purchase button text')}
+            />
+          </Form.Item>
+
+          <InputTitle>{t('Table Overlay - Back Button')}</InputTitle>
+          <InputDesc>{t('Button to get out from table overlay')}</InputDesc>
+          <Form.Item
+            name="pickingTableOverlayBackButton"
+          >
+            <AdminInput
+              placeholder={t('Button to get out from table overlay')}
+            />
+          </Form.Item>
+
+          <InputTitle>{t('Table Overlay - Finish Button')}</InputTitle>
+          <InputDesc>{t('Button to finsih ordering process and enter payment process')}</InputDesc>
+          <Form.Item
+            name="pickingTableOverlayFinishButton"
+          >
+            <AdminInput
+              placeholder={t('Button to finsih ordering process and enter payment process')}
             />
           </Form.Item>
         </InputGroup>
 
         <InputGroup>
-          <InputTitle>戻るボタン</InputTitle>
-          <InputDesc>最終画面からメニュー画面に戻るボタンの文言</InputDesc>
+          <HeadTitle>{t('Confirmed Order Page')}</HeadTitle>
+          <InputTitle>{t('Descriptive Text')}</InputTitle>
+          <InputDesc>{t('Text shown after orders are placed')}</InputDesc>
           <Form.Item
-            name="finalButton"
+            name="finalDesc"
           >
             <AdminInput
-              placeholder="戻るボタン"
+              placeholder={t('Text shown after orders are placed')}
+            />
+          </Form.Item>
+
+          <InputTitle>{t('Main Greeting Text')}</InputTitle>
+          <InputDesc>{t('Greetings such as "Thank you"')}</InputDesc>
+          <Form.Item
+            name="finalMain"
+          >
+            <AdminInput
+              placeholder={t('Greetings such as "Thank you"')}
             />
           </Form.Item>
         </InputGroup>
 
-        <ButtonPrimary type="submit">設定変更</ButtonPrimary>
+        <InputGroup>
+          <HeadTitle>{t('Picking Page')}</HeadTitle>
+          <InputTitle>{t('Picking Method Text')}</InputTitle>
+          <InputDesc>{t('Text about what customer should do next after ordering')}</InputDesc>
+          <Form.Item
+            name="pickingDesc"
+          >
+            <AdminInput
+              placeholder={t('Text about what customer should do next after ordering')}
+            />
+          </Form.Item>
+        </InputGroup>
+
+        <ButtonPrimary type="submit">{t('Change Settings')}</ButtonPrimary>
       </Form>
     </AdminSettingPageContainer>
-  ) : <Spin tip="処理中" />
+  ) : <Spin tip={t('Loading')} />
 }

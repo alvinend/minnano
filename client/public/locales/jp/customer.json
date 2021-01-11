@@ -1,0 +1,21 @@
+{
+  "ModeSelectorPage": {
+    "Please enter the table number": "テーブル番号を入力してください",
+    "Table": "テーブル",
+    "Takeaway": "お持ち帰り",
+    "Select this if you want to enable multiple orders in one session": "1つのセッションで複数の注文を有効にする場合は、これを選択します",
+    "Enter the table number and press \"OK\"": "テーブル番号を入力し,「OK」を押してください",
+    "Select this if you want this machine to accept a single order": "このマシンに単一の注文を受け入れさせる場合は、これを選択してください"
+  },
+  "IdlePage": {
+    "Table Number": "テーブル番号"
+  },
+  "CatalogPage": {
+    "USD": "円",
+    "Total Price": "合計",
+    "Order": "注文"
+  },
+  "WaitingPage": {
+    "Table Number": "テーブル番号"
+  }
+}

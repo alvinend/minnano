@@ -7,6 +7,7 @@ import { Category, Item } from 'models/common'
 import { IoIosTrash } from 'react-icons/io'
 import { AlertModal } from 'components/organisms/AlertModal'
 import { AdminCategoryModal } from 'components/organisms/AdminCategoryModal'
+import { useTranslation } from 'react-i18next'
 
 const AdminCategoryPageContainer = styled.div`
   padding: 40px 0 40px 120px;
@@ -76,6 +77,12 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
   const [creatingCategory, setCreatingCategory] = React.useState<Category>({} as Item)
   const [isCreatingCategory, setIsCreatingCategory] = React.useState<boolean>(false)
   const [image, setImage] = React.useState<any>(null)
+  const { t: rawT } = useTranslation('admin')
+
+  const t = React.useCallback(
+    (str: string) => rawT(`CategoryPage.${str}`),
+    [rawT]
+  )
 
   const changeImage = React.useCallback(
     file => {
@@ -174,15 +181,17 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
     <>
       <AdminCategoryPageContainer>
         <HeadTitle>
-          カテゴリリスト
-          <ButtonPrimary onClick={() => setIsCreatingCategory(true)}>新規追加</ButtonPrimary>
+          {t('Categories List')}
+          <ButtonPrimary onClick={() => setIsCreatingCategory(true)}>
+            {t('Add Category')}
+          </ButtonPrimary>
         </HeadTitle>
         <OuterTableWrapper>
           <TableWrapper>
-              <TableHeader>カテゴリ名</TableHeader>
-              <TableHeader>説明</TableHeader>
-              <TableHeader>画像</TableHeader>
-              <TableHeader>アクション</TableHeader>
+              <TableHeader>{t('Category Name')}</TableHeader>
+              <TableHeader>{t('Description')}</TableHeader>
+              <TableHeader>{t('Image')}</TableHeader>
+              <TableHeader>{t('Action')}</TableHeader>
               {categories.map(category => (
                 <React.Fragment key={category._id}>
                   <TableItem>{category.name}</TableItem>
@@ -214,7 +223,11 @@ export const AdminCategoryPage:React.FC<iAdminCategoryPage> = ({
         onSubmit={handleConfirmDeleting}
         onCancel={handleCancelDeleting}
       >
-        <>アイテム<b>{deletingCategory?.name}</b>削除しますか？</>
+        <>
+          {t('Category')}
+          <b>{deletingCategory?.name}</b>
+          {t('Do you want to delete it?')}
+        </>
       </AlertModal>
 
       {/* 作成モーダル */}

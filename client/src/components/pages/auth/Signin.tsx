@@ -1,9 +1,9 @@
 import { Button } from 'components/atoms/button'
 import React from 'react'
 import styled from 'styled-components'
-import { color } from '../../atoms/color'
 import { Input } from '../../atoms/Input'
 import { transparentize } from 'polished'
+import { useTranslation } from 'react-i18next'
 
 const SignupContainer = styled.div`
   display: flex;
@@ -43,11 +43,12 @@ type iSignin = {
   signin: (user: any) => void
 }
 
-const Signin:React.FC<iSignin> = ({
+const Signin: React.FC<iSignin> = ({
   signin
 }) => {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const { t } = useTranslation('signin')
 
   const handleEmailInput = React.useCallback(
     e => {
@@ -76,20 +77,20 @@ const Signin:React.FC<iSignin> = ({
   return (
     <SignupContainer>
       <SigninBox>
-        <img src="https://minnanoonline.s3-ap-northeast-1.amazonaws.com/Minnano+Logo.png" />
+        <img src="https://minnanoonline.s3-ap-northeast-1.amazonaws.com/Minnano+Logo.png" alt="Minnano Logo" />
         <Input
-          label="メール"
+          label={t('MailLabel')}
           value={email}
           onChange={handleEmailInput}
           type="email"
         />
         <Input
-          label="パスワード"
+          label={t('PasswordLabel')}
           value={password}
           onChange={handlePasswordInput}
           type="password"
         />
-        <Button onClick={handleSignin}>サインイン</Button>
+        <Button onClick={handleSignin}>{t('SigninButton')}</Button>
       </SigninBox>
     </SignupContainer>
   )

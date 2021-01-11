@@ -1,0 +1,13 @@
+{
+  "USD": "USD",
+  "Order Number": "Order Number",
+  "Do you want to complete it?": "Do you want to complete it?",
+  "Order": "Order",
+  "Table": "Table",
+  "Processing": "Processing",
+  "Waiting": "Waiting",
+  "Completed": "Completed",
+  "Idle": "Idle",
+  "Started": "Started",
+  "Pending": "Pending"
+}

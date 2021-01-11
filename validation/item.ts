@@ -8,9 +8,10 @@ type IItemError = {
   name: string
   categoryid: string
   price: string
+  subitemids: string
 }
 
-export const validateItemInput = async(data: IItem) => {
+export const validateItemInput = async (data: IItem) => {
   const errors = {} as IItemError
 
   data.name = !isEmpty(data.name) ? data.name : '';
@@ -22,10 +23,6 @@ export const validateItemInput = async(data: IItem) => {
 
   if (!data.price) {
     errors.price = 'Price field is required'
-  }
-
-  if (Validator.isEmpty(data.categoryid)) {
-    errors.categoryid = 'category id field is required';
   }
 
   try {
