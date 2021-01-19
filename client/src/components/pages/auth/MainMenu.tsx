@@ -4,6 +4,8 @@ import * as React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { FaUserTie, FaKey } from 'react-icons/fa'
+import { IoIosPeople } from 'react-icons/io'
 
 const MainMenuContainer = styled.div`
   display: flex;
@@ -11,7 +13,10 @@ const MainMenuContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: ${color.secondary};
+  background-image: url('https://minnanoonline.s3-ap-northeast-1.amazonaws.com/logo/2nd+Homepage+Background_00000.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   & button {
     margin-top: 50px;
@@ -31,15 +36,16 @@ const LinkContainer = styled.div`
 
 const StyledLink = styled(Link)`
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
   justify-content: flex-end;
-  width: 300px;
+  width: 250px;
   height: 300px;
-  padding: 0 10px;
-  background-color: ${color.primary};
-  font-size: 46px;
+  padding: 20px 10px;
+  background-color: ${color.white};
+  font-size: 24px;
   font-weight: bold;
-  color: ${color.white};
+  color: #777;
   text-decoration: none;
   text-align: right;
   box-shadow: 5px 5px 10px 5px rgba(0,0,0,0.2);
@@ -48,6 +54,10 @@ const StyledLink = styled(Link)`
   &:hover {
     box-shadow: 6px 6px 10px 6px rgba(0,0,0,0.3);
   }
+`
+
+const IconContainer = styled.span`
+  font-size: 108px;
 `
 
 type iMainMenu = {
@@ -64,9 +74,24 @@ const MainMenu: React.FC<iMainMenu> = ({
   return (
     <MainMenuContainer>
       <LinkContainer>
-        <StyledLink to="/customer">{t('CustomerLinkLabel')}</StyledLink>
-        <StyledLink to="/staff">{t('StaffLinkLabel')}</StyledLink>
-        {isAdmin && <StyledLink to="/admin">{t('AdminLinkLabel')}</StyledLink>}
+        <StyledLink to="/customer">
+          <IconContainer>
+            <IoIosPeople />
+          </IconContainer>
+          {t('CustomerLinkLabel')}
+        </StyledLink>
+        <StyledLink to="/staff">
+          <IconContainer>
+            <FaUserTie />
+          </IconContainer>
+          {t('StaffLinkLabel')}
+        </StyledLink>
+        {isAdmin && <StyledLink to="/admin">
+          <IconContainer>
+            <FaKey />
+          </IconContainer>
+          {t('AdminLinkLabel')}
+        </StyledLink>}
       </LinkContainer>
       <Button
         size="large"
