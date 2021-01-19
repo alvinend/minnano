@@ -46,12 +46,13 @@ const IdleWrapper = styled.div<{ type: string }>`
   }
 `
 
-const IdleContainer = styled.div`
+const IdleContainer = styled.div<{ backgroundUrl: string }>`
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
   height: 100%;
-  background-image: url('https://minnanoonline.s3-ap-northeast-1.amazonaws.com/GettyImages-1154797812-2000.jpeg');
+  background-image: url('${({ backgroundUrl }) => backgroundUrl}');
+  background-size: cover;
 
   & .desc-container {
     position: relative;
@@ -142,7 +143,7 @@ const IdlePage: React.FC<iIdlePage> = ({
 
   return (
     <IdleWrapper type={animationType}>
-      <IdleContainer>
+      <IdleContainer backgroundUrl={l?.backgroundUrl}>
         <FrostedBox className="desc-container">
           <h2 className="idle-greeting">{l?.greeting}</h2>
           <h1 className="idle-storename">{layout?.storename}</h1>

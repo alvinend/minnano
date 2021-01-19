@@ -60,7 +60,6 @@ router.get(
       const orders = await Promise.all(
         table.orderids.map(async (id: String) => {
           const order = (await Order.findById(id))
-          console.log(order)
 
           const cart = await Promise.all(
             order!.cart.map(async content => {

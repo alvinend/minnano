@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { color } from '../atoms/color'
-import { Item, Cart, Subitem } from 'models/common'
+import { Item, Cart, Subitem, Layout } from 'models/common'
 import { FrostedBox } from 'components/atoms/FrostedBox'
 import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai'
 import { RoundedButton } from 'components/atoms/button/RoundedButton'
 import { RoundedButtonPrimary } from 'components/atoms/button/RoundedButtonPrimary'
+import { useTranslation } from 'react-i18next'
 
 const SubmenuModalWrapper = styled.div`
   position: fixed;
@@ -58,7 +59,7 @@ const StyledSubmenuModal = styled.div<{ type: string }>`
   width: 80vw;
   height: 80vh;
   background-color: ${color.white};
-  font-size: 24px;
+  font-size: 16px;
   z-index: 3;
   animation: ${({ type }) => type === 'in' ?
     'slide-in-bck-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both' :
@@ -98,14 +99,13 @@ const DetailContainer = styled.div`
   & > img {
     width: calc(100% + 80px);
     height: 30%;
-    margin: -40px;
+    margin: -40px -40px 20px -40px;
     object-fit: cover;
   }
 
   & > .title {
-    font-size: 60px;
-    font-weight: bold;
-    -webkit-text-stroke: 4px ${color.primary};
+    font-size: 24px;
+    font-weight: 900;
   }
 
   & > .desc {
@@ -133,7 +133,7 @@ const VariationContainer = styled.div`
     align-content: flex-start;
     justify-content: space-between;
     width: 100%;
-    height: 90%;
+    height: 80%;
     margin-top: 20px;
     overflow: auto;
 
@@ -224,6 +224,7 @@ const CartInfoFooter = styled.div`
     display: flex;
     justify-content: space-around;
     margin: 20px 0;
+    font-size: 16px;
   }
 
 `
@@ -233,6 +234,7 @@ type iSubmenuModal = {
   onSubmit: (cart: Cart) => void
   onCancel: () => void
   item: Item
+  layout: Layout
 }
 
 export const SubmenuModal: React.FC<iSubmenuModal> = ({
@@ -240,9 +242,16 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
   onSubmit,
   onCancel,
   item,
+  layout
 }) => {
   const [animationType, setAnimationType] = React.useState('in')
   const [cart, setCart] = React.useState([] as Cart)
+  const { t: rawT } = useTranslation('customer')
+
+  const t = React.useCallback(
+    (str: string) => rawT(`SubmenuModal.${str}`),
+    [rawT]
+  )
 
   React.useEffect(
     () => {
@@ -346,21 +355,21 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
 
           <CartInfoFooter>
             <div className="total-price">
-              合計
-              <span>{totalPrice}</span>
-              円
+              {t('Total')}
+              <span>{totalPrice.toLocaleString()}</span>
+              {layout.currency}
             </div>
             <div className="button-container">
               <RoundedButton
                 onClick={onCancel}
               >
-                キャンセル
+                {t('Cancel')}
               </RoundedButton>
               <RoundedButtonPrimary
                 disabled={!cart.length}
                 onClick={handleSubmit}
               >
-                カートに入れる
+                {t('Add to cart')}
               </RoundedButtonPrimary>
             </div>
           </CartInfoFooter>
@@ -368,7 +377,7 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
         </DetailContainer>
         <VariationContainer>
           <VariationTitle>
-            種類
+            {t('Variation')}
           </VariationTitle>
           <div className="subitem-inner">
             {!!item.subitems.length ? item?.subitems.map(subitem => (
@@ -378,7 +387,7 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
               >
                 <h3 className="subitem-title">
                   {subitem.name}
-                  <span className="subitem-price">{subitem.price}円</span>
+                  <span className="subitem-price">{subitem.price.toLocaleString()} {layout.currency}</span>
                 </h3>
                 <p className="subitem-desc">{subitem.desc}</p>
               </FrostedBox>
@@ -387,8 +396,8 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
                 onClick={() => handleAddCart(item)}
               >
                 <h3 className="subitem-title">
-                  通常版
-                <span className="subitem-price">{item.price}円</span>
+                  {item.name}
+                  <span className="subitem-price">{item.price.toLocaleString()} {layout.currency}</span>
                 </h3>
                 <p className="subitem-desc">{item.desc}</p>
               </FrostedBox>

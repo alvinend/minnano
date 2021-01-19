@@ -122,7 +122,7 @@ type iNumberPage = {
   layout: Layout
 }
 
-const NumberPage:React.FC<iNumberPage> = ({
+const NumberPage: React.FC<iNumberPage> = ({
   onSendOrder,
   layout
 }) => {
@@ -133,7 +133,7 @@ const NumberPage:React.FC<iNumberPage> = ({
     input => () => setNumber(`${number}${input}`),
     [number]
   )
-  
+
   const delNumber = React.useCallback(
     () => setNumber(number.slice(0, -1)),
     [number]
@@ -153,7 +153,6 @@ const NumberPage:React.FC<iNumberPage> = ({
         <DescWrapper>
           <div>
             {layout.picking.desc}
-            順番カードを取り、こちらに入力してください。そちらの番号呼ばれたら、カウンタまでお越しください。
           </div>
           <NumberDispaly>{number}</NumberDispaly>
         </DescWrapper>

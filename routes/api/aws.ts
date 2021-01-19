@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import AWS from 'aws-sdk'
-import uuid from 'uuid'
+import * as uuid from 'uuid'
 
 // AWS Setting
-AWS.config.update({region: 'ap-northeast-1'})
+AWS.config.update({ region: 'ap-northeast-1' })
 const enterpriseName = process.env.ENTERPRISE_NAME
 const s3 = new AWS.S3()
 const router = Router()
@@ -23,7 +23,7 @@ router.post('/image', async (req, res) => {
     const s3Key = `${enterpriseName}/images/${uuid.v4()}.${ext}`
 
     s3.putObject(
-      { Bucket: 'minnanoonline', Body: myFile.buffer ,Key: s3Key },
+      { Bucket: 'minnanoonline', Body: myFile.buffer, Key: s3Key },
       (err, data) => {
         if (err) {
           console.log("Error", err);
@@ -35,6 +35,7 @@ router.post('/image', async (req, res) => {
       }
     )
   } catch (error) {
+    console.log(error)
     res.status(400).json({ error })
   }
 })

@@ -17,5 +17,16 @@
   },
   "WaitingPage": {
     "Table Number": "テーブル番号"
+  },
+  "SubmenuModal": {
+    "Total": "合計",
+    "Cancel": "キャンセル",
+    "Add to cart": "カートに入れる",
+    "Variation": "種類"
+  },
+  "CartOverlay": {
+    "Cart is Empty": "カートは空です",
+    "Total Price": "合計金額",
+    "Cancel": "戻る"
   }
 }

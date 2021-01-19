@@ -264,10 +264,10 @@ export const TableOverlay: React.FC<iTableOverlay> = ({
                     {order.cart.map(({ quantity, item }) => (
                       <OrderList>
                         <span>
-                          {item.name} ({item.price}{layout?.currency})
+                          {item.name} ({item.price.toLocaleString()}{layout?.currency})
                           <span className="order-quantity">X {quantity}</span>
                         </span>
-                        <span>{item.price * quantity}{layout?.currency}</span>
+                        <span>{(item.price * quantity).toLocaleString()}{layout?.currency}</span>
                       </OrderList>
                     ))}
                   </OrderWrapper>

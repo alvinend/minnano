@@ -10,6 +10,7 @@ import { useFirstMountState } from 'react-use'
 import { Cart, Item, Category, Layout, Table } from '../../../models/common'
 import { FaHistory } from 'react-icons/fa'
 import { TableOverlay } from 'components/organisms/TableOverlay'
+import Truncate from 'react-truncate'
 
 const CategoryWrapper = styled.div`
   display: flex;
@@ -21,20 +22,21 @@ const CategoryWrapper = styled.div`
 
 const CategoryBar = styled.div`
   display: flex;
-  justify-content: center;
   width: 90%;
   padding: 10px 0;
   margin: 20px 0;
   border: 2px ${color.gray} solid;
   border-radius: 5px;
   background-color: ${color.white};
+  overflow-x: auto;
 `
 
 const CategoryItem = styled.div<{ isSelected: boolean }>`
-  width: 200px;
+  min-width: 150px;
   padding: 10px 12px;
   margin: 0 20px;
   text-align: center;
+  white-space: nowrap;
   ${({ isSelected }) => isSelected && `border-bottom: 4px ${color.primary} solid;`}
   ${({ isSelected }) => isSelected && 'font-weight: bold;'}
 `
@@ -84,11 +86,12 @@ const CategoryDesc = styled.div`
 `
 
 const ItemCard = styled.div<{ index: number }>`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 300px;
-  min-height: 300px;
+  height: 400px;
   margin: 8px;
   padding: 20px;
   border: 2px ${color.gray} solid;
@@ -100,10 +103,10 @@ const ItemCard = styled.div<{ index: number }>`
   color: ${color.black};
 
   & img {
-    height: 150px;
-    width: 100%;
+    height: 200px;
+    width: 200px;
     object-fit: cover;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
   }
 
   & h2 {
@@ -112,12 +115,18 @@ const ItemCard = styled.div<{ index: number }>`
   }
 
   & p {
+    width: 200px;
     height: 60px;
   }
 
   & span {
     font-size: 18px;
     font-weight: light;
+  }
+
+  & .item-price {
+    position: absolute;
+    bottom: 30px;
   }
 
   &:hover {
@@ -460,8 +469,15 @@ const CatalogPage: React.FC<iCatalogPage> = ({
               >
                 <img src={`${item.imagelink}`} alt="Item" />
                 <h2>{item.name}</h2>
-                <p>{item.desc}</p>
-                <span><b>{item.price.toLocaleString()}{layout?.currency}</b></span>
+                <Truncate
+                  children={item.desc}
+                  lines={2}
+                  ellipsis='...'
+                  width={200}
+                />
+                <span className="item-price">
+                  <b>{item.price.toLocaleString()} {layout?.currency}</b>
+                </span>
               </ItemCard>
             )
           )
@@ -473,6 +489,7 @@ const CatalogPage: React.FC<iCatalogPage> = ({
         onSubmit={handleAddCart}
         onCancel={handleSubitemCancel}
         item={subitemShowing}
+        layout={layout}
       />
 
     </CategoryWrapper>

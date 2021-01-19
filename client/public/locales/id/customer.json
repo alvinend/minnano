@@ -17,5 +17,16 @@
   },
   "WaitingPage": {
     "Table Number": "Nomor Meja"
+  },
+  "SubmenuModal": {
+    "Total": "Total",
+    "Cancel": "Cancel",
+    "Add to cart": "Tambah ke keranjang",
+    "Variation": "Variasi"
+  },
+  "CartOverlay": {
+    "Cart is Empty": "Keranjang kosong",
+    "Total Price": "Total",
+    "Cancel": "Kembali"
   }
 }

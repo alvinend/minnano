@@ -22,6 +22,7 @@ export type ISetting = {
       main: string
     }
     idle: {
+      backgroundUrl: string
       greeting: string // Welcome to
       startButton: string // Start Order
     }
@@ -91,6 +92,10 @@ const SettingSchema = new Schema({
       }
     },
     idle: {
+      backgroundUrl: {
+        type: String,
+        default: 'https://minnanoonline.s3-ap-northeast-1.amazonaws.com/logo/Logo+Minnano+Desktop+Format.png'
+      },
       greeting: {
         type: String,
         default: 'Welcome to'

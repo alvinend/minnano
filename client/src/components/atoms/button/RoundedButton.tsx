@@ -3,7 +3,7 @@ import { color } from 'components/atoms/color'
 
 
 export const RoundedButton = styled.button`
-  padding: 5px 10px;
+  padding: 10px 15px;
   border-radius: 30px;
   border: 2px solid ${color.black};
   background-color: ${color.white};

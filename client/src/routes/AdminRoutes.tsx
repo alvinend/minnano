@@ -45,13 +45,11 @@ const AdminRoutes = () => {
   const updateItem = React.useCallback(
     async (editingItem: Item) => {
       try {
-        console.log(editingItem)
         const res = await axios.put(`/api/admin/item/${editingItem?._id}`, editingItem)
         const newItem: Item = res.data
         const index = items.findIndex(item => item._id === newItem._id)
         const oldItem = items[index]
         items[index] = { ...oldItem, ...newItem }
-        console.log(items[index])
         setItems([...items])
         notifySuccess('アイテムの更新が成功しました')
       } catch (e) {

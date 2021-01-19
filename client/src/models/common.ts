@@ -56,6 +56,7 @@ export type Layout = {
     main: string
   }
   idle: {
+    backgroundUrl: string
     greeting: string // Welcome to
     startButton: string // Start Order
   }

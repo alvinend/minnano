@@ -77,6 +77,7 @@ export const AdminSettingPage = () => {
             button: values?.finalButton
           },
           idle: {
+            backgroundUrl: values?.idleBackgroundUrl,
             greeting: values?.idleGreeting,
             startButton: values?.idleStartButton
           },
@@ -111,6 +112,7 @@ export const AdminSettingPage = () => {
           finalDesc: layoutSettings?.final?.desc,
           idleGreeting: layoutSettings?.idle?.greeting,
           idleStartButton: layoutSettings?.idle?.startButton,
+          idleBackgroundUrl: layoutSettings?.idle?.backgroundUrl,
           waitingClosing: layoutSettings?.waiting?.closing,
           waitingInstruction: layoutSettings?.waiting?.instruction
         }}
@@ -142,6 +144,16 @@ export const AdminSettingPage = () => {
 
         <InputGroup>
           <HeadTitle>{t('Idle Page')}</HeadTitle>
+          <InputTitle>{t('Background')}</InputTitle>
+          <InputDesc>{t('Will be shown on idle page')}</InputDesc>
+          <Form.Item
+            name="idleBackgroundUrl"
+          >
+            <AdminInput
+              placeholder={t('Will be shown on idle page')}
+            />
+          </Form.Item>
+
           <InputTitle>{t('Greeting')}</InputTitle>
           <InputDesc>{t('Will be shown on idle page')}</InputDesc>
           <Form.Item

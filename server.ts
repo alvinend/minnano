@@ -35,7 +35,7 @@ app.use(multerMid.single('file'))
 app.disable('x-powered-by')
 
 // DB Config
-const db = keys.mongoURI;
+const db = process.env.MONGO_URI || keys.mongoURI
 
 // Connect to MongoDB
 mongoose.set('useNewUrlParser', true);
@@ -62,11 +62,11 @@ app.use('/api/admin', adminRouter)
 app.use('/api/aws', awsRouter)
 const port = process.env.PORT || 5000;
 
-app.get('/test-var/:name', (req,res) => {
+app.get('/test-var/:name', (req, res) => {
   res.send(process.env[req.params.name])
 })
 
-app.get('(/*)?', (req,res) => {
+app.get('(/*)?', (req, res) => {
   res.sendFile(path.join(__dirname, './client/build/index.html'));
 })
 

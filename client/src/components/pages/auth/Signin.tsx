@@ -2,8 +2,8 @@ import { Button } from 'components/atoms/button'
 import React from 'react'
 import styled from 'styled-components'
 import { Input } from '../../atoms/Input'
-import { transparentize } from 'polished'
 import { useTranslation } from 'react-i18next'
+import { FrostedBox } from 'components/atoms/FrostedBox'
 
 const SignupContainer = styled.div`
   display: flex;
@@ -18,21 +18,19 @@ const SignupContainer = styled.div`
   background-size: cover;
 
   & img {
-    width: 300px;
-    margin: -70px;
+    width: 500px;
+    margin: -150px;
   }
 `
 
-const SigninBox = styled.div`
+const SigninBox = styled(FrostedBox)`
   width: 60vw;
   height: 80vh;
   border-radius: 20px;
-  background-color: ${transparentize(0.5, '#4d3927')};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: bold;
@@ -77,7 +75,7 @@ const Signin: React.FC<iSignin> = ({
   return (
     <SignupContainer>
       <SigninBox>
-        <img src="https://minnanoonline.s3-ap-northeast-1.amazonaws.com/Minnano+Logo.png" alt="Minnano Logo" />
+        <img src="https://minnanoonline.s3-ap-northeast-1.amazonaws.com/logo/Logo+Minnano+Transparant+Background.png" alt="Minnano Logo" />
         <Input
           label={t('MailLabel')}
           value={email}

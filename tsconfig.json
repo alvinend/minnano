@@ -16,6 +16,7 @@
     "./"
   ],
   "exclude": [
-    "./client"
+    "./client",
+    "./prod-build"
   ]
 }

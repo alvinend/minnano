@@ -2,16 +2,9 @@
   "name": "minnano",
   "version": "1.0.0",
   "description": "Social network for developers",
-  "main": "dist/server.js",
+  "main": "server.js",
   "scripts": {
-    "build": "tsc",
-    "start": "NODE_PATH=dist node .",
-    "client": "cd client && yarn start",
-    "dev:client": "concurrently -p time -t 'HH:mm' \"yarn build & yarn start\" \"yarn run client\"",
-    "dev:server": "concurrently -p time -t 'HH:mm' \"tsc -w\" \"nodemon --watch ./dist --exec 'yarn start'\"",
-    "dev:all": "concurrently \"yarn dev:server\" \"yarn run client\"",
-    "tspath": "tspath",
-    "deploy": "gulp"
+    "start": "NODE_PATH=. node server.js"
   },
   "author": "Endratno Alvin",
   "license": "MIT",

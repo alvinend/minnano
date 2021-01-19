@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { TiShoppingCart, TiPlusOutline, TiMinusOutline } from 'react-icons/ti'
 import { color } from '../atoms/color'
 import { Cart, Layout } from '../../models/common'
+import { useTranslation } from 'react-i18next'
 
 const Overlay = styled.div<{ type: string }>`
   display: flex;
@@ -178,6 +179,13 @@ export const CartOverlay: React.FC<iCartOverlay> = ({
   animationType,
   layout
 }) => {
+  const { t: rawT } = useTranslation('customer')
+
+  const t = React.useCallback(
+    (str: string) => rawT(`CartOverlay.${str}`),
+    [rawT]
+  )
+
   const handleAddItem = React.useCallback(
     (index: number) => {
       let newCart = cart
@@ -209,7 +217,7 @@ export const CartOverlay: React.FC<iCartOverlay> = ({
           <div>{layout.confirmation.desc}</div>
         </IconContainer>
         <ItemWrapper>
-          {!cart.length && 'Cart is Empty'}
+          {!cart.length && t('Cart is Empty')}
           {cart.map(
             (cartItem, index) => (
               <div
@@ -225,16 +233,16 @@ export const CartOverlay: React.FC<iCartOverlay> = ({
                 x{cartItem.quantity}
                   <button onClick={() => handleAddItem(index)}><TiPlusOutline /></button>
                 </Quantitiy>
-                <ItemPrice>{(cartItem.quantity * cartItem.item.price).toLocaleString()}円</ItemPrice>
+                <ItemPrice>{(cartItem.quantity * cartItem.item.price).toLocaleString()} {layout.currency}</ItemPrice>
               </div>
             )
           )}
         </ItemWrapper>
         <TotalPriceContainer>
-          <TotalPriceDesc>合計金額</TotalPriceDesc>
+          <TotalPriceDesc>{t('Total Price')}</TotalPriceDesc>
           <TotalPrice>
-            <span>{totalPrice.toLocaleString()}円</span>
-            <button onClick={onClickBack}>戻る</button>
+            <span>{totalPrice.toLocaleString()} {layout.currency}</span>
+            <button onClick={onClickBack}>{t('Cancel')}</button>
             <button disabled={!cart.length} onClick={onClickConfirmed}>{layout.confirmation.button}</button>
           </TotalPrice>
         </TotalPriceContainer>
