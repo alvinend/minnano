@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const InputContainer  = styled.div`
+const InputContainer = styled.div`
   margin-bottom: 1.5rem;
   position: relative;
   width: 20.4375rem;
@@ -112,7 +112,7 @@ export const Input: React.FC<iInput> = ({
           type={type}
         />
         <InputLabel>{label}</InputLabel>
-        <HelperText>{helperText}</HelperText>
+        {!!helperText ? <HelperText>{helperText}</HelperText> : null}
       </label>
     </InputContainer>
   )

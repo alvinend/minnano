@@ -76,7 +76,8 @@ const CategoryDesc = styled.div`
   display: flex;
 
   & div {
-    width: 180px;
+    width: 160px;
+    margin-right: 20px;
   }
 
   & h1 {

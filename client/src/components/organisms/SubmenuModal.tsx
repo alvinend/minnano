@@ -109,7 +109,7 @@ const DetailContainer = styled.div`
   }
 
   & > .desc {
-    height: 30%;
+    height: calc(50% - 100px);
     overflow: auto;
   }
 `
@@ -225,6 +225,10 @@ const CartInfoFooter = styled.div`
     justify-content: space-around;
     margin: 20px 0;
     font-size: 16px;
+
+    & > button {
+      min-width: 30%;
+    }
   }
 
 `

@@ -81,20 +81,24 @@ router.get(
               if (!query) {
                 query = await Subitem.findById(content.item)
                 object = query?.toObject()
-                object.itemName = (await Item.findById(query?.itemid))?.name
 
-                item = {
-                  _id: query?._id,
-                  type: 'subitem',
-                  name: `${object.itemName} - ${object.name}`,
-                  price: object.price
+                if (object) {
+                  object.itemName = (await Item.findById(query?.itemid))?.name
+
+                  item = {
+                    _id: query?._id,
+                    type: 'subitem',
+                    name: `${object?.itemName} - ${object?.name}`,
+                    price: object.price
+                  }
                 }
+
               } else {
                 object = query.toObject()
                 item = {
                   _id: query?._id,
                   type: 'item',
-                  name: `${object.name}`,
+                  name: `${object?.name}`,
                   price: object.price
                 }
               }
@@ -116,6 +120,7 @@ router.get(
 
       return res.status(200).json(returnOrders)
     } catch (err) {
+      console.log(err)
       return res.status(400).json(err)
     }
   }

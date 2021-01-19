@@ -17,5 +17,16 @@
   },
   "WaitingPage": {
     "Table Number": "Table Number"
+  },
+  "SubmenuModal": {
+    "Total": "Total",
+    "Cancel": "Cancel",
+    "Add to cart": "Add to cart",
+    "Variation": "Variation"
+  },
+  "CartOverlay": {
+    "Cart is Empty": "Cart is Empty",
+    "Total Price": "Total Price",
+    "Cancel": "Cancel"
   }
 }

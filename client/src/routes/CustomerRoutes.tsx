@@ -42,7 +42,6 @@ const CustomerRoutes: React.FC = () => {
     async number => {
       try {
         setIsLoading(true)
-        console.log(cart)
         const res = await axios.post(
           '/api/customer/order',
           {
@@ -114,7 +113,6 @@ const CustomerRoutes: React.FC = () => {
 
   React.useEffect(
     () => {
-      console.log(table)
       window.addEventListener('beforeunload', (event) => {
         event.preventDefault()
         event.returnValue = ''
