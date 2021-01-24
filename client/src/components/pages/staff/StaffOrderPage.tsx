@@ -3,13 +3,14 @@ import styled from 'styled-components'
 import { color } from '../../atoms/color'
 import { IoMdCheckmarkCircle } from 'react-icons/io'
 import { AlertModal } from '../../organisms/AlertModal'
-import { Cart, OrderCart } from '../../../models/common'
+import { Cart, OrderCart, OrderStatuses } from '../../../models/common'
 import { FaAngleDoubleRight } from 'react-icons/fa'
 import axios from 'axios'
 import { notifyAxiosError, notifySuccess } from 'models/notification'
 import { StaffLoading } from 'components/atoms/StaffLoading'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
+import { OrderDetailModal } from 'components/organisms/staff/OrderDetailModal'
 
 const StaffOrderPageWrapper = styled.div`
   display: flex;
@@ -183,17 +184,16 @@ const HeaderContainer = styled.div`
 `
 
 type iStaffOrderPage = {
-  deleteOrder: (alertId: string) => void
 }
 
 const StaffOrderPage: React.FC<iStaffOrderPage> = ({
-  deleteOrder,
 }) => {
   const [alertNumber, setAlertNumber] = React.useState('')
   const [alertId, setAlertId] = React.useState('')
   const [orderCarts, setOrderCarts] = React.useState<OrderCart[]>([])
   const [currentStatus, setCurrentStatus] = React.useState('processing')
   const [isLoading, setIsLoading] = React.useState(false)
+  const [selectedOrderCart, setSelectedOrderCart] = React.useState({} as OrderCart)
   const history = useHistory()
 
   const { t } = useTranslation('staff')
@@ -202,6 +202,18 @@ const StaffOrderPage: React.FC<iStaffOrderPage> = ({
     (cart: Cart) => cart.length && cart
       .map(cartItem => cartItem?.item?.price && cartItem?.item?.price * cartItem?.quantity)
       .reduce((a, b) => a + b),
+    []
+  )
+
+  const deleteOrder = React.useCallback(
+    async cartid => {
+      try {
+        const res = await axios.delete(`/api/staff/order/${cartid}`)
+        setOrderCarts(res.data)
+      } catch (e) {
+        notifyAxiosError(e)
+      }
+    },
     []
   )
 
@@ -266,8 +278,7 @@ const StaffOrderPage: React.FC<iStaffOrderPage> = ({
 
   const handleChangeOrderStatus = React.useCallback(
     async (orderCart: OrderCart) => {
-      const statuses = ['processing', 'waiting', 'completed', 'archived']
-      const status = statuses[statuses.findIndex(ele => ele === orderCart.status) + 1]
+      const status = OrderStatuses[OrderStatuses.findIndex(ele => ele === orderCart.status) + 1]
 
       try {
         if (status) {
@@ -294,75 +305,111 @@ const StaffOrderPage: React.FC<iStaffOrderPage> = ({
     []
   )
 
+  const changeOrderStatus = React.useCallback(
+    async (status: string) => {
+      try {
+        const res = await axios.put(
+          `/api/staff/order/${selectedOrderCart._id}`,
+          { status }
+        )
+
+        console.log(res.data)
+        setSelectedOrderCart({
+          ...selectedOrderCart,
+          status: res.data.status
+        })
+
+        setOrderCarts((await axios.get(`/api/staff/order?status=${currentStatus}`)).data)
+
+        notifySuccess(`状態更新を成功しました。新状態：${status.charAt(0).toUpperCase() + status.slice(1)}`)
+      } catch (e) {
+        notifyAxiosError(e)
+      }
+
+    },
+    [selectedOrderCart, currentStatus]
+  )
+
   return (
-    <StaffOrderPageWrapper>
-      <AlertModal
-        isShowing={!!alertNumber}
-        onSubmit={handleOnSubmit}
-        onCancel={handleAlertCancel}
-      >
-        <>{t('Order Number')}<b>{alertNumber}</b> {t('Do you want to complete it?')}</>
-      </AlertModal>
-      <HeaderContainer>
-        <div className="mode-container">
-          <span className="active-mode">{t('Order')}</span>
-          <span onClick={() => history.push('/staff/table')}>{t('Table')}</span>
-        </div>
+    <>
+      <StaffOrderPageWrapper>
+        <AlertModal
+          isShowing={!!alertNumber}
+          onSubmit={handleOnSubmit}
+          onCancel={handleAlertCancel}
+        >
+          <>{t('Order Number')}<b>{alertNumber}</b> {t('Do you want to complete it?')}</>
+        </AlertModal>
+        <HeaderContainer>
+          <div className="mode-container">
+            <span className="active-mode">{t('Order')}</span>
+            <span onClick={() => history.push('/staff/table')}>{t('Table')}</span>
+          </div>
 
-        <div className="process-container">
-          <span
-            onClick={() => handleChangeProcess('processing')}
-            className={currentStatus === 'processing' ? 'active-process' : ''}
-          >
-            {t('Processing')}
-          </span>
-          <span className="process-arrow"><FaAngleDoubleRight /></span>
-          <span
-            onClick={() => handleChangeProcess('waiting')}
-            className={currentStatus === 'waiting' ? 'active-process' : ''}
-          >
-            {t('Waiting')}
-          </span>
-          <span className="process-arrow"><FaAngleDoubleRight /></span>
-          <span
-            onClick={() => handleChangeProcess('completed')}
-            className={currentStatus === 'completed' ? 'active-process' : ''}
-          >
-            {t('Completed')}
-          </span>
-        </div>
-      </HeaderContainer>
-      <InnerContainer>
-        {isLoading ?
-          <StaffLoading /> :
-          <>
-            {orderCarts.map(
-              (orderCart: OrderCart) => (
-                <OrderBox key={orderCart._id} number={orderCart.label}>
-                  <OrderBoxInner>
-                    <ListOrderContainer>
-                      {orderCart?.cart?.map(
-                        cartItem => (
-                          <ListOrder key={cartItem?.item?._id}>
-                            <span>{cartItem?.item?.name}</span>
-                            <span>{cartItem?.quantity}x</span>
-                          </ListOrder>
-                        )
-                      )}
-                    </ListOrderContainer>
-                    <OrderBoxActionContainer>
-                      <span>{!!totalPrice && totalPrice(orderCart?.cart).toLocaleString()}{t('USD')}</span>
-                      <div onClick={() => handleChangeOrderStatus(orderCart)}><IoMdCheckmarkCircle /></div>
-                    </OrderBoxActionContainer>
-                  </OrderBoxInner>
-                </OrderBox>
-              )
-            )}
-          </>
-        }
-      </InnerContainer>
-
-    </StaffOrderPageWrapper>
+          <div className="process-container">
+            <span
+              onClick={() => handleChangeProcess('processing')}
+              className={currentStatus === 'processing' ? 'active-process' : ''}
+            >
+              {t('Processing')}
+            </span>
+            <span className="process-arrow"><FaAngleDoubleRight /></span>
+            <span
+              onClick={() => handleChangeProcess('waiting')}
+              className={currentStatus === 'waiting' ? 'active-process' : ''}
+            >
+              {t('Waiting')}
+            </span>
+            <span className="process-arrow"><FaAngleDoubleRight /></span>
+            <span
+              onClick={() => handleChangeProcess('completed')}
+              className={currentStatus === 'completed' ? 'active-process' : ''}
+            >
+              {t('Completed')}
+            </span>
+          </div>
+        </HeaderContainer>
+        <InnerContainer>
+          {isLoading ?
+            <StaffLoading /> :
+            <>
+              {orderCarts.map(
+                (orderCart: OrderCart) => (
+                  <OrderBox key={orderCart._id} number={orderCart.label}>
+                    <OrderBoxInner>
+                      <ListOrderContainer onClick={() => setSelectedOrderCart(orderCart)}>
+                        {orderCart?.cart?.map(
+                          cartItem => (
+                            <ListOrder key={cartItem?.item?._id}>
+                              <span>{cartItem?.item?.name}</span>
+                              <span>{cartItem?.quantity}x</span>
+                            </ListOrder>
+                          )
+                        )}
+                      </ListOrderContainer>
+                      <OrderBoxActionContainer>
+                        <span>{!!totalPrice && totalPrice(orderCart?.cart).toLocaleString()}{t('USD')}</span>
+                        <div onClick={() => handleChangeOrderStatus(orderCart)}><IoMdCheckmarkCircle /></div>
+                      </OrderBoxActionContainer>
+                    </OrderBoxInner>
+                  </OrderBox>
+                )
+              )}
+            </>
+          }
+        </InnerContainer>
+      </StaffOrderPageWrapper>
+      <OrderDetailModal
+        isShowing={!!selectedOrderCart._id}
+        orderCart={selectedOrderCart}
+        onCancel={() => setSelectedOrderCart({} as OrderCart)}
+        changeOrderStatus={changeOrderStatus}
+        deleteOrder={() => {
+          setAlertId(selectedOrderCart._id)
+          setAlertNumber(selectedOrderCart.label)
+        }}
+      />
+    </>
   )
 }
 

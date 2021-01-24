@@ -4,8 +4,7 @@ import * as React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { FaUserTie, FaKey } from 'react-icons/fa'
-import { IoIosPeople } from 'react-icons/io'
+import { FaUserTie, FaKey, FaUserFriends } from 'react-icons/fa'
 
 const MainMenuContainer = styled.div`
   display: flex;
@@ -76,7 +75,7 @@ const MainMenu: React.FC<iMainMenu> = ({
       <LinkContainer>
         <StyledLink to="/customer">
           <IconContainer>
-            <IoIosPeople />
+            <FaUserFriends />
           </IconContainer>
           {t('CustomerLinkLabel')}
         </StyledLink>

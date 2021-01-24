@@ -8,7 +8,7 @@ const ModalWrapper = styled.div`
   display: flex;
   width: 100vw;
   height: 100vh;
-  z-index: 2;
+  z-index: 3;
   align-items: center;
   justify-content: center;
 `
@@ -130,7 +130,7 @@ export const AlertModal: React.FC<iAlertModal> = ({
 
   return isShowing ? (
     <ModalWrapper>
-      <Overlay onClick={handleCloseModal} type={animationType}/>
+      <Overlay onClick={handleCloseModal} type={animationType} />
       <Modal type={animationType}>
         {children}
         <ButtonContainer>

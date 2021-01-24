@@ -262,7 +262,7 @@ export const TableOverlay: React.FC<iTableOverlay> = ({
                       {t('Order')} {moment(order.created_at).format('HH:mm')}
                     </h3>
                     {order.cart.map(({ quantity, item }) => (
-                      <OrderList>
+                      <OrderList key={item._id}>
                         <span>
                           {item.name} ({item.price.toLocaleString()}{layout?.currency})
                           <span className="order-quantity">X {quantity}</span>

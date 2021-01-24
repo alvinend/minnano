@@ -82,3 +82,5 @@ export type Table = {
   orderids: string[]
   status: string
 }
+
+export const OrderStatuses = ['processing', 'waiting', 'completed', 'archived']
