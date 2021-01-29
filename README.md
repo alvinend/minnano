@@ -13,7 +13,7 @@ Minnano Uses
 
 # Setting up Database
 
-![Setting%20up%20Environment%204ffbaa6a192243eba889fcc62861eebf/Untitled.png](Setting%20up%20Environment%204ffbaa6a192243eba889fcc62861eebf/Untitled.png)
+![https://www.notion.so/Setting-up-Environment-79aee552244f4fdea860ff4871d9b21a#4ffbaa6a192243eba889fcc62861eebf](https://www.notion.so/Setting-up-Environment-79aee552244f4fdea860ff4871d9b21a#4ffbaa6a192243eba889fcc62861eebf)
 
 ## What and Why
 
@@ -54,7 +54,7 @@ Set Environment variable of MONGO_URI
 
 # Setting up AWS S3 (For Image Upload)
 
-![Setting%20up%20Environment%204ffbaa6a192243eba889fcc62861eebf/Untitled%201.png](Setting%20up%20Environment%204ffbaa6a192243eba889fcc62861eebf/Untitled%201.png)
+![https://www.notion.so/Setting-up-Environment-79aee552244f4fdea860ff4871d9b21a#ed57f6bee4044314856aadb577aaaa60](https://www.notion.so/Setting-up-Environment-79aee552244f4fdea860ff4871d9b21a#ed57f6bee4044314856aadb577aaaa60)
 
 ## Prerequisite
 
@@ -83,7 +83,7 @@ If you deploy it from AWS Beanstalk (which is recommended) you only need to writ
 
 # Setting up Back-End and Front-End
 
-![Setting%20up%20Environment%204ffbaa6a192243eba889fcc62861eebf/Untitled%202.png](Setting%20up%20Environment%204ffbaa6a192243eba889fcc62861eebf/Untitled%202.png)
+![https://www.notion.so/Setting-up-Environment-79aee552244f4fdea860ff4871d9b21a#06a6a91404e4497fbbaa01b4820fb822](https://www.notion.so/Setting-up-Environment-79aee552244f4fdea860ff4871d9b21a#06a6a91404e4497fbbaa01b4820fb822)
 
 ## Prerequisite
 
