@@ -1,4 +1,4 @@
-{
+  {
   "USD": "IDR",
   "Order Number": "Nomor Pesanan",
   "Do you want to complete it?": "Apakah benar pesanan ini selesai?",
@@ -9,5 +9,25 @@
   "Completed": "Selesai",
   "Idle": "Kosong",
   "Started": "Memesan",
-  "Pending": "Pending"
+  "Pending": "Pending",
+  "OrderDetailModal": {
+    "Order no": "Order no",
+    "Status": "Status",
+    "Created At": "Waktu Pesanan",
+    "Delete Order": "Hapus Order",
+    "Change Status Back to": "Kembalikan Status ke",
+    "Change Status to": "Ubah Status ke",
+    "Complete Order": "Selesaikan Order",
+    "Order Detail": "Detail Order",
+    "Total": "Total"
+  },
+  "API": {
+    "USD": "IDR",
+    "Processing": "Membuat",
+    "Waiting": "Menunggu",
+    "Completed": "Selesai",
+    "Idle": "Kosong",
+    "Started": "Memesan",
+    "Pending": "Pending"
+  }
 }

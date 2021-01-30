@@ -186,8 +186,7 @@ const HeaderContainer = styled.div`
 type iStaffOrderPage = {
 }
 
-const StaffOrderPage: React.FC<iStaffOrderPage> = ({
-}) => {
+const StaffOrderPage: React.FC<iStaffOrderPage> = () => {
   const [alertNumber, setAlertNumber] = React.useState('')
   const [alertId, setAlertId] = React.useState('')
   const [orderCarts, setOrderCarts] = React.useState<OrderCart[]>([])

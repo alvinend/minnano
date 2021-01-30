@@ -9,5 +9,25 @@
   "Completed": "完成",
   "Idle": "アイドル",
   "Started": "開始した",
-  "Pending": "保留中"
+  "Pending": "保留中",
+  "OrderDetailModal": {
+    "Order no": "注文番号",
+    "Status": "状態",
+    "Created At": "注文された時刻",
+    "Delete Order": "取り消し",
+    "Change Status Back to": "状態を戻す",
+    "Change Status to": "状態を変更",
+    "Complete Order": "注文完了にする",
+    "Order Detail": "注文詳細",
+    "Total": "合計"
+  },
+  "API": {
+    "USD": "円",
+    "Processing": "調理中",
+    "Waiting": "待機",
+    "Completed": "完成",
+    "Idle": "アイドル",
+    "Started": "開始した",
+    "Pending": "保留中"
+  }
 }

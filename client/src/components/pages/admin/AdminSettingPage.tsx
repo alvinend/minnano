@@ -35,6 +35,7 @@ export const AdminSettingPage = () => {
   const [isFetched, setIsFetched] = React.useState(false)
   const [layoutSettings, setLayoutSettings] = React.useState<Layout>({} as Layout)
   const { t: rawT } = useTranslation('admin')
+  const [image, setImage] = React.useState<any>(null)
 
   const t = React.useCallback(
     (str: string) => rawT(`SettingPage.${str}`),
@@ -50,6 +51,13 @@ export const AdminSettingPage = () => {
       }
 
       init()
+    },
+    []
+  )
+
+  const handleChangeFile = React.useCallback(
+    e => {
+      setImage(e?.target?.files[0])
     },
     []
   )
@@ -77,7 +85,7 @@ export const AdminSettingPage = () => {
             button: values?.finalButton
           },
           idle: {
-            backgroundUrl: values?.idleBackgroundUrl,
+            backgroundUrl: '',
             greeting: values?.idleGreeting,
             startButton: values?.idleStartButton
           },
@@ -87,6 +95,14 @@ export const AdminSettingPage = () => {
           }
         }
 
+        if (image) {
+          const formData = new FormData()
+          formData.append('file', image)
+          const res = await axios.post(`/api/aws/image`, formData)
+          data.idle.backgroundUrl = res.data.url as string
+          setImage(null)
+        }
+
         const res = await axios.put('/api/admin/layout', data)
         setLayoutSettings(res.data)
         notifySuccess('設定の更新が成功しました')
@@ -94,7 +110,7 @@ export const AdminSettingPage = () => {
         notifyAxiosError(e)
       }
     },
-    []
+    [image]
   )
 
   return isFetched ? (
@@ -112,7 +128,6 @@ export const AdminSettingPage = () => {
           finalDesc: layoutSettings?.final?.desc,
           idleGreeting: layoutSettings?.idle?.greeting,
           idleStartButton: layoutSettings?.idle?.startButton,
-          idleBackgroundUrl: layoutSettings?.idle?.backgroundUrl,
           waitingClosing: layoutSettings?.waiting?.closing,
           waitingInstruction: layoutSettings?.waiting?.instruction
         }}
@@ -151,6 +166,9 @@ export const AdminSettingPage = () => {
           >
             <AdminInput
               placeholder={t('Will be shown on idle page')}
+              name="imagelink"
+              onChange={handleChangeFile}
+              type="file"
             />
           </Form.Item>
 

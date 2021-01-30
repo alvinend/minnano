@@ -1,5 +1,6 @@
 {
   "MailLabel": "Email",
   "PasswordLabel": "Password",
-  "SigninButton": "Sign In"
+  "SigninButton": "Sign In",
+  "Welcome Back": "Selamat Datang Kembali"
 }

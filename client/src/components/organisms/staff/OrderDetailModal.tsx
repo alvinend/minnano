@@ -238,11 +238,15 @@ export const OrderDetailModal: React.FC<iOrderDetailModal> = ({
   onCancel,
 }) => {
   const [animationType, setAnimationType] = React.useState('in')
-  const { t: rawT } = useTranslation('customer')
+  const { t: rawT } = useTranslation('staff')
 
-  // eslint-disable-next-line
   const t = React.useCallback(
     (str: string) => rawT(`OrderDetailModal.${str}`),
+    [rawT]
+  )
+
+  const apiT = React.useCallback(
+    (str: string) => rawT(`API.${str}`),
     [rawT]
   )
 
@@ -250,7 +254,7 @@ export const OrderDetailModal: React.FC<iOrderDetailModal> = ({
     () => {
       const index = OrderStatuses.findIndex(ele => ele === orderCart.status) - 1
       if (index > -1) {
-        return OrderStatuses[index]
+        return capitalize(OrderStatuses[index])
       }
 
       return null
@@ -262,7 +266,7 @@ export const OrderDetailModal: React.FC<iOrderDetailModal> = ({
     () => {
       const index = OrderStatuses.findIndex(ele => ele === orderCart.status) + 1
       if (index < OrderStatuses.length - 1) {
-        return OrderStatuses[index]
+        return capitalize(OrderStatuses[index])
       }
 
       return null
@@ -324,13 +328,13 @@ export const OrderDetailModal: React.FC<iOrderDetailModal> = ({
       <StyledOrderDetailModal type={animationType}>
         <DetailContainer>
           <div className="detail-body">
-            <p className="title-desc">Order no.</p>
+            <p className="title-desc">{t('Order no')}</p>
             <h2 className="title">{orderCart.label}</h2>
 
-            <p className="title-desc">Status</p>
-            <h2 className="title">{capitalize(orderCart.status)}</h2>
+            <p className="title-desc">{t('Status')}</p>
+            <h2 className="title">{apiT(capitalize(orderCart.status))}</h2>
 
-            <p className="title-desc">Created At</p>
+            <p className="title-desc">{t('Created At')}</p>
             <h2 className="title">{moment(orderCart.createdAt).format('YYYY/MM/DD HH:mm:ss')}</h2>
           </div>
 
@@ -339,14 +343,14 @@ export const OrderDetailModal: React.FC<iOrderDetailModal> = ({
               <RoundedButtonDanger
                 onClick={handleDeleteOrder}
               >
-                Delete Order
+                {t('Delete Order')}
               </RoundedButtonDanger>
 
               {!!prevStatus &&
                 <RoundedButton
                   onClick={handleChangePrevStatus}
                 >
-                  Change Status Back to "{prevStatus}"
+                  {t('Change Status Back to')} "{apiT(prevStatus)}"
                 </RoundedButton>
               }
 
@@ -355,14 +359,14 @@ export const OrderDetailModal: React.FC<iOrderDetailModal> = ({
                   onClick={handleChangeNextStatus}
                   className="main-button"
                 >
-                  Change Status to "{nextStatus}"
+                  {t('Change Status to')} "{apiT(nextStatus)}"
                 </RoundedButtonPrimary>
               }
 
               <RoundedButton
                 onClick={handleChangeCompletedStatus}
               >
-                Complete Order
+                {t('Complete Order')}
               </RoundedButton>
             </div>
           </CartInfoFooter>
@@ -371,17 +375,17 @@ export const OrderDetailModal: React.FC<iOrderDetailModal> = ({
         <VariationContainer>
           <OrderWrapper>
             <h3 className="order-header">
-              Order Detail
+              {t('Order Detail')}
             </h3>
             {orderCart?.cart?.map(({ item, quantity }) => <OrderList key={item._id}>
               <span>
-                {item.name} ({item.price.toLocaleString()} USD)
+                {item.name} ({item.price.toLocaleString()} {apiT('USD')})
                 <span className="order-quantity">X {quantity}</span>
               </span>
-              <span>{(item.price * quantity).toLocaleString()} USD</span>
+              <span>{(item.price * quantity).toLocaleString()} {apiT('USD')}</span>
             </OrderList>)}
             <h3 className="order-footer">
-              Total: {totalPrice} USD
+              {t('Total')}: {totalPrice} {apiT('USD')}
             </h3>
           </OrderWrapper>
         </VariationContainer>

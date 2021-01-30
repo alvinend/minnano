@@ -105,7 +105,7 @@ const Signin: React.FC<iSignin> = ({
       </ImageBox>
 
       <SigninBox>
-        <h1>Welcome Back</h1>
+        <h1>{t('Welcome Back')}</h1>
         <Input
           label={t('MailLabel')}
           value={email}

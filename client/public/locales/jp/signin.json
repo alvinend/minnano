@@ -1,5 +1,6 @@
 {
   "MailLabel": "メール",
   "PasswordLabel": "パスワード",
-  "SigninButton": "サインイン"
+  "SigninButton": "サインイン",
+  "Welcome Back": "ようこそ"
 }

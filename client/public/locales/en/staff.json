@@ -9,5 +9,25 @@
   "Completed": "Completed",
   "Idle": "Idle",
   "Started": "Started",
-  "Pending": "Pending"
+  "Pending": "Pending",
+  "OrderDetailModal": {
+    "Order no": "Order no",
+    "Status": "Status",
+    "Created At": "Created At",
+    "Delete Order": "Delete Order",
+    "Change Status Back to": "Change Status Back to",
+    "Change Status to": "Change Status to",
+    "Complete Order": "Complete Order",
+    "Order Detail": "Order Detail",
+    "Total": "Total"
+  },
+  "API": {
+    "USD": "USD",
+    "Processing": "Processing",
+    "Waiting": "Waiting",
+    "Completed": "Completed",
+    "Idle": "Idle",
+    "Started": "Started",
+    "Pending": "Pending"
+  }
 }
