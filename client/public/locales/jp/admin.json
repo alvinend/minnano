@@ -70,7 +70,8 @@
     "Picking Method Text": "受け取る方法テキスト",
     "Text about what customer should do next after ordering": "注文後に顧客が次に何をすべきかについてのテキスト",
     "Change Settings": "設定を変更する",
-    "Loading": "処理中"
+    "Loading": "処理中",
+    "Background": "メイン画像"
   },
   "Sidebar": {
     "Item": "アイテム",

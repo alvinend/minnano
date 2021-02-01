@@ -21,6 +21,15 @@
     "Order Detail": "Order Detail",
     "Total": "Total"
   },
+  "TableDetailModal": {
+    "Table no": "Table no",
+    "Status": "Status",
+    "Change Status Back to": "Change Status Back to",
+    "Change Status to": "Change Status to",
+    "Reset Table": "Reset Table",
+    "Table Detail": "Table Detail",
+    "Total": "Total"
+  },
   "API": {
     "USD": "USD",
     "Processing": "Processing",

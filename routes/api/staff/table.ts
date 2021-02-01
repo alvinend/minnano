@@ -1,4 +1,7 @@
 import { Router } from 'express'
+import { Item } from 'models/Item';
+import { Order } from 'models/Order';
+import { Subitem } from 'models/Subitem';
 import { Table } from 'models/Table';
 import passport from 'passport'
 
@@ -64,6 +67,73 @@ router.put(
       )
 
       res.status(200).json(table)
+    } catch (err) {
+      return res.status(400).json(err)
+    }
+  }
+)
+
+// @route   GET api/staff/table/:id
+// @desc    Get all orders on table
+router.get(
+  '/:id',
+  async (req, res) => {
+    try {
+      const rawTable = await Table.findById(req.params.id)
+
+      // Insert Orders
+      const table = rawTable!.toObject()
+      const orders = await Promise.all(
+        table.orderids.map(async (id: String) => {
+          const order = (await Order.findById(id))
+
+          const cart = await Promise.all(
+            order!.cart.map(async content => {
+              // Find Item or Subitem
+              let item = {}
+              let query
+              let object
+              query = await Item.findById(content.item)
+
+              if (!query) {
+                query = await Subitem.findById(content.item)
+                object = query?.toObject()
+                object.itemName = (await Item.findById(query?.itemid))?.name
+
+                item = {
+                  _id: query?._id,
+                  type: 'subitem',
+                  name: `${object.itemName} - ${object.name}`,
+                  price: object.price
+                }
+              } else {
+                object = query.toObject()
+                item = {
+                  _id: query?._id,
+                  type: 'item',
+                  name: `${object.name}`,
+                  price: object.price
+                }
+              }
+
+              return {
+                quantity: content.count,
+                item
+              }
+            })
+          )
+
+          return {
+            created_at: order!.createdAt,
+            cart
+          }
+        })
+      )
+
+      table.orders = orders
+      delete table.orderids
+
+      return res.status(200).json(table)
     } catch (err) {
       return res.status(400).json(err)
     }

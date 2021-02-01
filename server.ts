@@ -16,7 +16,6 @@ import { staffRouter } from 'routes/api/staff'
 import { adminRouter } from 'routes/api/admin'
 import { awsRouter } from 'routes/api/aws'
 
-import { keys } from 'config/keys'
 import { passportConfig } from 'config/passport'
 
 const app = express()
@@ -35,7 +34,7 @@ app.use(multerMid.single('file'))
 app.disable('x-powered-by')
 
 // DB Config
-const db = process.env.MONGO_URI || keys.mongoURI
+const db = process.env.MONGO_URI
 
 // Connect to MongoDB
 mongoose.set('useNewUrlParser', true);

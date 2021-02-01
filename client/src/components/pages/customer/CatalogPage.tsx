@@ -105,9 +105,11 @@ const ItemCard = styled.div<{ index: number }>`
 
   & img {
     height: 200px;
-    width: 200px;
+    width: calc(100% + 40px);
+    margin: -20px;
     object-fit: cover;
     margin-bottom: 20px;
+    border-radius: 15px 15px 0 0;
   }
 
   & h2 {
@@ -472,9 +474,9 @@ const CatalogPage: React.FC<iCatalogPage> = ({
                 <h2>{item.name}</h2>
                 <Truncate
                   children={item.desc}
-                  lines={2}
+                  lines={3}
                   ellipsis='...'
-                  width={200}
+                  width={500}
                 />
                 <span className="item-price">
                   <b>{item.price.toLocaleString()} {layout?.currency}</b>

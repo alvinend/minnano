@@ -9,7 +9,7 @@
   "Completed": "完成",
   "Idle": "アイドル",
   "Started": "開始した",
-  "Pending": "保留中",
+  "Pending": "お会計中",
   "OrderDetailModal": {
     "Order no": "注文番号",
     "Status": "状態",
@@ -21,6 +21,16 @@
     "Order Detail": "注文詳細",
     "Total": "合計"
   },
+  "TableDetailModal": {
+    "Table no": "テーブル番号",
+    "Status": "状態",
+    "Change Status Back to": "状態を戻す",
+    "Change Status to": "状態を変更",
+    "Reset Table": "テーブルリセット",
+    "Table Detail": "テーブル詳細",
+    "Total": "合計",
+    "Order": "注文"
+  },
   "API": {
     "USD": "円",
     "Processing": "調理中",
@@ -28,6 +38,7 @@
     "Completed": "完成",
     "Idle": "アイドル",
     "Started": "開始した",
-    "Pending": "保留中"
+    "Pending": "お会計中",
+    "Finished": "お会計済み"
   }
 }

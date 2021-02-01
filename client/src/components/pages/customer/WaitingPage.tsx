@@ -90,6 +90,8 @@ const WaitingPage: React.FC<iWaitingPage> = ({
         async () => {
           const res = await axios.get(`/api/customer/table/${table._id}/status`)
 
+          console.log(res?.data?.status)
+
           if (res?.data?.status === 'finished') {
             resetTable()
             resetState()

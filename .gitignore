@@ -6,3 +6,4 @@ client/build
 yarn-error.log
 build/
 dist/
+.env

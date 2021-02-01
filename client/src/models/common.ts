@@ -80,7 +80,9 @@ export type Table = {
   _id: string
   label: string
   orderids: string[]
+  orders: OrderCart[]
   status: string
 }
 
 export const OrderStatuses = ['processing', 'waiting', 'completed', 'archived']
+export const TableStatuses = ['idle', 'started', 'pending', 'finished']

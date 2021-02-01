@@ -10,6 +10,7 @@ import { notifyAxiosError, notifySuccess } from 'models/notification'
 import { useTranslation } from 'react-i18next'
 import { StaffLoading } from 'components/atoms/StaffLoading'
 import { useHistory } from 'react-router-dom'
+import { TableDetailModal } from 'components/organisms/staff/TableDetailModal'
 
 const StaffTablePageWrapper = styled.div`
   display: flex;
@@ -183,6 +184,7 @@ const StaffTablePage: React.FC<iStaffTablePage> = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const { t } = useTranslation('staff')
   const history = useHistory()
+  const [selectedTable, setSelectedTable] = React.useState({ } as Table)
 
   const handleAlertCancel = React.useCallback(
     () => {
@@ -264,69 +266,103 @@ const StaffTablePage: React.FC<iStaffTablePage> = () => {
     []
   )
 
+  const changeTableStatus = React.useCallback(
+    async (status: string) => {
+      try {
+        status = status.toLowerCase()
+
+        const res = await axios.put(
+          `/api/staff/table/${selectedTable._id}`,
+          { status }
+        )
+
+        setSelectedTable({
+          ...selectedTable,
+          status: res.data.status
+        })
+
+        setTables((await axios.get(`/api/staff/table?status=${currentStatus}`)).data)
+
+        notifySuccess(`状態更新を成功しました。新状態：${status.charAt(0).toUpperCase() + status.slice(1)}`)
+      } catch (e) {
+        notifyAxiosError(e)
+      }
+
+    },
+    [selectedTable, currentStatus]
+  )
+
   return (
-    <StaffTablePageWrapper>
-      <AlertModal
-        isShowing={!!alertNumber}
-        onSubmit={handleAlertCancel}
-        onCancel={handleAlertCancel}
-      >
-        <>{t('Order Number')}<b>{alertNumber}</b> {t('Do you want to complete it?')}</>
-      </AlertModal>
-      <HeaderContainer>
-        <div className="mode-container">
-          <span onClick={() => history.push('/staff/order')}>{t('Order')}</span>
-          <span className="active-mode">{t('Table')}</span>
-        </div>
+    <>
+      <StaffTablePageWrapper>
+        <AlertModal
+          isShowing={!!alertNumber}
+          onSubmit={handleAlertCancel}
+          onCancel={handleAlertCancel}
+        >
+          <>{t('Order Number')}<b>{alertNumber}</b> {t('Do you want to complete it?')}</>
+        </AlertModal>
+        <HeaderContainer>
+          <div className="mode-container">
+            <span onClick={() => history.push('/staff/order')}>{t('Order')}</span>
+            <span className="active-mode">{t('Table')}</span>
+          </div>
 
-        <div className="process-container">
-          <span
-            onClick={() => handleChangeProcess('idle')}
-            className={currentStatus === 'idle' ? 'active-process' : ''}
-          >
-            {t('Idle')}
-          </span>
-          <span className="process-arrow"><FaAngleDoubleRight /></span>
-          <span
-            onClick={() => handleChangeProcess('started')}
-            className={currentStatus === 'started' ? 'active-process' : ''}
-          >
-            {t('Started')}
-          </span>
-          <span className="process-arrow"><FaAngleDoubleRight /></span>
-          <span
-            onClick={() => handleChangeProcess('pending')}
-            className={currentStatus === 'pending' ? 'active-process' : ''}
-          >
-            {t('Pending')}
-          </span>
-        </div>
-      </HeaderContainer>
-      <InnerContainer>
-        {isLoading ?
-          <StaffLoading /> :
-          <>
-            {tables.map(
-              (table: Table) => (
-                <OrderBox key={table._id} number={table.label}>
-                  <OrderBoxInner>
-                    <ListOrderContainer>
-                      {table.label}
-                    </ListOrderContainer>
-                    {table.status === 'pending' &&
-                      <OrderBoxActionContainer>
-                        <div onClick={() => handleChangeOrderStatus(table)}><IoMdCheckmarkCircle /></div>
-                      </OrderBoxActionContainer>
-                    }
-                  </OrderBoxInner>
-                </OrderBox>
-              )
-            )}
-          </>
-        }
-      </InnerContainer>
+          <div className="process-container">
+            <span
+              onClick={() => handleChangeProcess('idle')}
+              className={currentStatus === 'idle' ? 'active-process' : ''}
+            >
+              {t('Idle')}
+            </span>
+            <span className="process-arrow"><FaAngleDoubleRight /></span>
+            <span
+              onClick={() => handleChangeProcess('started')}
+              className={currentStatus === 'started' ? 'active-process' : ''}
+            >
+              {t('Started')}
+            </span>
+            <span className="process-arrow"><FaAngleDoubleRight /></span>
+            <span
+              onClick={() => handleChangeProcess('pending')}
+              className={currentStatus === 'pending' ? 'active-process' : ''}
+            >
+              {t('Pending')}
+            </span>
+          </div>
+        </HeaderContainer>
+        <InnerContainer>
+          {isLoading ?
+            <StaffLoading /> :
+            <>
+              {tables.map(
+                (table: Table) => (
+                  <OrderBox key={table._id} number={table.label}>
+                    <OrderBoxInner>
+                      <ListOrderContainer onClick={() => setSelectedTable(table)}>
+                        {table.label}
+                      </ListOrderContainer>
+                      {table.status === 'pending' &&
+                        <OrderBoxActionContainer>
+                          <div onClick={() => handleChangeOrderStatus(table)}><IoMdCheckmarkCircle /></div>
+                        </OrderBoxActionContainer>
+                      }
+                    </OrderBoxInner>
+                  </OrderBox>
+                )
+              )}
+            </>
+          }
+        </InnerContainer>
 
-    </StaffTablePageWrapper>
+      </StaffTablePageWrapper>
+      <TableDetailModal
+        isShowing={!!selectedTable._id}
+        table={selectedTable}
+        onCancel={() => setSelectedTable({} as Table)}
+        changeTableStatus={changeTableStatus}
+      />
+    </>
   )
 }
 
