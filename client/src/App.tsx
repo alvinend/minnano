@@ -5,7 +5,6 @@ import {
   Route
 } from "react-router-dom"
 import Signin from './components/pages/auth/Signin'
-import AdminRoutes from './routes/AdminRoutes'
 import StaffRoutes from './routes/StaffRoutes'
 import CustomerRoutes from './routes/CustomerRoutes'
 import MainMenu from './components/pages/auth/MainMenu'
@@ -17,6 +16,7 @@ import { notifyAxiosError, notifySuccess } from 'models/notification'
 import Cookies from 'js-cookie'
 import { useTranslation } from 'react-i18next'
 import 'antd/dist/antd.css'
+import { AdminApps } from 'apps/admin/AdminApps'
 
 const App = () => {
   // eslint-disable-next-line
@@ -91,7 +91,7 @@ const App = () => {
       <Router>
         <Switch>
           <Route path="/admin">
-            <AdminRoutes />
+            <AdminApps />
           </Route>
           <Route path="/staff">
             <StaffRoutes />

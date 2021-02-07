@@ -10,7 +10,7 @@ import { AlertModal } from 'components/organisms/AlertModal'
 import { Modal } from 'components/organisms/Modal'
 import { useTranslation } from 'react-i18next'
 
-const AdminUserPageContainer = styled.div`
+const AdminUserPageWrapper = styled.div`
   padding: 40px 0 40px 120px;
   width: calc(100% - 350px);
 `
@@ -168,7 +168,7 @@ export const AdminUserPage = () => {
 
   return (
     <>
-      <AdminUserPageContainer>
+      <AdminUserPageWrapper>
         <HeadTitle>{t('User')}</HeadTitle>
         <InputGroup>
           <InputTitle>{t('Create User')}</InputTitle>
@@ -229,7 +229,7 @@ export const AdminUserPage = () => {
           <Table columns={columns} dataSource={userData} />
         </InputGroup>
 
-      </AdminUserPageContainer>
+      </AdminUserPageWrapper>
 
       <AlertModal
         isShowing={!!deletingUser}

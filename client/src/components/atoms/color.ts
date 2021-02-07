@@ -9,5 +9,6 @@ export const color = {
   red: 'red',
   green: 'green',
   lightGreen: 'lightgreen',
-  adminBackground: '#ECECEC'
+  adminBackground: '#ECECEC',
+  logoColor: '#f9eac3'
 }
