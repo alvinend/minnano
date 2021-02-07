@@ -46,7 +46,7 @@ const StyledLink = styled(Link)`
   font-weight: bold;
   color: #777;
   text-decoration: none;
-  text-align: right;
+  text-align: center;
   box-shadow: 5px 5px 10px 5px rgba(0,0,0,0.2);
   transition: box-shadow 0.3s ease-in-out;
 

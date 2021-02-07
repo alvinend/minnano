@@ -474,9 +474,9 @@ const CatalogPage: React.FC<iCatalogPage> = ({
                 <h2>{item.name}</h2>
                 <Truncate
                   children={item.desc}
-                  lines={3}
+                  lines={2}
                   ellipsis='...'
-                  width={500}
+                  width={200}
                 />
                 <span className="item-price">
                   <b>{item.price.toLocaleString()} {layout?.currency}</b>

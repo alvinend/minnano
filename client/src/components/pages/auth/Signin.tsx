@@ -31,6 +31,7 @@ const SigninBox = styled(FrostedBox)`
   font-weight: bold;
 
   & > h1 {
+    text-align: center;
     font-weight: 600;
     color: ${color.black};
     margin-bottom: 50px;

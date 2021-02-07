@@ -79,7 +79,7 @@ const App = () => {
 
   React.useEffect(
     () => {
-      i18n.changeLanguage('jp')
+      i18n.changeLanguage('id')
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
