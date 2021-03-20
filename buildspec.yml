@@ -19,3 +19,4 @@ phases:
 artifacts:
   files:
     - prod-build/react-nodejs.zip
+  name: deploy-$(date +%Y-%m-%d).zip 
