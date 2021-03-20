@@ -15,7 +15,7 @@ phases:
       - yarn
       - echo Build Production
       - yarn deploy
-  post-build:
+  post_build:
     commands:
       - echo Folder Change
       - find ./ -mindepth 1 ! -regex '^./prod-build\(/.*\)?' -delete
