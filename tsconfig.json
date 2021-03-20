@@ -1,23 +1,27 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "target": "es6",
     "module": "commonjs",
-    "rootDir": "./",
+    "rootDir": ".",
     "outDir": "./dist",
     "esModuleInterop": true,
     "strict": true,
     "importHelpers": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "sourceMap": true
+    "sourceMap": true,
+    "paths": {
+      "@Config/*": ["./config/*"],
+      "@Helpers/*": ["./helpers/*"],
+      "@Middleware/*": ["./middleware/*"],
+      "@Models/*": ["./models/*"],
+      "@Routes/*": ["./routes/*"],
+      "@Validation/*": ["./validation/*"]
+    }
   },
-  "include": [
-    "./",
-    "./*"
-  ],
   "exclude": [
-    "./client",
-    "./prod-build"
+    "client",
+    "prod-build"
   ]
 }
