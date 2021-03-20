@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import passport from 'passport'
 
+import { keys } from 'config/keys'
+
 // Load Input Validation
 import { validateRegisterInput } from 'validation/register'
 import { validateLoginInput } from 'validation/login'
@@ -86,7 +88,7 @@ router.post('/login', async (req, res) => {
       // Sign Token
       jwt.sign(
         payload,
-        'secret',
+        keys.secretOrKey,
         { },
         (err, token) => {
           res.json({

@@ -10,13 +10,13 @@ if (process.env.NODE_ENV !== 'production') {
   dotenv.config()
 }
 
-import { userRouter } from '@Routes/api/users'
-import { customerRouter } from '@Routes/api/customer'
-import { staffRouter } from '@Routes/api/staff'
-import { adminRouter } from '@Routes/api/admin'
-import { awsRouter } from '@Routes/api/aws'
+import { userRouter } from 'routes/api/users'
+import { customerRouter } from 'routes/api/customer'
+import { staffRouter } from 'routes/api/staff'
+import { adminRouter } from 'routes/api/admin'
+import { awsRouter } from 'routes/api/aws'
 
-import { passportConfig } from '@Config/passport'
+import { passportConfig } from 'config/passport'
 
 const app = express()
 
@@ -42,7 +42,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 mongoose
-  .connect(db!, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 

@@ -1,10 +1,12 @@
 import { ExtractJwt, Strategy } from 'passport-jwt'
-import { User } from '@Models/User'
+import { User } from 'models/User'
+import { keys } from 'config/keys'
 import { PassportStatic } from 'passport'
+
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'secret'
+  secretOrKey: keys.secretOrKey
 }
 
 export const passportConfig = (passport:PassportStatic) => {
