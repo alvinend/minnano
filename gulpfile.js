@@ -32,11 +32,14 @@ function createProdBuildFolder() {
 
 function buildReactCodeTask(cb) {
   log('building React code into the directory')
-  return exec('cd ./client && npm run build', function (err, stdout, stderr) {
-    log(stdout);
-    log(stderr);
-    cb(err);
-  })
+  return exec(
+    'cd ./client && yarn && yarn build',
+    function (err, stdout, stderr) {
+      log(stdout);
+      log(stderr);
+      cb(err);
+    }
+  )
 }
 
 function copyReactCodeTask() {
@@ -47,10 +50,13 @@ function copyReactCodeTask() {
 
 function compileNodeJsTask() {
   log('compile NodeJs Typescript')
-  return exec('tsc', function (err, stdout, stderr) {
-    log(stdout);
-    log(stderr);
-  })
+  return exec(
+    'yarn build',
+    function (err, stdout, stderr) {
+      log(stdout);
+      log(stderr);
+    }
+  )
 }
 
 function copyNodeJsPackage() {

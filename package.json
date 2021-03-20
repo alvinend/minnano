@@ -4,7 +4,7 @@
   "description": "Social network for developers",
   "main": "dist/server.js",
   "scripts": {
-    "build": "tsc",
+    "build": "NODE_PATH=. tsc --build tsconfig.json",
     "start": "cross-env NODE_PATH=dist node .",
     "client": "cross-env yarn --cwd \"client\" start",
     "dev:client": "cross-env concurrently -p time -t 'HH:mm' \"yarn build & yarn start\" \"yarn run client\"",
