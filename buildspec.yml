@@ -22,4 +22,6 @@ phases:
       - find ./ -mindepth 1 ! -regex '^./prod-build\(/.*\)?' -delete
       - mv ./prod-build/* ./ 
 artifacts:
+  files:
+    - '**/*'
   name: deploy-$(date +%Y-%m-%d).zip 
