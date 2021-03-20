@@ -16,7 +16,10 @@ phases:
       - echo Build Production
       - cd ./client && yarn && yarn build && cd ..
       - yarn deploy
+  post_build:
+    commands:
+      - echo Folder Change
+      - find ./ -mindepth 1 ! -regex '^./prod-build\(/.*\)?' -delete
+      - mv ./prod-build/* ./ 
 artifacts:
-  files:
-    - prod-build/react-nodejs.zip
   name: deploy-$(date +%Y-%m-%d).zip 
