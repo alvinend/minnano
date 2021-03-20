@@ -5,7 +5,7 @@ run-as: root
 phases:
   install:
     runtime-versions:
-      nodejs: 10  
+      nodejs: 12
     commands:
       - echo Installing Yarn...
       - npm install -g yarn
