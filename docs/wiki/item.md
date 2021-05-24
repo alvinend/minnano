@@ -2,7 +2,7 @@
 
 ## Item is what you're selling
 
-[Item](../img/item_ss.png)
+![Item](../img/item_ss.png)
 
 There is
     - Name
