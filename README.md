@@ -1,6 +1,5 @@
-# What is Minnano
-
 ![Logo](/docs/img/logo_background.png)
+# What is Minnano
 
 Minnano is a system that allows restaurants to accept orders from customers. With the rise in online orders, it becomes essential that the ordering system is integrated with online ordering.
 
