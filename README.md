@@ -16,9 +16,9 @@ Is Cheap! Many ordering system have for feature, but it expect the store to have
 # Wiki
 
 [User](/docs/wiki/user.md)
-[Staff](/docs/wiki/staff.md)
-[Admin](/docs/wiki/admin.md)
+[Item](/docs/wiki/item.md)
+[Category](/docs/wiki/category.md)
 
 # Developer Guides
-[Setup](/docs/wiki/setup.md)
-[Production Infrastructure](/docs/wiki/structure.md)
+[Setup](/docs/setup.md)
+[Production Infrastructure](/docs/structure.md)
