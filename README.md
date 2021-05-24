@@ -15,10 +15,11 @@ Is Cheap! Many ordering system have for feature, but it expect the store to have
 
 # Wiki
 
-[User](/docs/wiki/user.md)
-[Item](/docs/wiki/item.md)
-[Category](/docs/wiki/category.md)
+- [User](/docs/wiki/user.md)
+- [Item](/docs/wiki/item.md)
+- [Category](/docs/wiki/category.md)
 
 # Developer Guides
-[Setup](/docs/setup.md)
-[Production Infrastructure](/docs/structure.md)
+
+- [Setup](/docs/setup.md)
+- [Production Infrastructure](/docs/structure.md)
