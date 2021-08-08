@@ -6,12 +6,12 @@ export const Button = styled.button`
   background: #eee;
   border: 2px solid #aaa;
   border-radius: 4px;
-  box-shadow: 5px 5px 10px 5px rgba(0,0,0,0.2);
+  box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.2);
   transition: all 0.2s ease-in-out;
 
   &:hover {
     border: 2px solid #555;
-    box-shadow: 6px 6px 10px 6px rgba(0,0,0,0.3);
-    transform: scale(1.1)
+    box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.2);
+    transform: scaleY(1.05)
   }
 `

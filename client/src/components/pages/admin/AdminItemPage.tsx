@@ -11,7 +11,9 @@ import { useTranslation } from 'react-i18next'
 
 const AdminItemPageContainer = styled.div`
   padding: 40px 0 40px 120px;
-  width: calc(100% - 350px);
+  width: calc(90% - 350px);
+  border: 1px solid ${color.lightGray};
+  background: ${color.white};
 `
 
 const HeadTitle = styled.h1`

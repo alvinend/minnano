@@ -10,15 +10,21 @@ import { AdminItemModal } from 'components/organisms/AdminItemModal'
 import { useTranslation } from 'react-i18next'
 
 const ItemContentWrapper = styled.div`
-  padding: 40px 0 40px 120px;
-  width: calc(100% - 350px);
+  width: 90%;
+  border: 1px solid ${color.secondary};
+  padding: 40px;
+  background-color: ${color.white};
+  border-radius: 20px;
+  margin-bottom: 40px;
 `
 
 const HeadTitle = styled.h1`
   display: flex;
   justify-content: space-between;
+  padding-bottom: 10px;
   margin-bottom: 20px;
-  font-size: 48px;
+  font-size: 24px;
+  border-bottom: 1px solid ${color.secondary};
 `
 
 const OuterTableWrapper = styled.div`
@@ -222,10 +228,18 @@ export const ItemContent: React.FC<iItemContent> = ({
     <>
       <ItemContentWrapper>
         <HeadTitle>
+          {t('Add Item')}
+        </HeadTitle>
+        <p>
+          Add Item in App
+        </p>
+        <ButtonPrimary onClick={() => setIsCreatingItem(true)}>
+          {t('Add Item')}
+        </ButtonPrimary>
+      </ItemContentWrapper>
+      <ItemContentWrapper>
+        <HeadTitle>
           {t('Items List')}
-          <ButtonPrimary onClick={() => setIsCreatingItem(true)}>
-            {t('Add Item')}
-          </ButtonPrimary>
         </HeadTitle>
         <OuterTableWrapper>
           <TableWrapper>

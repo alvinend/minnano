@@ -117,7 +117,9 @@ export const AdminItemModal: React.FC<iAdminItemModal> = ({
         onSubmit={onSubmit}
         onCancel={onCancel}
       >
-        <ModalTitle>{t('Edit Item Details')}</ModalTitle>
+        <ModalTitle>
+          {type === 'create' ? 'Create Item' : 'Edit Item Details'}
+        </ModalTitle>
         <InputGroup>
           <InputDescGroup>
             <InputTitle>{t('Item Name')}</InputTitle>

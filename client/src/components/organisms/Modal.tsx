@@ -4,6 +4,8 @@ import { color } from '../atoms/color'
 import { Button, ButtonPrimary } from 'components/atoms/button'
 
 const ModalWrapper = styled.div`
+  top: 0;
+  left: 0;
   position: fixed;
   display: flex;
   width: 100vw;
@@ -103,6 +105,7 @@ type iModal = {
   onCancel: () => void
   children: JSX.Element | string | JSX.Element[]
   submitButtonProps?: any
+  submitButtonText?: string
 }
 
 export const Modal: React.FC<iModal> = ({
@@ -110,6 +113,7 @@ export const Modal: React.FC<iModal> = ({
   onSubmit,
   onCancel,
   children,
+  submitButtonText = null,
   submitButtonProps = null
 }) => {
   const [animationType, setAnimationType] = React.useState('in')
@@ -131,7 +135,7 @@ export const Modal: React.FC<iModal> = ({
       <StyledModal type={animationType}>
         {children}
         <ButtonContainer>
-          <Button onClick={handleCloseModal}>キャンセル</Button>
+          <Button onClick={handleCloseModal}>Cancel</Button>
           {submitButtonProps ?
             <ButtonPrimary
               { ...submitButtonProps }
@@ -139,7 +143,7 @@ export const Modal: React.FC<iModal> = ({
             <ButtonPrimary
               onClick={onSubmit}
             >
-              アイテム詳細変更
+              {submitButtonText ? submitButtonText  : 'Save'}
             </ButtonPrimary>
           }
         </ButtonContainer>
