@@ -1,4 +1,8 @@
+import { query } from 'express'
 import mongoose, { Schema, Document } from 'mongoose'
+import { Item } from './Item'
+import { Subitem } from './Subitem'
+
 
 export type IOrder = {
   id: string
@@ -49,3 +53,41 @@ const OrderSchema = new Schema({
 })
 
 export const Order = mongoose.model<IOrderModel>('orders', OrderSchema)
+
+const getTotalPrice = async (orders: IOrderModel[]) => {
+  let totalPrice = 0
+
+  for(const order of orders) {
+    // Loop Cart in Order
+    for(const obj of order.cart) {
+      let query
+      query = await Item.findById(obj.item)
+
+      if (!query) {
+        query = await Subitem.findById(obj.item)
+      }
+
+      totalPrice += (query?.toObject()?.price || 0) * Number(obj.count)
+    }
+  }
+
+  return totalPrice
+}
+
+const getTotalQuantities = async (orders: IOrderModel[]) => {
+  let total = 0
+
+  for(const order of orders) {
+    // Loop Cart in Order
+    for(const obj of order.cart) {
+      total += Number(obj.count)
+    }
+  }
+
+  return total
+}
+
+export const OrderUtils = {
+  getTotalPrice,
+  getTotalQuantities
+}

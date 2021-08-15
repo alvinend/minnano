@@ -18,6 +18,7 @@ app.use('/category', adminCategoryRouter)
 app.use('/item', adminItemRouter)
 app.use('/layout', adminLayoutRouter)
 app.use('/subitem', adminSubitemRouter)
+// app.use('/sales', adminSalesRouter)
 
 
 export const adminRouter = app
