@@ -8,24 +8,10 @@ import { IoIosTrash } from 'react-icons/io'
 import { AlertModal } from 'components/organisms/AlertModal'
 import { AdminItemModal } from 'components/organisms/AdminItemModal'
 import { useTranslation } from 'react-i18next'
-
-const ItemContentWrapper = styled.div`
-  width: 90%;
-  border: 1px solid ${color.secondary};
-  padding: 40px;
-  background-color: ${color.white};
-  border-radius: 20px;
-  margin-bottom: 40px;
-`
-
-const HeadTitle = styled.h1`
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-  font-size: 24px;
-  border-bottom: 1px solid ${color.secondary};
-`
+import {
+  AdminContentWrapper,
+  AdminSectionTitle
+} from '../molecules'
 
 const OuterTableWrapper = styled.div`
   overflow: auto;
@@ -226,21 +212,21 @@ export const ItemContent: React.FC<iItemContent> = ({
 
   return (
     <>
-      <ItemContentWrapper>
-        <HeadTitle>
+      <AdminContentWrapper>
+        <AdminSectionTitle>
           {t('Add Item')}
-        </HeadTitle>
+        </AdminSectionTitle>
         <p>
           Add Item in App
         </p>
         <ButtonPrimary onClick={() => setIsCreatingItem(true)}>
           {t('Add Item')}
         </ButtonPrimary>
-      </ItemContentWrapper>
-      <ItemContentWrapper>
-        <HeadTitle>
+      </AdminContentWrapper>
+      <AdminContentWrapper>
+        <AdminSectionTitle>
           {t('Items List')}
-        </HeadTitle>
+        </AdminSectionTitle>
         <OuterTableWrapper>
           <TableWrapper>
             <TableHeader>{t('Item Name')}</TableHeader>
@@ -264,7 +250,7 @@ export const ItemContent: React.FC<iItemContent> = ({
             ))}
           </TableWrapper>
         </OuterTableWrapper>
-      </ItemContentWrapper>
+      </AdminContentWrapper>
 
       {/* 編集モーダル */}
       <AdminItemModal

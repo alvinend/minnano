@@ -7,28 +7,14 @@ import { User } from 'models/common'
 import { AlertModal } from 'components/organisms/AlertModal'
 import { Modal } from 'components/organisms/Modal'
 import { useTranslation } from 'react-i18next'
-
-const UserContentWrapper = styled.div`
-  padding: 40px 0 40px 120px;
-  width: calc(100% - 350px);
-`
-
-const HeadTitle = styled.h1`
-  margin-bottom: 20px;
-  font-size: 48px;
-`
-
-const InputTitle = styled.h3`
-  font-size: 24px;
-`
+import {
+  AdminContentWrapper,
+  AdminSectionTitle
+} from '../molecules'
 
 const InputDesc = styled.p`
   font-size: 14px;
   margin: 5px 0 15px 0;
-`
-
-const InputGroup = styled(Card)`
-  margin-bottom: 30px;
 `
 
 type iUserContent = {
@@ -154,68 +140,65 @@ export const UserContent: React.FC<iUserContent> = ({
 
   return (
     <>
-      <UserContentWrapper>
-        <HeadTitle>{t('User')}</HeadTitle>
-        <InputGroup>
-          <InputTitle>{t('Create User')}</InputTitle>
-          <InputDesc>{t('Use for login and use application')}</InputDesc>
-          <Form
-            name="create-user"
-            onFinish={onFinish}
+      <AdminContentWrapper>
+        <AdminSectionTitle>{t('Create User')}</AdminSectionTitle>
+        <InputDesc>{t('Use for login and use application')}</InputDesc>
+        <Form
+          name="create-user"
+          onFinish={onFinish}
+        >
+          <Form.Item
+            label={t('Mail')}
+            name="email"
+            rules={[{ required: true, message: t('Please input your mail address') }]}
           >
-            <Form.Item
-              label={t('Mail')}
-              name="email"
-              rules={[{ required: true, message: t('Please input your mail address') }]}
-            >
-              <Input />
-            </Form.Item>
+            <Input />
+          </Form.Item>
 
-            <Form.Item
-              label={t('Password')}
-              name="password"
-              rules={[{ required: true, message: t('Please enter your password') }]}
-            >
-              <Input.Password />
-            </Form.Item>
+          <Form.Item
+            label={t('Password')}
+            name="password"
+            rules={[{ required: true, message: t('Please enter your password') }]}
+          >
+            <Input.Password />
+          </Form.Item>
 
-            <Form.Item
-              label={t('Confirm Password')}
-              name="password2"
-              rules={[{ required: true, message: t('Please enter your password') }]}
-            >
-              <Input.Password />
-            </Form.Item>
+          <Form.Item
+            label={t('Confirm Password')}
+            name="password2"
+            rules={[{ required: true, message: t('Please enter your password') }]}
+          >
+            <Input.Password />
+          </Form.Item>
 
-            <Form.Item
-              label={t('Role')}
-              name="role"
-              rules={[{ required: true, message: t('Please select user\'s role') }]}
-            >
-              <Select>
-                <Select.Option value="staff">
-                  {t('Staff')}
-                </Select.Option>
-                <Select.Option value="admin">
-                  {t('Admin')}
-                </Select.Option>
-              </Select>
-            </Form.Item>
+          <Form.Item
+            label={t('Role')}
+            name="role"
+            rules={[{ required: true, message: t('Please select user\'s role') }]}
+          >
+            <Select>
+              <Select.Option value="staff">
+                {t('Staff')}
+              </Select.Option>
+              <Select.Option value="admin">
+                {t('Admin')}
+              </Select.Option>
+            </Select>
+          </Form.Item>
 
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                {t('Create User')}
-              </Button>
-            </Form.Item>
-          </Form>
-        </InputGroup>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              {t('Create User')}
+            </Button>
+          </Form.Item>
+        </Form>
+      </AdminContentWrapper>
 
-        <InputGroup>
-          <InputTitle>{t('Users List')}</InputTitle>
-          <Table columns={columns} dataSource={userData} />
-        </InputGroup>
+      <AdminContentWrapper>
+        <AdminSectionTitle>{t('Users List')}</AdminSectionTitle>
+        <Table columns={columns} dataSource={userData} />
+      </AdminContentWrapper>
 
-      </UserContentWrapper>
 
       <AlertModal
         isShowing={!!deletingUser}

@@ -7,15 +7,20 @@ import axios from 'axios'
 import { notifyAxiosError, notifySuccess } from 'models/notification'
 import { Layout } from 'models/common'
 import { useTranslation } from 'react-i18next'
+import {
+  AdminContentWrapper,
+  AdminSectionTitle
+} from '../components/molecules'
 
 const AdminSettingPageContainer = styled.div`
-  padding: 40px 0 40px 120px;
-  width: calc(100% - 350px);
-`
+  width: 100%;
 
-const HeadTitle = styled.h1`
-  margin-bottom: 20px;
-  font-size: 48px;
+  & > form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  } 
 `
 
 const InputTitle = styled.h3`
@@ -27,11 +32,7 @@ const InputDesc = styled.p`
   margin: 5px 0 15px 0;
 `
 
-const InputGroup = styled(Card)`
-  margin-bottom: 30px;
-`
-
-export const AdminSettingPage = () => {
+export const SettingPage = () => {
   const [isFetched, setIsFetched] = React.useState(false)
   const [layoutSettings, setLayoutSettings] = React.useState<Layout>({} as Layout)
   const { t: rawT } = useTranslation('admin')
@@ -133,9 +134,8 @@ export const AdminSettingPage = () => {
         }}
         onFinish={handleSubmit}
       >
-        <HeadTitle>{t('Layout')}</HeadTitle>
-        <InputGroup>
-          <HeadTitle>{t('General')}</HeadTitle>
+        <AdminContentWrapper>
+          <AdminSectionTitle>{t('General')}</AdminSectionTitle>
           <InputTitle>{t('Store Name')}</InputTitle>
           <InputDesc>{t('Your store name here')}</InputDesc>
           <Form.Item
@@ -155,10 +155,10 @@ export const AdminSettingPage = () => {
               placeholder={t('Currency for pricing (exp: Yen, USD)')}
             />
           </Form.Item>
-        </InputGroup>
+        </AdminContentWrapper>
 
-        <InputGroup>
-          <HeadTitle>{t('Idle Page')}</HeadTitle>
+        <AdminContentWrapper>
+          <AdminSectionTitle>{t('Idle Page')}</AdminSectionTitle>
           <InputTitle>{t('Background')}</InputTitle>
           <InputDesc>{t('Will be shown on idle page')}</InputDesc>
           <Form.Item
@@ -191,10 +191,10 @@ export const AdminSettingPage = () => {
               placeholder={t('Mark the start of ordering process')}
             />
           </Form.Item>
-        </InputGroup>
+        </AdminContentWrapper>
 
-        <InputGroup>
-          <HeadTitle>{t('Catalog Page')}</HeadTitle>
+        <AdminContentWrapper>
+          <AdminSectionTitle>{t('Catalog Page')}</AdminSectionTitle>
 
           <InputTitle>{t('Order Overlay - Confirm Desc')}</InputTitle>
           <InputDesc>{t('Descriptive text about confirmation of purchase')}</InputDesc>
@@ -235,10 +235,10 @@ export const AdminSettingPage = () => {
               placeholder={t('Button to finsih ordering process and enter payment process')}
             />
           </Form.Item>
-        </InputGroup>
+        </AdminContentWrapper>
 
-        <InputGroup>
-          <HeadTitle>{t('Confirmed Order Page')}</HeadTitle>
+        <AdminContentWrapper>
+          <AdminSectionTitle>{t('Confirmed Order Page')}</AdminSectionTitle>
           <InputTitle>{t('Descriptive Text')}</InputTitle>
           <InputDesc>{t('Text shown after orders are placed')}</InputDesc>
           <Form.Item
@@ -258,10 +258,10 @@ export const AdminSettingPage = () => {
               placeholder={t('Greetings such as "Thank you"')}
             />
           </Form.Item>
-        </InputGroup>
+        </AdminContentWrapper>
 
-        <InputGroup>
-          <HeadTitle>{t('Picking Page')}</HeadTitle>
+        <AdminContentWrapper>
+          <AdminSectionTitle>{t('Picking Page')}</AdminSectionTitle>
           <InputTitle>{t('Picking Method Text')}</InputTitle>
           <InputDesc>{t('Text about what customer should do next after ordering')}</InputDesc>
           <Form.Item
@@ -271,7 +271,7 @@ export const AdminSettingPage = () => {
               placeholder={t('Text about what customer should do next after ordering')}
             />
           </Form.Item>
-        </InputGroup>
+        </AdminContentWrapper>
 
         <ButtonPrimary type="submit">{t('Change Settings')}</ButtonPrimary>
       </Form>
