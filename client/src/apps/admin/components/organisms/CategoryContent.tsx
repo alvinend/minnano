@@ -8,19 +8,10 @@ import { IoIosTrash } from 'react-icons/io'
 import { AlertModal } from 'components/organisms/AlertModal'
 import { AdminCategoryModal } from 'components/organisms/AdminCategoryModal'
 import { useTranslation } from 'react-i18next'
-
-const CategoryContentWrapper = styled.div`
-  padding: 40px 0 40px 120px;
-  width: calc(100% - 350px);
-`
-
-const HeadTitle = styled.h1`
-  display: flex;
-  width: 90%;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  font-size: 48px;
-`
+import {
+  AdminContentWrapper,
+  AdminSectionTitle
+} from '../molecules'
 
 const OuterTableWrapper = styled.div`
   overflow: auto;
@@ -179,13 +170,22 @@ export const CategoryContent: React.FC<iCategoryContent> = ({
 
   return (
     <>
-      <CategoryContentWrapper>
-        <HeadTitle>
+      <AdminContentWrapper>
+        <AdminSectionTitle>
+          {t('Add Category')}
+        </AdminSectionTitle>
+        <p>
+          Add Category in App
+        </p>
+        <ButtonPrimary onClick={() => setIsCreatingCategory(true)}>
+          {t('Add Category')}
+        </ButtonPrimary>
+      </AdminContentWrapper>
+
+      <AdminContentWrapper>
+        <AdminSectionTitle>
           {t('Categories List')}
-          <ButtonPrimary onClick={() => setIsCreatingCategory(true)}>
-            {t('Add Category')}
-          </ButtonPrimary>
-        </HeadTitle>
+        </AdminSectionTitle>
         <OuterTableWrapper>
           <TableWrapper>
             <TableHeader>{t('Category Name')}</TableHeader>
@@ -205,7 +205,7 @@ export const CategoryContent: React.FC<iCategoryContent> = ({
             ))}
           </TableWrapper>
         </OuterTableWrapper>
-      </CategoryContentWrapper>
+      </AdminContentWrapper>
 
       {/* 編集モーダル */}
       <AdminCategoryModal

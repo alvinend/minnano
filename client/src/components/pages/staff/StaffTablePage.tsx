@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { StaffLoading } from 'components/atoms/StaffLoading'
 import { useHistory } from 'react-router-dom'
 import { TableDetailModal } from 'components/organisms/staff/TableDetailModal'
+import { Button } from 'components/atoms/button'
 
 const StaffTablePageWrapper = styled.div`
   display: flex;
@@ -24,17 +25,16 @@ const StaffTablePageWrapper = styled.div`
 
 const InnerContainer = styled.div`
   display: flex;
-  flex-direction: column;
   flex-wrap: wrap; 
+  justify-content: center;
   align-content: flex-start;
   width: calc(100% - 60px);
   height: calc(100vh - 150px);
   padding: 30px 30px 0 30px;
   background-color: ${color.secondary};
-  border: 2px ${color.gray} solid;
-  border-radius: 5px;
 	animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
   overflow: auto;
+  border-radius: 45px;
 
   @keyframes slide-in-top {
     0% {
@@ -54,9 +54,11 @@ const OrderBox = styled.div<{ number: string }>`
   height: auto;
   max-height: calc(100vh - 154px);
   background-color: ${color.white};
-  margin-right: 30px;
-  margin-bottom: 30px;
-  border: 2px ${color.gray} solid;
+  margin-right: 40px;
+  margin-bottom: 60px;
+  border-radius: 25px;
+  padding-top: 25px;
+  box-shadow: 2px 2px 4px 2px rgba(0,0,0,0.2);
 
   &::after {
     content: '${props => props.number}';
@@ -64,27 +66,33 @@ const OrderBox = styled.div<{ number: string }>`
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: -25px;
-    left: -25px;
-    border-radius: 50%;
+    border-radius: 15px;
     background-color: ${color.black};
     color: ${color.white};
     font-weight: bolder;
-    width: 50px;
+    width: 120px;
     height: 50px;
+    font-size: 20px;
+    top: -20px;
+    left: calc(50% - 60px);
   }
 `
 
 const OrderBoxInner = styled.div`
-  
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 20px;
 `
 
 const ListOrderContainer = styled.div`
   max-height: calc(100vh - 308px);
   height: auto;
-  padding: 20px 15px;
+  padding: 20px 0;
   overflow: auto;
   font-weight: bold;
+  min-width: 190px;
 
   & span {
     text-align: right;
@@ -96,25 +104,9 @@ const OrderBoxActionContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  border-top: 5px ${color.gray} dotted;
   padding: 10px 0;
   cursor: pointer;
-
-  & span {
-    margin-bottom: 10px;
-    font-size: 24px;
-    font-weight: bold;
-  }
-
-  & div {
-    color: ${color.green};
-    font-size: 60px;
-    line-height: 0.1;
-
-    &:hover {
-      color: ${color.lightGreen};
-    }
-  }
+  border-top: 2px ${color.black} solid;
 `
 
 const HeaderContainer = styled.div`
@@ -123,53 +115,53 @@ const HeaderContainer = styled.div`
   padding: 0 30px;
   width: 100%;
   height: 100px;
+  margin-bottom: 10px;
+`
 
-  & span {
-    cursor: pointer;
-  }
+const StaffModeContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: stretch;
 
-  & .mode-container {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    font-size: 48px;
-    line-height: 1;
-    width: 30%;
-    font-weight: bold;
-    color: #777;
-    border-right: 5px solid ${color.black};
+  & > * {
+    flex: 1;
 
-    & > span:first-child {
-      margin-right: 25px;
-    }
-
-    & .active-mode {
-      font-size: 72px;
-      color: ${color.black};
-      cursor: unset;
+    &:first-child {
+      margin-right: 60px;
     }
   }
+`
 
-  & .process-container {
-    display: flex;
-    width: 70%;
-    align-items: center;
-    justify-content: space-around;
-    font-size: 24px;
-    font-weight: bold;
-    color: #777;
+const StaffProcessContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 50px;
 
-    & .process-arrow {
-      line-height: 0.2;
-      cursor: unset;
-    }
+  & > * {
+    width: 300px;
 
-    & .active-process {
-      font-size: 36px;
-      color: ${color.black};
-      cursor: unset;
+    &:not(:last-child) {
+      margin-right: 60px;
     }
   }
+`
+
+const StaffConfirmOrderButton = styled.div`
+  color: ${color.blue};
+  font-size: 60px;
+  line-height: 0.1;
+  transition: all 0.2s;
+
+  &:hover {
+    color: ${color.lightGreen};
+  }
+`
+const TotalPriceSpan = styled.div`
+  margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: bold;
 `
 
 type iStaffTablePage = {
@@ -256,7 +248,7 @@ const StaffTablePage: React.FC<iStaffTablePage> = () => {
 
         const res = await axios.get(`/api/staff/table?status=${table.status}`)
         setTables(res.data)
-        notifySuccess(`状態更新を成功しました。新状態：${status.charAt(0).toUpperCase() + status.slice(1)}`)
+        notifySuccess(`Order Status Updated。Order Status："${status.charAt(0).toUpperCase() + status.slice(1)}"`)
       } catch (e) {
         notifyAxiosError(e)
       }
@@ -283,7 +275,7 @@ const StaffTablePage: React.FC<iStaffTablePage> = () => {
 
         setTables((await axios.get(`/api/staff/table?status=${currentStatus}`)).data)
 
-        notifySuccess(`状態更新を成功しました。新状態：${status.charAt(0).toUpperCase() + status.slice(1)}`)
+        notifySuccess(`Order Status Updated。Order Status："${status.charAt(0).toUpperCase() + status.slice(1)}"`)
       } catch (e) {
         notifyAxiosError(e)
       }
@@ -300,38 +292,42 @@ const StaffTablePage: React.FC<iStaffTablePage> = () => {
           onSubmit={handleAlertCancel}
           onCancel={handleAlertCancel}
         >
-          <>{t('Order Number')}<b>{alertNumber}</b> {t('Do you want to complete it?')}</>
+          <>{t('Table Number')}<b>{alertNumber}</b> {t('Do you want to complete it?')}</>
         </AlertModal>
         <HeaderContainer>
-          <div className="mode-container">
-            <span onClick={() => history.push('/staff/order')}>{t('Order')}</span>
-            <span className="active-mode">{t('Table')}</span>
-          </div>
+          <StaffModeContainer>
+            <Button onClick={() => history.push('/staff/order')}>{t('Order')}</Button>
+            <Button color={color.white} backgroundColor={color.blue}>{t('Table')}</Button>
+          </StaffModeContainer>
+        </HeaderContainer>
 
-          <div className="process-container">
-            <span
+        <InnerContainer>
+          <StaffProcessContainer>
+          <Button
+              size="small"
               onClick={() => handleChangeProcess('idle')}
-              className={currentStatus === 'idle' ? 'active-process' : ''}
+              backgroundColor={currentStatus === 'idle' ? color.yellow : ''}
+              color={currentStatus === 'idle' ? color.white : ''}
             >
               {t('Idle')}
-            </span>
-            <span className="process-arrow"><FaAngleDoubleRight /></span>
-            <span
+            </Button>
+            <Button
+              size="small"
               onClick={() => handleChangeProcess('started')}
-              className={currentStatus === 'started' ? 'active-process' : ''}
+              backgroundColor={currentStatus === 'started' ? color.yellow : ''}
+              color={currentStatus === 'started' ? color.white : ''}
             >
               {t('Started')}
-            </span>
-            <span className="process-arrow"><FaAngleDoubleRight /></span>
-            <span
+            </Button>
+            <Button
+              size="small"
               onClick={() => handleChangeProcess('pending')}
-              className={currentStatus === 'pending' ? 'active-process' : ''}
+              backgroundColor={currentStatus === 'pending' ? color.yellow : ''}
+              color={currentStatus === 'pending' ? color.white : ''}
             >
               {t('Pending')}
-            </span>
-          </div>
-        </HeaderContainer>
-        <InnerContainer>
+            </Button>
+          </StaffProcessContainer>
           {isLoading ?
             <StaffLoading /> :
             <>
@@ -344,7 +340,7 @@ const StaffTablePage: React.FC<iStaffTablePage> = () => {
                       </ListOrderContainer>
                       {table.status === 'pending' &&
                         <OrderBoxActionContainer>
-                          <div onClick={() => handleChangeOrderStatus(table)}><IoMdCheckmarkCircle /></div>
+                          <StaffConfirmOrderButton onClick={() => handleChangeOrderStatus(table)}><IoMdCheckmarkCircle /></StaffConfirmOrderButton>
                         </OrderBoxActionContainer>
                       }
                     </OrderBoxInner>

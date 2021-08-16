@@ -1,4 +1,3 @@
-import { AdminSettingPage } from 'components/pages/admin/AdminSettingPage'
 import * as React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
@@ -6,7 +5,8 @@ import {
   CategoryPage,
   DashboardPage,
   ItemPage,
-  UserPage
+  UserPage,
+  SettingPage
 } from './pages'
 import { SidebarContainer } from './container/organisms/SidebarContainer'
 import { color } from 'components/atoms/color'
@@ -39,7 +39,7 @@ export const AdminApps: React.FC = () => {
             <UserPage />
           </Route>
           <Route path="/admin/settings">
-            <AdminSettingPage />
+            <SettingPage />
           </Route>
           <Route path="/admin/categories">
             <CategoryPage />

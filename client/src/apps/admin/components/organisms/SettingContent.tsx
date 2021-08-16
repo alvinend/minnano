@@ -118,7 +118,7 @@ export const SettingContent: React.FC<iSettingContent> = ({
         }}
         onFinish={handleSubmit}
       >
-        <HeadTitle>{t('Layout')}</HeadTitle>
+        <HeadTitle>{t('Layout')}aaa</HeadTitle>
         <InputGroup>
           <HeadTitle>{t('General')}</HeadTitle>
           <InputTitle>{t('Store Name')}</InputTitle>
