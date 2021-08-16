@@ -256,7 +256,7 @@ const StaffTablePage: React.FC<iStaffTablePage> = () => {
 
         const res = await axios.get(`/api/staff/table?status=${table.status}`)
         setTables(res.data)
-        notifySuccess(`状態更新を成功しました。新状態：${status.charAt(0).toUpperCase() + status.slice(1)}`)
+        notifySuccess(`Order Status Updated。Order Status："${status.charAt(0).toUpperCase() + status.slice(1)}"`)
       } catch (e) {
         notifyAxiosError(e)
       }
@@ -283,7 +283,7 @@ const StaffTablePage: React.FC<iStaffTablePage> = () => {
 
         setTables((await axios.get(`/api/staff/table?status=${currentStatus}`)).data)
 
-        notifySuccess(`状態更新を成功しました。新状態：${status.charAt(0).toUpperCase() + status.slice(1)}`)
+        notifySuccess(`Order Status Updated。Order Status："${status.charAt(0).toUpperCase() + status.slice(1)}"`)
       } catch (e) {
         notifyAxiosError(e)
       }
