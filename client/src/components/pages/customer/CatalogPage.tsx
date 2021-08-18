@@ -17,7 +17,8 @@ const CategoryWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: ${color.lightGray};
+  height: 100vh;
+  background-color: ${color.white};
 `
 
 const CategoryBar = styled.div`
@@ -63,12 +64,12 @@ const ItemWrapper = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   width: 90%;
-  height: calc(100vh - 132px);
+  height: calc(100vh - 192px);
   padding: 0 5px;
   background-color: ${color.secondary};
-  border: 2px ${color.gray} solid;
-  border-radius: 5px;
+  border-radius: 35px;
   overflow: auto;
+  box-shadow: 2px 2px 4px 2px rgba(0,0,0,0.2);
 `
 const CategoryDesc = styled.div`
   left: 0;
@@ -91,8 +92,8 @@ const ItemCard = styled.div<{ index: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 300px;
-  height: 400px;
+  width: 260px;
+  height: 350px;
   margin: 8px;
   padding: 20px;
   border: 2px ${color.gray} solid;
@@ -123,13 +124,14 @@ const ItemCard = styled.div<{ index: number }>`
   }
 
   & span {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: light;
+    line-height: 1.4;
   }
 
   & .item-price {
     position: absolute;
-    bottom: 30px;
+    bottom: 15px;
   }
 
   &:hover {
