@@ -12,10 +12,6 @@ const MainMenuContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-image: url('https://minnanoonline.s3-ap-northeast-1.amazonaws.com/logo/2nd+Homepage+Background_00000.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
 
   & button {
     margin-top: 50px;
@@ -59,6 +55,16 @@ const IconContainer = styled.span`
   font-size: 108px;
 `
 
+const VideoContainer = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+`
+
 type iMainMenu = {
   onSignOut: () => void
   isAdmin: boolean
@@ -71,36 +77,43 @@ const MainMenu: React.FC<iMainMenu> = ({
   const { t } = useTranslation('mainmenu')
 
   return (
-    <MainMenuContainer>
-      <LinkContainer>
-        <StyledLink to="/customer">
-          <IconContainer>
-            <FaUserFriends />
-          </IconContainer>
-          {t('CustomerLinkLabel')}
-        </StyledLink>
-        <StyledLink to="/staff">
-          <IconContainer>
-            <FaUserTie />
-          </IconContainer>
-          {t('StaffLinkLabel')}
-        </StyledLink>
-        {isAdmin && <StyledLink to="/admin">
-          <IconContainer>
-            <FaKey />
-          </IconContainer>
-          {t('AdminLinkLabel')}
-        </StyledLink>}
-      </LinkContainer>
-      <Button
-        size="large"
-        danger={true}
-        type="primary"
-        onClick={onSignOut}
-      >
-        {t('LogoutButton')}
-      </Button>
-    </MainMenuContainer>
+    <>
+      <VideoContainer>
+        <video autoPlay={true} loop={true} muted={true}>
+          <source src="https://minnanoonline.s3.ap-northeast-1.amazonaws.com/mode_selector_video_high.mp4" type="video/mp4"/>
+        </video>
+      </VideoContainer>
+      <MainMenuContainer>
+        <LinkContainer>
+          <StyledLink to="/customer">
+            <IconContainer>
+              <FaUserFriends />
+            </IconContainer>
+            {t('CustomerLinkLabel')}
+          </StyledLink>
+          <StyledLink to="/staff">
+            <IconContainer>
+              <FaUserTie />
+            </IconContainer>
+            {t('StaffLinkLabel')}
+          </StyledLink>
+          {isAdmin && <StyledLink to="/admin">
+            <IconContainer>
+              <FaKey />
+            </IconContainer>
+            {t('AdminLinkLabel')}
+          </StyledLink>}
+        </LinkContainer>
+        <Button
+          size="large"
+          danger={true}
+          type="primary"
+          onClick={onSignOut}
+        >
+          {t('LogoutButton')}
+        </Button>
+      </MainMenuContainer>
+    </>
   )
 }
 
