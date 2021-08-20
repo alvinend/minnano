@@ -29,7 +29,7 @@ const LinkContainer = styled.div`
   width: 100%;
 
   & a {
-    margin: 40px 55px;
+    margin: 80px 55px;
   }
 `
 
@@ -60,13 +60,19 @@ const IconContainer = styled.span`
 `
 
 const VideoContainer = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100% !important;
+  height: auto !important;
   overflow: hidden;
   z-index: -1;
+  object-fit: fill;
+
+  & > video {
+    width: 100% !important;
+    height: auto !important;
+  }
 `
 
 type iMainMenu = {
