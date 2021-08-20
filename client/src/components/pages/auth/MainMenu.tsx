@@ -10,11 +10,15 @@ const MainMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   height: 100vh;
+  position: relative;
 
   & button {
-    margin-top: 50px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    border-radius: 15px;
   }
 `
 
@@ -22,29 +26,29 @@ const LinkContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 80%;
+  width: 100%;
 
   & a {
-    margin: 20px;
+    margin: 40px 55px;
   }
 `
 
 const StyledLink = styled(Link)`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  width: 250px;
-  height: 300px;
+  width: 254px;
+  height: 90px;
   padding: 20px 10px;
   background-color: ${color.white};
   font-size: 24px;
   font-weight: bold;
-  color: #777;
+  color: ${color.blue};
   text-decoration: none;
   text-align: center;
   box-shadow: 5px 5px 10px 5px rgba(0,0,0,0.2);
   transition: box-shadow 0.3s ease-in-out;
+  border-radius: 25px;
 
   &:hover {
     box-shadow: 6px 6px 10px 6px rgba(0,0,0,0.3);
@@ -59,8 +63,8 @@ const VideoContainer = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   z-index: -1;
 `
