@@ -25,7 +25,7 @@ const ModeSelectorWrapper = styled.div`
     justify-content: center;
     font-size: 16px;
     text-align: center;
-    padding: 0 40px;
+    padding: 0 20px;
   }
 `
 
@@ -43,7 +43,7 @@ const TableModeContainer = styled.div`
     align-items: center;
     justify-content: flex-start;
     width: 49%;
-    padding: 50px 50px 0 50px;
+    padding: 10px 10px 0 10px;
     margin: 20px 0;
 
     & > img {
@@ -61,8 +61,10 @@ const TableModeContainer = styled.div`
 const TableModeInnerContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 900px;
-  height: 600px;
+  width: 85%;
+  height: 80%;
+  max-width: 900px;
+  max-height: 600px;
   margin: 20px 0;
   background-color: ${color.secondary};
   border: 2px ${color.lightGray} solid;
@@ -122,8 +124,10 @@ const OrderModeInnerContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 350px;
-  height: 600px;
+  width: 85%;
+  height: 80%;
+  max-width: 350px;
+  max-height: 600px;
   margin: 20px 0;
   padding-top: 80px;
   background-color: ${color.white};
@@ -177,6 +181,7 @@ const ButtonGroup = styled.div`
   flex-wrap: wrap;
   margin-top: 30px;
   margin-left: 30px;
+  width: 300px;
 
   & button {
     width: 70px;
