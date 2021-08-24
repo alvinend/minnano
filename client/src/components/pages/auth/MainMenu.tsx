@@ -64,14 +64,15 @@ const VideoContainer = styled.div`
   top: 0;
   bottom: 0;
   width: 100% !important;
-  height: auto !important;
+  height: 100% !important;
   overflow: hidden;
   z-index: -1;
-  object-fit: fill;
+  object-fit: cover;
 
   & > video {
     width: 100% !important;
-    height: auto !important;
+    height: 100% !important;
+    object-fit: cover;
   }
 `
 
