@@ -9,8 +9,8 @@ const CategoryWrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 100vh;
-  background-color: ${color.secondary};
-  background: linear-gradient(334deg, ${color.blue} 0%, ${color.blue} 50%, ${color.secondary} 50%, ${color.secondary} 100%);
+  background-color: rgba(0, 0, 0, 0);
+  /* background: linear-gradient(334deg, ${color.blue} 0%, ${color.blue} 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%); */
 `
 
 const OuterContainer = styled.div`
@@ -63,7 +63,7 @@ const DescWrapper = styled.div`
   justify-content: center;
   width: 50%;
   height: 100%;
-  background-color: ${color.yellow};
+  background-color: ${color.blue};
   border-radius: 25px;
 `
 
@@ -72,6 +72,7 @@ const DescHeader = styled.h1`
   font-weight: 700;
   line-height: 1;
   margin-bottom: 10px;
+  color: ${color.white};
 `
 
 const DescItem = styled.div<{ number: number }>`
@@ -202,47 +203,70 @@ const NumberPage: React.FC<iNumberPage> = ({
     [number, onSendOrder]
   )
 
+  const VideoContainer = styled.div`
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden;
+    z-index: -1;
+    object-fit: cover;
+
+    & > video {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+    }
+  `
 
   return (
-    <CategoryWrapper>
-      <OuterContainer>
-        <InnerContainer>
-          <ButtonWrapper>
-            <NumberDisplay>{number}</NumberDisplay>
-            <ButtonGroup>
-              <button onClick={inputNumber(1)} disabled={number.length === 3}>1</button>
-              <button onClick={inputNumber(2)} disabled={number.length === 3}>2</button>
-              <button onClick={inputNumber(3)} disabled={number.length === 3}>3</button>
-              <button onClick={inputNumber(4)} disabled={number.length === 3}>4</button>
-              <button onClick={inputNumber(5)} disabled={number.length === 3}>5</button>
-              <button onClick={inputNumber(6)} disabled={number.length === 3}>6</button>
-              <button onClick={inputNumber(7)} disabled={number.length === 3}>7</button>
-              <button onClick={inputNumber(8)} disabled={number.length === 3}>8</button>
-              <button onClick={inputNumber(9)} disabled={number.length === 3}>9</button>
-              <button onClick={delNumber} disabled={!number.length}>DEL</button>
-              <button onClick={inputNumber(0)} disabled={number.length === 3}>0</button>
-              <button onClick={handleOrder} disabled={number.length !== 3}>OK</button>
-            </ButtonGroup>
-          </ButtonWrapper>
-          <DescWrapper>
-            <DescHeader>STEPS</DescHeader>
-            <DescItem number={1}>
-              Take the number that is on the right of this machine.
-            </DescItem>
-            <DescItem number={2}>
-              Enter the number on this machine.
-            </DescItem>
-            <DescItem number={3}>
-              We will call the number if the order is completed.
-            </DescItem>
-          </DescWrapper>
-        </InnerContainer>
-        <Footer>
-          <span>Total: 100 USD</span>
-          <span>Time Estimation: 15 Minutes</span>
-        </Footer>
-      </OuterContainer>
-    </CategoryWrapper>
+    <>
+      <VideoContainer>
+        <video autoPlay={true} loop={true} muted={true}>
+          <source src="https://minnanoonline.s3.ap-northeast-1.amazonaws.com/number_page_background.mp4" type="video/mp4"/>
+        </video>
+      </VideoContainer>
+      <CategoryWrapper>
+        <OuterContainer>
+          <InnerContainer>
+            <ButtonWrapper>
+              <NumberDisplay>{number}</NumberDisplay>
+              <ButtonGroup>
+                <button onClick={inputNumber(1)} disabled={number.length === 3}>1</button>
+                <button onClick={inputNumber(2)} disabled={number.length === 3}>2</button>
+                <button onClick={inputNumber(3)} disabled={number.length === 3}>3</button>
+                <button onClick={inputNumber(4)} disabled={number.length === 3}>4</button>
+                <button onClick={inputNumber(5)} disabled={number.length === 3}>5</button>
+                <button onClick={inputNumber(6)} disabled={number.length === 3}>6</button>
+                <button onClick={inputNumber(7)} disabled={number.length === 3}>7</button>
+                <button onClick={inputNumber(8)} disabled={number.length === 3}>8</button>
+                <button onClick={inputNumber(9)} disabled={number.length === 3}>9</button>
+                <button onClick={delNumber} disabled={!number.length}>DEL</button>
+                <button onClick={inputNumber(0)} disabled={number.length === 3}>0</button>
+                <button onClick={handleOrder} disabled={number.length !== 3}>OK</button>
+              </ButtonGroup>
+            </ButtonWrapper>
+            <DescWrapper>
+              <DescHeader>STEPS</DescHeader>
+              <DescItem number={1}>
+                Take the number that is on the right of this machine.
+              </DescItem>
+              <DescItem number={2}>
+                Enter the number on this machine.
+              </DescItem>
+              <DescItem number={3}>
+                We will call the number if the order is completed.
+              </DescItem>
+            </DescWrapper>
+          </InnerContainer>
+          <Footer>
+            <span>Total: 100 USD</span>
+            <span>Time Estimation: 15 Minutes</span>
+          </Footer>
+        </OuterContainer>
+      </CategoryWrapper>
+    </>
   )
 }
 
