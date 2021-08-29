@@ -7,7 +7,7 @@ export const notifyAxiosError = (e: any) => {
   if (typeof message === "string") {
     toast.error(message)
   } else {
-    toast.error('エラーが発生しました')
+    toast.error('An error has occurred')
   }
 }
 

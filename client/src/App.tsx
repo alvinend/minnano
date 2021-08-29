@@ -34,7 +34,7 @@ const App = () => {
         const user = (await axios.get('/api/users/current')).data
         setUser(user as User)
         Cookies.set('jwt', token)
-        notifySuccess('ログイン成功しました')
+        notifySuccess('Login was successful')
       } catch (e) {
         notifyAxiosError(e)
       }
