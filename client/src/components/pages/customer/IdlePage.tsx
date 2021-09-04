@@ -6,15 +6,30 @@ import { Layout, Table } from 'models/common'
 import { FrostedBox } from 'components/atoms/FrostedBox'
 import { FaAngleDoubleRight } from 'react-icons/fa'
 import { useTranslation } from 'react-i18next'
+import { Button } from 'components/atoms/button'
+
+const IdleLeftContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 8vw;
+  width: 50%;
+  font-size: 2vw;
+`
+
+const WelcomeText = styled.span`
+  font-size: 5vw;
+  font-weight: 700;
+  margin-bottom: 2vw;
+`
 
 const IdleWrapper = styled.div<{ type: string }>`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  background-color: ${color.lightGray};
+  background-color: ${color.white};
   font-size: 24px;
   animation: ${({ type }) => type === 'in' ? 'tracking-in-expand 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) both' :
     type === 'out' && 'tracking-out-contract 0.7s cubic-bezier(0.550, 0.085, 0.680, 0.530) both'};
@@ -46,61 +61,29 @@ const IdleWrapper = styled.div<{ type: string }>`
   }
 `
 
-const IdleContainer = styled.div<{ backgroundUrl: string }>`
+const IdleRightContainer = styled.div<{ backgroundUrl: string }>`
   display: flex;
-  flex-direction: row-reverse;
-  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
   height: 100%;
-  background-image: url('${({ backgroundUrl }) => backgroundUrl}');
+  padding-right: 8vw;
   background-size: cover;
+  background-color: ${color.white};
 
-  & .desc-container {
-    position: relative;
-    width: 800px;
-    padding: 40px;
-    font-weight: bold;
+  & > img {
+    width: 30vw;
+    height: 30vw;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 5vw;
+  }
 
-    & .idle-greeting {
-      font-size: 48px;
-      font-weight: bold;
-    }
-
-    & .idle-storename {
-      font-size: 72px;
-      font-weight: bold;
-    }
-
-    & .idle-start {
-      position: absolute;
-      right: 60px;
-      bottom: 60px;
-      display: flex;
-      align-items: center;
-      font-size: 48px;
-      animation: heartbeat 3s infinite;
-
-      @keyframes heartbeat {
-        0%
-        {
-          transform: scaleX( .8 );
-        }
-        50%
-        {
-          transform: scaleX( 1 );
-        }
-        100%
-        {
-          transform: scaleX( 0.8 );
-        }
-      }
-
-
-      & > span {
-        display: inherit;
-        margin-left: 20px;
-        font-size: 60px;
-      }
-    }
+  & > button {
+    font-size: 2.5vw;
+    height: 10vh;
+    width: 22vw;
   }
 `
 
@@ -143,22 +126,23 @@ const IdlePage: React.FC<iIdlePage> = ({
 
   return (
     <IdleWrapper type={animationType}>
-      <IdleContainer backgroundUrl={l?.backgroundUrl}>
-        <FrostedBox className="desc-container">
-          <h2 className="idle-greeting">{l?.greeting}</h2>
-          <h1 className="idle-storename">{layout?.storename}</h1>
-          {table &&
-            <p className="idle-desc">
-              {t('Table Number')} {table.label?.substring(1)}
-            </p>
-          }
+      <IdleLeftContainer>
+        <WelcomeText>Welcome</WelcomeText>
+        <h2 className="idle-greeting">{l?.greeting}</h2>
+        <h1 className="idle-storename">{layout?.storename}</h1>
+        {table &&
+          <p className="idle-desc">
+            {t('Table Number')} {table.label?.substring(1)}
+          </p>
+        }
 
-          <div className="idle-start" onClick={handleStartOrdering}>
-            {l?.startButton}
-            <span><FaAngleDoubleRight /></span>
-          </div>
-        </FrostedBox>
-      </IdleContainer>
+      </IdleLeftContainer>
+      <IdleRightContainer backgroundUrl={l?.backgroundUrl}>
+        <img src={l?.backgroundUrl} alt="Idle Page Backgound Image" />
+        <Button onClick={handleStartOrdering} backgroundColor={color.yellow} color={color.white}>
+          {l?.startButton}
+        </Button>
+      </IdleRightContainer>
     </IdleWrapper>
   )
 }

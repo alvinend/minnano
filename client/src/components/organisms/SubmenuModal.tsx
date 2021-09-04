@@ -7,10 +7,13 @@ import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai'
 import { RoundedButton } from 'components/atoms/button/RoundedButton'
 import { RoundedButtonPrimary } from 'components/atoms/button/RoundedButtonPrimary'
 import { useTranslation } from 'react-i18next'
+import { Button } from 'components/atoms/button'
 
 const SubmenuModalWrapper = styled.div`
   position: fixed;
   display: flex;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   z-index: 2;
@@ -56,6 +59,7 @@ const Overlay = styled.div<{ type: string }>`
 
 const StyledSubmenuModal = styled.div<{ type: string }>`
   display: flex;
+  border-radius: 25px;
   width: 80vw;
   height: 80vh;
   background-color: ${color.white};
@@ -92,16 +96,10 @@ const StyledSubmenuModal = styled.div<{ type: string }>`
 `
 
 const DetailContainer = styled.div`
-  width: 40%;
+  width: 35%;
   padding: 40px;
-  background-color: ${color.primary};
-
-  & > img {
-    width: calc(100% + 80px);
-    height: 30%;
-    margin: -40px -40px 20px -40px;
-    object-fit: cover;
-  }
+  border-radius: 25px 0 0 25px;
+  background-color: ${color.secondary};
 
   & > .title {
     font-size: 24px;
@@ -109,23 +107,35 @@ const DetailContainer = styled.div`
   }
 
   & > .desc {
-    height: calc(50% - 100px);
+    height: calc(95% - 200px);
     overflow: auto;
   }
 `
 
 const VariationTitle = styled.h2`
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+  position: relative;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
   font-size: 36px;
   font-weight: bold;
-  border-bottom: 10px dotted ${color.gray};
+  
+  & > img {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    border-radius: 50%;
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
+  }
 `
 
 const VariationContainer = styled.div`
-  width: 60%;
-  padding: 40px;
+  width: 65%;
+  padding: 10px 40px;
+  border-radius: 0 0 25px 0;
   margin-top: 30px;
+  background-color: ${color.white};
   
   & > .subitem-inner {
     display: flex;
@@ -136,23 +146,6 @@ const VariationContainer = styled.div`
     height: 80%;
     margin-top: 20px;
     overflow: auto;
-
-    & ${FrostedBox} {
-      width: 48%;
-      margin-bottom: 20px;
-      transition: .3s all ease-in-out;
-
-      &:hover {
-        background: linear-gradient(130deg, ${color.pink} 0%, ${color.secondary} 100%);
-        box-shadow: none;
-        transition: .3s all ease-in-out;
-        cursor: pointer;
-
-        & .subitem-price {
-          border: 2px solid ${color.black};
-        }
-      }
-    }
   }
 
   & .subitem-title {
@@ -164,13 +157,33 @@ const VariationContainer = styled.div`
       margin-left: 20px;
       padding: 2px 8px;
       border-radius: 20px;
-      border: 2px solid ${color.secondary};
+      border: 2px solid ${color.blue};
       font-size: 16px;
     }
   }
 
   & .subitem-desc {
     font-size: 16px;
+  }
+`
+
+const ItemContainer = styled.div`
+  width: 48%;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  transition: .3s all ease-in-out;
+  border-radius: 25px;
+  border: 1px solid ${color.yellow};
+
+  &:hover {
+    background: ${color.yellow};
+    box-shadow: none;
+    transition: .3s all ease-in-out;
+    cursor: pointer;
+
+    & .subitem-price {
+      background-color: ${color.blue};
+    }
   }
 `
 
@@ -207,7 +220,7 @@ const CartInfoContainer = styled.div`
 `
 
 const CartInfoFooter = styled.div`
-  border-top: 10px dotted ${color.black};
+  border-top: 1px solid ${color.black};
   padding: 20px;
 
   & .total-price {
@@ -329,7 +342,6 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
       <Overlay onClick={handleCloseSubmenuModal} type={animationType} />
       <StyledSubmenuModal type={animationType}>
         <DetailContainer>
-          <img src={`${item?.imagelink}`} alt="Item" />
           <h2 className="title">{item?.name}</h2>
           <p className="desc">
             {!!cart.length ?
@@ -364,17 +376,19 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
               {layout.currency}
             </div>
             <div className="button-container">
-              <RoundedButton
+              <Button
                 onClick={onCancel}
               >
                 {t('Cancel')}
-              </RoundedButton>
-              <RoundedButtonPrimary
+              </Button>
+              <Button
                 disabled={!cart.length}
                 onClick={handleSubmit}
+                color={color.white}
+                backgroundColor={color.green}
               >
                 {t('Add to cart')}
-              </RoundedButtonPrimary>
+              </Button>
             </div>
           </CartInfoFooter>
 
@@ -382,10 +396,11 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
         <VariationContainer>
           <VariationTitle>
             {t('Variation')}
+            <img src={`${item?.imagelink}`} alt="Item" />
           </VariationTitle>
           <div className="subitem-inner">
             {!!item.subitems.length ? item?.subitems.map(subitem => (
-              <FrostedBox
+              <ItemContainer
                 key={subitem._id}
                 onClick={() => handleAddCart(subitem)}
               >
@@ -394,9 +409,9 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
                   <span className="subitem-price">{subitem.price.toLocaleString()} {layout.currency}</span>
                 </h3>
                 <p className="subitem-desc">{subitem.desc}</p>
-              </FrostedBox>
+              </ItemContainer>
             )) :
-              <FrostedBox
+              <ItemContainer
                 onClick={() => handleAddCart(item)}
               >
                 <h3 className="subitem-title">
@@ -404,7 +419,7 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
                   <span className="subitem-price">{item.price.toLocaleString()} {layout.currency}</span>
                 </h3>
                 <p className="subitem-desc">{item.desc}</p>
-              </FrostedBox>
+              </ItemContainer>
             }
           </div>
         </VariationContainer>
