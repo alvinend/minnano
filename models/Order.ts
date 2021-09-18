@@ -74,7 +74,7 @@ const getTotalPrice = async (orders: IOrderModel[]) => {
   return totalPrice
 }
 
-const getTotalQuantities = async (orders: IOrderModel[]) => {
+const getTotalQuantities = (orders: IOrderModel[]) => {
   let total = 0
 
   for(const order of orders) {

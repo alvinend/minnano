@@ -168,6 +168,20 @@ export const AdminItemModal: React.FC<iAdminItemModal> = ({
             onChange={onChangeItem}
           />
         </InputGroup>
+
+        <InputGroup>
+          <InputDescGroup>
+            <InputTitle>Stock</InputTitle>
+            <InputDesc>Stock of this item (-1 for infinite stock)</InputDesc>
+          </InputDescGroup>
+          <AdminInput
+            placeholder="Item Counts"
+            value={itemData?.stock}
+            name="stock"
+            onChange={onChangeItem}
+          />
+        </InputGroup>
+
         <InputGroup>
           <InputDescGroup>
             <InputTitle>{t('Category')}</InputTitle>

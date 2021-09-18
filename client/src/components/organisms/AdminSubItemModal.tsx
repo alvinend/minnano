@@ -3,11 +3,12 @@ import styled from 'styled-components'
 import { Modal } from 'components/organisms/Modal'
 import { AdminInput } from 'components/atoms/input/AdminInput'
 import { Subitem } from 'models/common'
-import { Button, Card } from 'antd'
+import { Card } from 'antd'
 import { FaAngleDown } from 'react-icons/fa'
 import { color } from 'components/atoms/color'
 import ButtonGroup from 'antd/lib/button/button-group'
 import { useTranslation } from 'react-i18next'
+import { Button, ButtonPrimary } from 'components/atoms/button'
 
 const InputTitle = styled.h3`
   font-size: 16px;
@@ -83,7 +84,7 @@ const StyledListCardDetails = styled.div<{ isShowing: boolean }>`
       transform-origin: 100% 0%;
     }
     100% {
-      height: 300px;
+      height: 350px;
       transform: scaleY(1);
       transform-origin: 100% 0%;
     }
@@ -94,10 +95,11 @@ const StyledListCardDetails = styled.div<{ isShowing: boolean }>`
 const StyledButtonGroup = styled(ButtonGroup)`
   width: 150px;
   justify-content: space-between;
+  margin-top: 10px;
 `
 
 const ListCardContainer = styled.div`
-  height: 70vh;
+  height: calc(70vh - 100px);
   overflow: auto;
 `
 
@@ -277,19 +279,36 @@ export const AdminSubItemModal: React.FC<iAdminSubItemModal> = ({
                 onChange={handleChangeEditingItem}
               />
             </InputGroup>
+
+            <InputGroup>
+              <InputDescGroup>
+                <InputTitle>Stock</InputTitle>
+                <InputDesc>{t('Sub-item stock (-1 for unlimited)')}</InputDesc>
+              </InputDescGroup>
+              <AdminInput
+                placeholder="Stock"
+                value={editingSubitemData?.stock}
+                name="stock"
+                onChange={handleChangeEditingItem}
+              />
+            </InputGroup>
+
             <StyledButtonGroup>
               <Button
-                danger={true}
+                backgroundColor={color.red}
+                size="small"
+                color={color.white}
                 onClick={handleDelete}
+                margin="0 20px 0 0"
               >
                 {t('Delete')}
               </Button>
-              <Button
-                type="primary"
+              <ButtonPrimary
                 onClick={handleUpdate}
+                size="small"
               >
                 {t('Update')}
-              </Button>
+              </ButtonPrimary>
             </StyledButtonGroup>
           </StyledListCardDetails>
         </StyledListCard>)}
@@ -343,13 +362,27 @@ export const AdminSubItemModal: React.FC<iAdminSubItemModal> = ({
                 onChange={handleChangeCreatingItem}
               />
             </InputGroup>
+
+            <InputGroup>
+              <InputDescGroup>
+                <InputTitle>{t('Price')}</InputTitle>
+                <InputDesc>{t('Sub-item price')}</InputDesc>
+              </InputDescGroup>
+              <AdminInput
+                placeholder={t('Price')}
+                value={creatingSubitemData?.price}
+                name="price"
+                onChange={handleChangeCreatingItem}
+              />
+            </InputGroup>
+
             <StyledButtonGroup>
-              <Button
-                type="primary"
+              <ButtonPrimary
                 onClick={handleCreate}
+                size="small"
               >
                 {t('Create')}
-              </Button>
+              </ButtonPrimary>
             </StyledButtonGroup>
           </StyledListCardDetails>
         </StyledListCard>

@@ -6,6 +6,7 @@ export const Button = styled.button<{
   color?: string
   size?: 'large' | 'small'
   width?: string
+  margin?: string
 }>`
   padding: 10px 20px;
   font-size: 18px;
@@ -18,6 +19,7 @@ export const Button = styled.button<{
   border: 0px solid transparent;
   height: ${({ size }) => size === 'large' ? '65px' : size === 'small' ? '45px' : '60px'};
   width: ${({ width }) => width || 'auto'};
+  ${({ margin }) => margin && `margin: ${margin};`};
 
   &:hover:enabled {
     border: 0px solid transparent;

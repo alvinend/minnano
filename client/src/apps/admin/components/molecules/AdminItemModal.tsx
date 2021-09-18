@@ -9,6 +9,7 @@ import { Button } from 'components/atoms/button'
 import { useTranslation } from 'react-i18next'
 
 const InputTitle = styled.h3`
+  padding: 20px 0 10px;
   font-size: 18px;
 `
 

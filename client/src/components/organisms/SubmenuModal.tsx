@@ -167,13 +167,34 @@ const VariationContainer = styled.div`
   }
 `
 
-const ItemContainer = styled.div`
+const ItemContainer = styled.div<{ isAvailable: boolean }>`
+  position: relative;
   width: 48%;
   padding: 15px 20px;
   margin-bottom: 20px;
   transition: .3s all ease-in-out;
   border-radius: 25px;
   border: 1px solid ${color.yellow};
+  ${({ isAvailable }) => !isAvailable && 'pointer-events: none;'}
+
+  & > * {
+    ${({ isAvailable }) => !isAvailable && 'opacity: 0.6;'}
+  }
+
+  &::after {
+    content: 'Out of Stock';
+    ${({ isAvailable }) => isAvailable && 'display: none;'}
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: ${color.red};
+    color: ${color.white};
+    z-index: 1;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 15px;
+  }
 
   &:hover {
     background: ${color.yellow};
@@ -219,6 +240,31 @@ const CartInfoContainer = styled.div`
   }
 `
 
+const CartQuantityButton = styled.span<{ isOut?: boolean }>`
+  display: flex;
+  align-items: center;
+  width: 30%;
+  ${({ isOut }) => isOut && 'opacity: 0.6;'}
+  ${({ isOut }) => isOut && 'pointer-events: none;'}
+
+  &.minus {
+    color: ${color.red};
+    font-size: 36px;
+    line-height: 1;
+  } 
+
+  &.total {
+    width: 80px;
+    text-align: center;
+  } 
+
+  &.plus {
+    color: ${({ isOut }) => isOut ? color.gray : color.green};
+    font-size: 36px;
+    line-height: 1;
+  } 
+`
+
 const CartInfoFooter = styled.div`
   border-top: 1px solid ${color.black};
   padding: 20px;
@@ -252,6 +298,7 @@ type iSubmenuModal = {
   onCancel: () => void
   item: Item
   layout: Layout
+  mainCart: Cart
 }
 
 export const SubmenuModal: React.FC<iSubmenuModal> = ({
@@ -259,7 +306,8 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
   onSubmit,
   onCancel,
   item,
-  layout
+  layout,
+  mainCart
 }) => {
   const [animationType, setAnimationType] = React.useState('in')
   const [cart, setCart] = React.useState([] as Cart)
@@ -337,37 +385,81 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
     [cart]
   )
 
+  const checkStock = React.useCallback(
+    subitem => {
+      // If Item have no stock
+      let itemCountInCart = 0
+
+      // if Sub-Item have no stock
+      let subitemCountInCart = 0
+
+      mainCart.forEach(
+        cartItem => {
+          // @ts-expect-error
+          if (cartItem.item._id === item._id || cartItem.item?.itemid === item._id) {
+            itemCountInCart = itemCountInCart + cartItem.quantity
+          }
+
+          if (cartItem.item._id === subitem._id) {
+            subitemCountInCart = subitemCountInCart + cartItem.quantity
+          }
+        }
+      )
+
+      cart.forEach(
+        cartItem => {
+          // @ts-expect-error
+          if (cartItem.item._id === item._id || cartItem.item?.itemid === item._id) {
+            itemCountInCart = itemCountInCart + cartItem.quantity
+          }
+
+          if (cartItem.item._id === subitem._id) {
+            subitemCountInCart = subitemCountInCart + cartItem.quantity
+          }
+        }
+      )
+
+      // If Item have no stock
+      if ((item?.stock || 0) - itemCountInCart === 0) { return false }
+      // if Sub-Item have no stock
+      if (subitem.stock - subitemCountInCart === 0) { return false } 
+      return true
+    },
+    [mainCart, cart, item]
+  )
+
   return isShowing ? (
     <SubmenuModalWrapper>
       <Overlay onClick={handleCloseSubmenuModal} type={animationType} />
       <StyledSubmenuModal type={animationType}>
         <DetailContainer>
           <h2 className="title">{item?.name}</h2>
-          <p className="desc">
+          <div className="desc">
             {!!cart.length ?
               cart.map(({ item, quantity }) => <div>
                 <CartInfoContainer key={`${item._id}-${quantity}`}>
                   <div className="cart-name">{item.name}</div>
                   <div className="cart-quantity">
-                    <span
-                      className="cart-quantity-minus"
+                    <CartQuantityButton
+                      className="minus"
                       onClick={() => handleRemoveCart(item as Subitem)}
                     >
                       <AiFillMinusCircle />
-                    </span>
+                    </CartQuantityButton>
                     <span className="cart-quantity-total">{quantity}</span>
-                    <span
-                      className="cart-quantity-plus"
+                    <CartQuantityButton
+                      className="plus"
                       onClick={() => handleAddCart(item as Subitem)}
+                      isOut={!checkStock(item)}
                     >
                       <AiFillPlusCircle />
-                    </span>
+                    </CartQuantityButton>
                   </div>
                 </CartInfoContainer>
               </div>)
               : item?.desc
             }
-          </p>
+          </div>
 
           <CartInfoFooter>
             <div className="total-price">
@@ -403,6 +495,7 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
               <ItemContainer
                 key={subitem._id}
                 onClick={() => handleAddCart(subitem)}
+                isAvailable={checkStock(subitem)}
               >
                 <h3 className="subitem-title">
                   {subitem.name}
@@ -413,6 +506,7 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
             )) :
               <ItemContainer
                 onClick={() => handleAddCart(item)}
+                isAvailable={checkStock(item)}
               >
                 <h3 className="subitem-title">
                   {item.name}

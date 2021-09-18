@@ -107,7 +107,7 @@ const CategoryDesc = styled.div`
   }
 `
 
-const ItemCard = styled.div<{ index: number }>`
+const ItemCard = styled.div<{ index: number, isAvailable: boolean }>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -123,6 +123,26 @@ const ItemCard = styled.div<{ index: number }>`
   animation: slit-in-diagonal-1 0.4s ease-out both;
   animation-delay: ${props => 0.1 * props.index}s;
   color: ${color.black};
+  ${({ isAvailable }) => !isAvailable && 'pointer-events: none;'}
+
+  & > * {
+    ${({ isAvailable }) => !isAvailable && 'opacity: 0.6;'}
+  }
+
+  &::after {
+    content: 'Out of Stock';
+    ${({ isAvailable }) => isAvailable && 'display: none;'}
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: ${color.red};
+    color: ${color.white};
+    z-index: 1;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 15px;
+  }
 
   & img {
     height: 200px;
@@ -363,6 +383,8 @@ const CatalogPage: React.FC<iCatalogPage> = ({
 
       setCart([...newCart])
       setSubitemShowing({} as Item)
+
+      console.log(cart)
     },
     [cart, setCart]
   )
@@ -445,6 +467,24 @@ const CatalogPage: React.FC<iCatalogPage> = ({
     [itemCount, isFirstMount]
   )
 
+  const checkStock = React.useCallback(
+    item => {
+      let itemCountInCart = 0
+
+      cart.forEach(
+        cartItem => {
+          // @ts-expect-error
+          if (cartItem.item._id === item._id || cartItem.item?.itemid === item._id) {
+            itemCountInCart = itemCountInCart + cartItem.quantity
+          }
+        }
+      )
+
+      return !(item.stock - itemCountInCart === 0)
+    },
+    [cart]
+  )
+
   return (
     <CategoryWrapper>
       <CartIcon
@@ -465,6 +505,7 @@ const CatalogPage: React.FC<iCatalogPage> = ({
         animationType={cartAnimationType}
         onClickConfirmed={handleConfirmed}
         layout={layout}
+        items={items}
       />}
 
       {isTableShowing &&
@@ -504,6 +545,7 @@ const CatalogPage: React.FC<iCatalogPage> = ({
           selectedItems.map(
             (item, index) => (
               <ItemCard
+                isAvailable={checkStock(item)}
                 key={item._id}
                 onClick={() => handleItemClick(item)}
                 index={index}
@@ -545,6 +587,7 @@ const CatalogPage: React.FC<iCatalogPage> = ({
         onCancel={handleSubitemCancel}
         item={subitemShowing}
         layout={layout}
+        mainCart={cart}
       />
 
     </CategoryWrapper>

@@ -52,6 +52,7 @@ const CustomerRoutes: React.FC = () => {
         )
         history.push('/customer/final')
         setCartNumber(res.data.label)
+        setupInitialInfo()
         setIsLoading(false)
       } catch (e) {
         notifyAxiosError(e)
@@ -129,24 +130,26 @@ const CustomerRoutes: React.FC = () => {
     [table]
   )
 
+  const setupInitialInfo = React.useCallback(
+    async () => {
+      try {
+        setIsLoading(true)
+        const res = await axios.get('/api/customer/info')
+        setCategories(res.data.categories)
+        setLayout(res.data.layout)
+        // setLayout(res.data.layout)
+        setItems(res.data.items)
+        setIsLoading(false)
+      } catch (e) {
+        notifyAxiosError(e)
+      }
+    },
+    []
+  )
 
   React.useEffect(
     () => {
-      const init = async () => {
-        try {
-          setIsLoading(true)
-          const res = await axios.get('/api/customer/info')
-          setCategories(res.data.categories)
-          setLayout(res.data.layout)
-          // setLayout(res.data.layout)
-          setItems(res.data.items)
-          setIsLoading(false)
-        } catch (e) {
-          notifyAxiosError(e)
-        }
-      }
-
-      init()
+      setupInitialInfo()
     },
     []
   )

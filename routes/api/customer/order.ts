@@ -1,7 +1,9 @@
 import { Router } from 'express'
+import { Item } from 'models/Item';
 
 // Load Model
 import { Order } from 'models/Order'
+import { Subitem } from 'models/Subitem';
 import { Table } from 'models/Table';
 
 const router = Router()
@@ -29,6 +31,51 @@ router.post(
       })
 
       const label = req.body.number
+
+      // Update Stock
+      for(const cartItem of cart) {
+        const subItem = (await Subitem.findById(cartItem.item))
+        let item
+
+        if (!subItem) {
+          item = (await Item.findById(cartItem.item))
+        } else {
+          item = (await Item.findById(subItem.itemid))
+        }
+
+        if (!item) {
+          return res.status(500).json({error: 'Stock Check Failed'})
+        }
+
+        // Update Sub Item Stock
+        if (subItem) {
+          const subItemStock = (subItem?.stock || -1)
+
+          if (subItemStock > 0) {
+            if(subItemStock < cartItem.count) {
+              return res.status(500).json({error: `${subItem.name} is out of stock`})
+            }
+
+            subItem.stock = Math.max(0, subItemStock - cartItem.count)
+            
+            try { await subItem.save() } catch { return res.status(500).json({error: 'Stock Update Failed'}) }
+          }
+        }
+
+        // Update Item Stock
+        const itemStock = (item?.stock || -1)
+        
+        if (itemStock > 0) {
+          if(itemStock < cartItem.count) {
+            return res.status(500).json({error: `${item.name} is out of stock`})
+          }
+
+          item.stock = Math.max(0, itemStock - cartItem.count)
+          
+          try { await item.save() } catch { return res.status(500).json({error: 'Stock Update Failed'}) }
+        }
+      }
+
       const order = new Order({
         cart,
         label,
