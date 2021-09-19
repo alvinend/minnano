@@ -20,6 +20,7 @@ export const Button = styled.button<{
   height: ${({ size }) => size === 'large' ? '65px' : size === 'small' ? '45px' : '60px'};
   width: ${({ width }) => width || 'auto'};
   ${({ margin }) => margin && `margin: ${margin};`};
+  cursor: pointer;
 
   &:hover:enabled {
     border: 0px solid transparent;

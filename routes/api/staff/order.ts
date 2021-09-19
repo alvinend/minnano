@@ -126,5 +126,21 @@ router.get(
   }
 )
 
+// @route   DELETE staff/order/:id
+// @desc    Delete an order
+router.delete(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      console.log('AAAAAAAAAAAAAAAAAAAAAAAA')
+      const order = await Order.findByIdAndDelete(req.params.id)
+      console.log('BBBBBBBBBBBBBBBBBBBBBBBBBB')
+      return res.status(200).json(order)
+    } catch (err) {
+      return res.status(400).json(err)
+    }
+  }
+)
 
 export const staffOrderRouter = router

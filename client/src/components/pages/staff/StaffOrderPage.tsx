@@ -59,6 +59,7 @@ const OrderBox = styled.div<{ number: string }>`
   border-radius: 25px;
   padding-top: 25px;
   box-shadow: 2px 2px 4px 2px rgba(0,0,0,0.2);
+  cursor: pointer;
 
   &::after {
     content: '${props => props.number}';
@@ -197,35 +198,6 @@ const StaffOrderPage: React.FC<iStaffOrderPage> = () => {
     []
   )
 
-  const deleteOrder = React.useCallback(
-    async cartid => {
-      try {
-        const res = await axios.delete(`/api/staff/order/${cartid}`)
-        setOrderCarts(res.data)
-      } catch (e) {
-        notifyAxiosError(e)
-      }
-    },
-    []
-  )
-
-  const handleOnSubmit = React.useCallback(
-    () => {
-      deleteOrder(alertId)
-      setAlertId('')
-      setAlertNumber('')
-    },
-    [alertId, deleteOrder]
-  )
-
-  const handleAlertCancel = React.useCallback(
-    () => {
-      setAlertId('')
-      setAlertNumber('')
-    },
-    []
-  )
-
   const triggerFetch = React.useCallback(
     async () => {
       try {
@@ -237,6 +209,37 @@ const StaffOrderPage: React.FC<iStaffOrderPage> = () => {
 
     },
     [currentStatus]
+  )
+
+  const deleteOrder = React.useCallback(
+    async cartid => {
+      try {
+        setAlertId('')
+        setAlertNumber('')
+        setSelectedOrderCart({} as OrderCart)
+        await axios.delete(`/api/staff/order/${cartid}`)
+        await triggerFetch()
+        notifySuccess('Order Deleted Successfully')
+      } catch (e) {
+        notifyAxiosError(e)
+      }
+    },
+    [triggerFetch]
+  )
+
+  const handleOnSubmit = React.useCallback(
+    async () => {
+      await deleteOrder(alertId)
+    },
+    [alertId, deleteOrder]
+  )
+
+  const handleAlertCancel = React.useCallback(
+    () => {
+      setAlertId('')
+      setAlertNumber('')
+    },
+    []
   )
 
   React.useEffect(
@@ -330,7 +333,7 @@ const StaffOrderPage: React.FC<iStaffOrderPage> = () => {
           onSubmit={handleOnSubmit}
           onCancel={handleAlertCancel}
         >
-          <>{t('Order Number')}<b>{alertNumber}</b> {t('Do you want to complete it?')}</>
+          <>{t('Order Number')} <b>{alertNumber}</b> {t('Do you want to complete it?')}</>
         </AlertModal>
         <HeaderContainer>
           <StaffModeContainer>
