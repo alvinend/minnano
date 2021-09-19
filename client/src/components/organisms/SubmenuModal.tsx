@@ -282,11 +282,11 @@ const CartInfoFooter = styled.div`
   & .button-container {
     display: flex;
     justify-content: space-around;
-    margin: 20px 0;
-    font-size: 16px;
+    margin: 20px -10px;
 
     & > button {
-      min-width: 30%;
+      width: 50%;
+      font-size: 14px;
     }
   }
 
@@ -470,6 +470,7 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
             <div className="button-container">
               <Button
                 onClick={onCancel}
+                margin="0 10px 0 0"
               >
                 {t('Cancel')}
               </Button>

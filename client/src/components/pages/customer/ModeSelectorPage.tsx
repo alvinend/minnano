@@ -61,6 +61,7 @@ const TableModeContainer = styled.div`
 const TableModeInnerContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  min-width: 550px;
   width: 85%;
   height: 80%;
   max-width: 900px;
@@ -160,7 +161,7 @@ const NumberDisplay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 300px;
+  width: 80%;
   height: 65px;
   background-color: ${color.white};
   border: 2px solid ${color.black};
@@ -179,19 +180,23 @@ const ButtonWrapper = styled.div`
 const ButtonGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
+  width: 80%;
+  justify-content: center;
   margin-top: 30px;
-  margin-left: 30px;
-  width: 300px;
+  margin-left: 15px;
 
   & button {
-    width: 70px;
-    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
     border: 1px solid ${color.black};
     background: ${color.white};
     color: ${color.black};
-    font-size: 28px;
-    margin-bottom: 20px;
-    margin-right: 20px;
+    font-size: 24px;
+    margin-bottom: 15px;
+    margin-right: 15px;
     font-weight: bold;
     border-radius: 15px;
 

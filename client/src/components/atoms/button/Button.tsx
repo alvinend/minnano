@@ -8,7 +8,7 @@ export const Button = styled.button<{
   width?: string
   margin?: string
 }>`
-  padding: 10px 20px;
+  padding: 10px 15px;
   font-size: 18px;
   font-weight: 700;
   background: ${({ backgroundColor }) => backgroundColor ? backgroundColor : '#eee'};
