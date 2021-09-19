@@ -5,6 +5,7 @@ import passport from 'passport'
 import dotenv from 'dotenv'
 import multer from 'multer'
 import path from 'path'
+import { logger } from './config/logger'
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config()
@@ -26,6 +27,9 @@ const multerMid = multer({
     fileSize: 5 * 1024 * 1024,
   },
 })
+
+// Logger Middleware
+app.use(logger)
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
