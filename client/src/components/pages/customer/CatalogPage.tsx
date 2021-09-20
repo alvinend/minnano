@@ -11,13 +11,15 @@ import { Cart, Item, Category, Layout, Table } from '../../../models/common'
 import { FaHistory } from 'react-icons/fa'
 import { TableOverlay } from 'components/organisms/TableOverlay'
 import Truncate from 'react-truncate'
+import { Button } from 'components/atoms/button'
 
 const CategoryWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: ${color.lightGray};
+  height: 100vh;
+  background-color: ${color.white};
 `
 
 const CategoryBar = styled.div`
@@ -25,10 +27,12 @@ const CategoryBar = styled.div`
   width: 90%;
   padding: 10px 0;
   margin: 20px 0;
-  border: 2px ${color.gray} solid;
   border-radius: 5px;
   background-color: ${color.white};
   overflow-x: auto;
+  box-shadow: 2px 2px 4px 2px rgba(0,0,0,0.2);
+  border-radius: 15px;
+  height: 75px;
 `
 
 const CategoryItem = styled.div<{ isSelected: boolean }>`
@@ -37,7 +41,7 @@ const CategoryItem = styled.div<{ isSelected: boolean }>`
   margin: 0 20px;
   text-align: center;
   white-space: nowrap;
-  ${({ isSelected }) => isSelected && `border-bottom: 4px ${color.primary} solid;`}
+  ${({ isSelected }) => isSelected && `border-bottom: 4px ${color.black} solid;`}
   ${({ isSelected }) => isSelected && 'font-weight: bold;'}
 `
 
@@ -49,11 +53,10 @@ const CategorySelector = styled.div`
   position: relative;
 
   & img {
-    width: 80px;
-    height: 80px;
-    margin-right: 15px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
-    border: 2px ${color.gray} solid;
+    margin-right: 10px;
     border-radius: 5px;
   }
 `
@@ -63,36 +66,54 @@ const ItemWrapper = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   width: 90%;
-  height: calc(100vh - 132px);
+  height: calc(100vh - 192px);
   padding: 0 5px;
   background-color: ${color.secondary};
-  border: 2px ${color.gray} solid;
-  border-radius: 5px;
+  border-radius: 35px;
   overflow: auto;
+  box-shadow: 2px 2px 4px 2px rgba(0,0,0,0.2);
 `
 const CategoryDesc = styled.div`
   left: 0;
   top: 50%;
   display: flex;
+  align-items: center;
+  background-color: ${color.yellow};
+  width: 200px;
+  height: 80px;
+  font-size: 14px;
+  padding-left: 10px;
+  border-radius: 15px;
+  margin-right: 30px;
+  box-shadow: 2px 2px 4px 2px rgba(0,0,0,0.2);
 
-  & div {
-    width: 160px;
-    margin-right: 20px;
+  & > div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    line-height: 1.2;
+
+    & > p {
+      margin: 0;
+    }
   }
 
   & h1 {
+    margin: 0;
+    padding: 0;
     font-size: 16px;
     font-weight: 900;
+    margin-bottom: 5px;
   }
 `
 
-const ItemCard = styled.div<{ index: number }>`
+const ItemCard = styled.div<{ index: number, isAvailable: boolean }>`
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 300px;
-  height: 400px;
+  width: 260px;
+  height: 350px;
   margin: 8px;
   padding: 20px;
   border: 2px ${color.gray} solid;
@@ -102,6 +123,26 @@ const ItemCard = styled.div<{ index: number }>`
   animation: slit-in-diagonal-1 0.4s ease-out both;
   animation-delay: ${props => 0.1 * props.index}s;
   color: ${color.black};
+  ${({ isAvailable }) => !isAvailable && 'pointer-events: none;'}
+
+  & > * {
+    ${({ isAvailable }) => !isAvailable && 'opacity: 0.6;'}
+  }
+
+  &::after {
+    content: 'Out of Stock';
+    ${({ isAvailable }) => isAvailable && 'display: none;'}
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: ${color.red};
+    color: ${color.white};
+    z-index: 1;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 15px;
+  }
 
   & img {
     height: 200px;
@@ -123,13 +164,14 @@ const ItemCard = styled.div<{ index: number }>`
   }
 
   & span {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: light;
+    line-height: 1.4;
   }
 
   & .item-price {
     position: absolute;
-    bottom: 30px;
+    bottom: 15px;
   }
 
   &:hover {
@@ -161,7 +203,7 @@ const ItemCard = styled.div<{ index: number }>`
 
 const Icon = styled.div<{ isOpen: boolean, itemCount: number, type: string }>`
   position: fixed;
-  display: flex;
+  display: ${({ isOpen }) => isOpen ? 'flex' : 'none'};
   align-items: center;
   justify-content: center;
   width: 110px;
@@ -235,9 +277,33 @@ const CartIcon = styled(Icon)`
   bottom: 3%;
 `
 
-const TableIcon = styled(Icon)`
-  right: 3%;
-  bottom: calc(3% + 140px);
+const ButtonContainer = styled.div<{ isOpen: boolean, itemCount: number, type: string }>`
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+  margin-top: 20px;
+
+  &::after {
+    content: '${({ itemCount, isOpen }) => !isOpen && itemCount}';
+    display: ${({ itemCount, isOpen }) => !isOpen && itemCount ? 'flex' : 'none'};
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    color: ${color.white};
+    top: -20px;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: ${color.red};
+    font-size: 18px;
+    animation: ${({ type }) => type === 'in' ? 'puff-in-center 0.7s cubic-bezier(0.470, 0.000, 0.745, 0.715) both' : type === 'ping' && 'jello-horizontal 0.9s both'};
+  }
+
+  & > button:not(:last-child) {
+    margin-right: 30px;
+  }
 `
 
 type iCatalogPage = {
@@ -317,6 +383,8 @@ const CatalogPage: React.FC<iCatalogPage> = ({
 
       setCart([...newCart])
       setSubitemShowing({} as Item)
+
+      console.log(cart)
     },
     [cart, setCart]
   )
@@ -399,6 +467,24 @@ const CatalogPage: React.FC<iCatalogPage> = ({
     [itemCount, isFirstMount]
   )
 
+  const checkStock = React.useCallback(
+    item => {
+      let itemCountInCart = 0
+
+      cart.forEach(
+        cartItem => {
+          // @ts-expect-error
+          if (cartItem.item._id === item._id || cartItem.item?.itemid === item._id) {
+            itemCountInCart = itemCountInCart + cartItem.quantity
+          }
+        }
+      )
+
+      return !(item.stock - itemCountInCart === 0)
+    },
+    [cart]
+  )
+
   return (
     <CategoryWrapper>
       <CartIcon
@@ -408,8 +494,9 @@ const CatalogPage: React.FC<iCatalogPage> = ({
         type={cartIconAnimationType}
         onAnimationEnd={() => setCartIconAnimationType('')}
       >
-        {isOverlayShowing ? <GrClose /> : <TiShoppingCart />}
+        <GrClose />
       </CartIcon>
+
       {isCartShowing && <CartOverlay
         cart={cart}
         setCart={setCart}
@@ -418,9 +505,10 @@ const CatalogPage: React.FC<iCatalogPage> = ({
         animationType={cartAnimationType}
         onClickConfirmed={handleConfirmed}
         layout={layout}
+        items={items}
       />}
 
-      {isTableShowing ?
+      {isTableShowing &&
         <TableOverlay
           layout={layout}
           table={table!}
@@ -428,15 +516,6 @@ const CatalogPage: React.FC<iCatalogPage> = ({
           onCancel={handleHideOverlay}
           onFinish={handleFinishTable}
         />
-        : (!isOverlayShowing && !!table) &&
-        <TableIcon
-          onClick={handleShowTable}
-          isOpen={false}
-          itemCount={0}
-          type={'ping'}
-        >
-          <FaHistory />
-        </TableIcon>
       }
 
 
@@ -466,6 +545,7 @@ const CatalogPage: React.FC<iCatalogPage> = ({
           selectedItems.map(
             (item, index) => (
               <ItemCard
+                isAvailable={checkStock(item)}
                 key={item._id}
                 onClick={() => handleItemClick(item)}
                 index={index}
@@ -487,12 +567,27 @@ const CatalogPage: React.FC<iCatalogPage> = ({
         }
       </ItemWrapper>
 
+      <ButtonContainer itemCount={itemCount} isOpen={isOverlayShowing} type={cartIconAnimationType}>
+        <Button size="small" width="180px" onClick={handleShowTable}> History </Button>
+        <Button
+          size="small"
+          width="180px"
+          backgroundColor={color.blue}
+          color={color.white}
+          onClick={handleShowCart}
+          onAnimationEnd={() => setCartIconAnimationType('')}
+        >
+          Cart
+        </Button>
+      </ButtonContainer>
+
       <SubmenuModal
         isShowing={!!subitemShowing?._id}
         onSubmit={handleAddCart}
         onCancel={handleSubitemCancel}
         item={subitemShowing}
         layout={layout}
+        mainCart={cart}
       />
 
     </CategoryWrapper>

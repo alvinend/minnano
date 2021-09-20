@@ -19,7 +19,10 @@ const SubitemSchema = new Schema({
   },
   desc: String,
   price: Number,
-  stock: Number,
+  stock: {
+    type: Number,
+    default: -1
+  },
   itemid: {
     type: String,
     required: true

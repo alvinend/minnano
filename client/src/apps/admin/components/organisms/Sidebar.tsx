@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 
 const SidebarContainer = styled.div`
   width: 256px;
-  background-color:${color.drakenPrimary};
+  background-color:${color.black};
   min-height: 100vh;
   color: ${color.white};
   box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.2), 0px 3px 3px rgba(0, 0, 0, 0.12), 0px 3px 4px rgba(0, 0, 0, 0.14);
@@ -23,20 +23,18 @@ const SidebarLogo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 25px 20px 5px 20px;
   font-size: 30px;
   font-weight: bold;
   word-break: break-all;
   text-align: right;
-  background-color: ${color.lightenPrimary};
 
   & img {
-    width: 50%;
+    width: 40%;
   }
 `
 
 const SidebarItemContainer = styled.ul`
-  border-top: 1px solid ${color.gray};
   padding-top: 20px;
 `
 
@@ -45,13 +43,13 @@ const SidebarItem = styled(Link) <{ selected?: boolean }>`
   align-items: center;
   padding: 15px 30px;
   color: ${({ selected }) => selected ? color.black : color.white};
-  background-color: ${({ selected }) => selected && color.primary};
+  background-color: ${({ selected }) => selected && color.yellow};
   text-decoration: none;
   font-size: 14px; 
 
   &:hover {
     color: ${color.black};
-    background-color: ${color.lightenPrimary};
+    background-color: ${color.secondary};
   }
   
   & svg {
@@ -83,9 +81,11 @@ export const Sidebar: React.FC<iSidebar> = ({
 
   return (
     <SidebarContainer>
-      <SidebarLogo>
-        <img src="https://minnanoonline.s3-ap-northeast-1.amazonaws.com/logo/Logo+Minnano+Transparant+Background+2.png" alt="Minnano Logo" />
-      </SidebarLogo>
+      <Link to="/">
+        <SidebarLogo>
+          <img src="https://minnanoonline.s3.ap-northeast-1.amazonaws.com/logo/minnano_logo_white.png" alt="Minnano Logo" />
+        </SidebarLogo>
+      </Link>
       <SidebarItemContainer>
         <SidebarItem selected={page === 'dashboard'} to="/admin/dashboard">
           <AiOutlineDashboard />

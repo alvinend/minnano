@@ -8,17 +8,24 @@ import moment from 'moment'
 
 const router = Router()
 
-// @route   GET api/admin/category/test
+// @route   GET api/admin/sales/test
 // @desc    Test route
-router.get('/test', (req, res) => res.json({ msg: 'Admin Category Works' }))
+router.get('/test', (req, res) => res.json({ msg: 'Admin Sales Works' }))
 
-// @route   GET admin/category/
+// @route   GET admin/sales/
 // @desc    Get categories
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
+      // const month = req.query?.month || moment().month()
+      // const year = req.query?.year || moment().year()
+
+      // console.log(month)
+      // console.log(year)
+      // console.log(moment('2021-08-01').startOf('month').month())
+
       // Daily Sales
       const today = moment()
       today.set({hour:0,minute:0,second:0,millisecond:0})
@@ -50,10 +57,10 @@ router.get(
         const timeGte = moment().subtract(i, 'months').startOf('month')
         timeGte.set({hour:0,minute:0,second:0,millisecond:0})
 
-        const timeLt = moment().subtract(i - 0, 'months').startOf('month')
+        const timeLt = moment().subtract(i - 1, 'months').startOf('month')
         timeLt.set({hour:0,minute:0,second:0,millisecond:0})
 
-        const orders =await Order.find({
+        const orders = await Order.find({
           createdAt: {
             $gte: timeGte.toDate(),
             $lt: timeLt.toDate()

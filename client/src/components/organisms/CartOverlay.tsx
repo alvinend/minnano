@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { TiShoppingCart, TiPlusOutline, TiMinusOutline } from 'react-icons/ti'
 import { color } from '../atoms/color'
-import { Cart, Layout } from '../../models/common'
+import { Cart, Item, Layout, Subitem } from '../../models/common'
 import { useTranslation } from 'react-i18next'
 
 const Overlay = styled.div<{ type: string }>`
@@ -168,6 +168,7 @@ type iCartOverlay = {
   onClickConfirmed: () => void
   animationType: string
   layout: Layout
+  items: Item[]
 }
 
 export const CartOverlay: React.FC<iCartOverlay> = ({
@@ -177,7 +178,8 @@ export const CartOverlay: React.FC<iCartOverlay> = ({
   onClickBack,
   onClickConfirmed,
   animationType,
-  layout
+  layout,
+  items
 }) => {
   const { t: rawT } = useTranslation('customer')
 
@@ -189,10 +191,37 @@ export const CartOverlay: React.FC<iCartOverlay> = ({
   const handleAddItem = React.useCallback(
     (index: number) => {
       let newCart = cart
+      let cartItem = newCart[index]
+
+      // If Item or Sub-Item is out
+      if ((cartItem.item?.stock || 0) - cartItem.quantity === 0) {
+        return
+      }
+
+      // If Subitem's Item is out
+      const parentItemId = (cartItem.item as Subitem)?.itemid
+      if (parentItemId) {
+        const parentItem = items.find(item => item._id === parentItemId)!
+
+        let itemCountInCart = 0
+        cart.forEach(
+          cartItem => {
+            // @ts-expect-error
+            if (cartItem.item._id === parentItem._id || cartItem.item?.itemid === parentItem._id) {
+              itemCountInCart = itemCountInCart + cartItem.quantity
+            }
+          }
+        )
+
+        if ((parentItem?.stock || 0) - itemCountInCart === 0) {
+          return
+        }
+      }
+
       newCart[index].quantity += 1
       setCart([...newCart])
     },
-    [cart, setCart]
+    [cart, setCart, items]
   )
 
   const handleDeleteItem = React.useCallback(

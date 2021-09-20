@@ -7,10 +7,13 @@ import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai'
 import { RoundedButton } from 'components/atoms/button/RoundedButton'
 import { RoundedButtonPrimary } from 'components/atoms/button/RoundedButtonPrimary'
 import { useTranslation } from 'react-i18next'
+import { Button } from 'components/atoms/button'
 
 const SubmenuModalWrapper = styled.div`
   position: fixed;
   display: flex;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   z-index: 2;
@@ -56,6 +59,7 @@ const Overlay = styled.div<{ type: string }>`
 
 const StyledSubmenuModal = styled.div<{ type: string }>`
   display: flex;
+  border-radius: 25px;
   width: 80vw;
   height: 80vh;
   background-color: ${color.white};
@@ -92,16 +96,10 @@ const StyledSubmenuModal = styled.div<{ type: string }>`
 `
 
 const DetailContainer = styled.div`
-  width: 40%;
+  width: 35%;
   padding: 40px;
-  background-color: ${color.primary};
-
-  & > img {
-    width: calc(100% + 80px);
-    height: 30%;
-    margin: -40px -40px 20px -40px;
-    object-fit: cover;
-  }
+  border-radius: 25px 0 0 25px;
+  background-color: ${color.secondary};
 
   & > .title {
     font-size: 24px;
@@ -109,23 +107,35 @@ const DetailContainer = styled.div`
   }
 
   & > .desc {
-    height: calc(50% - 100px);
+    height: calc(95% - 200px);
     overflow: auto;
   }
 `
 
 const VariationTitle = styled.h2`
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+  position: relative;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
   font-size: 36px;
   font-weight: bold;
-  border-bottom: 10px dotted ${color.gray};
+  
+  & > img {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    border-radius: 50%;
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
+  }
 `
 
 const VariationContainer = styled.div`
-  width: 60%;
-  padding: 40px;
+  width: 65%;
+  padding: 10px 40px;
+  border-radius: 0 0 25px 0;
   margin-top: 30px;
+  background-color: ${color.white};
   
   & > .subitem-inner {
     display: flex;
@@ -136,23 +146,6 @@ const VariationContainer = styled.div`
     height: 80%;
     margin-top: 20px;
     overflow: auto;
-
-    & ${FrostedBox} {
-      width: 48%;
-      margin-bottom: 20px;
-      transition: .3s all ease-in-out;
-
-      &:hover {
-        background: linear-gradient(130deg, ${color.pink} 0%, ${color.secondary} 100%);
-        box-shadow: none;
-        transition: .3s all ease-in-out;
-        cursor: pointer;
-
-        & .subitem-price {
-          border: 2px solid ${color.black};
-        }
-      }
-    }
   }
 
   & .subitem-title {
@@ -164,13 +157,54 @@ const VariationContainer = styled.div`
       margin-left: 20px;
       padding: 2px 8px;
       border-radius: 20px;
-      border: 2px solid ${color.secondary};
+      border: 2px solid ${color.blue};
       font-size: 16px;
     }
   }
 
   & .subitem-desc {
     font-size: 16px;
+  }
+`
+
+const ItemContainer = styled.div<{ isAvailable: boolean }>`
+  position: relative;
+  width: 48%;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  transition: .3s all ease-in-out;
+  border-radius: 25px;
+  border: 1px solid ${color.yellow};
+  ${({ isAvailable }) => !isAvailable && 'pointer-events: none;'}
+
+  & > * {
+    ${({ isAvailable }) => !isAvailable && 'opacity: 0.6;'}
+  }
+
+  &::after {
+    content: 'Out of Stock';
+    ${({ isAvailable }) => isAvailable && 'display: none;'}
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: ${color.red};
+    color: ${color.white};
+    z-index: 1;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 15px;
+  }
+
+  &:hover {
+    background: ${color.yellow};
+    box-shadow: none;
+    transition: .3s all ease-in-out;
+    cursor: pointer;
+
+    & .subitem-price {
+      background-color: ${color.blue};
+    }
   }
 `
 
@@ -206,8 +240,33 @@ const CartInfoContainer = styled.div`
   }
 `
 
+const CartQuantityButton = styled.span<{ isOut?: boolean }>`
+  display: flex;
+  align-items: center;
+  width: 30%;
+  ${({ isOut }) => isOut && 'opacity: 0.6;'}
+  ${({ isOut }) => isOut && 'pointer-events: none;'}
+
+  &.minus {
+    color: ${color.red};
+    font-size: 36px;
+    line-height: 1;
+  } 
+
+  &.total {
+    width: 80px;
+    text-align: center;
+  } 
+
+  &.plus {
+    color: ${({ isOut }) => isOut ? color.gray : color.green};
+    font-size: 36px;
+    line-height: 1;
+  } 
+`
+
 const CartInfoFooter = styled.div`
-  border-top: 10px dotted ${color.black};
+  border-top: 1px solid ${color.black};
   padding: 20px;
 
   & .total-price {
@@ -223,11 +282,11 @@ const CartInfoFooter = styled.div`
   & .button-container {
     display: flex;
     justify-content: space-around;
-    margin: 20px 0;
-    font-size: 16px;
+    margin: 20px -10px;
 
     & > button {
-      min-width: 30%;
+      width: 50%;
+      font-size: 14px;
     }
   }
 
@@ -239,6 +298,7 @@ type iSubmenuModal = {
   onCancel: () => void
   item: Item
   layout: Layout
+  mainCart: Cart
 }
 
 export const SubmenuModal: React.FC<iSubmenuModal> = ({
@@ -246,7 +306,8 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
   onSubmit,
   onCancel,
   item,
-  layout
+  layout,
+  mainCart
 }) => {
   const [animationType, setAnimationType] = React.useState('in')
   const [cart, setCart] = React.useState([] as Cart)
@@ -324,38 +385,81 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
     [cart]
   )
 
+  const checkStock = React.useCallback(
+    subitem => {
+      // If Item have no stock
+      let itemCountInCart = 0
+
+      // if Sub-Item have no stock
+      let subitemCountInCart = 0
+
+      mainCart.forEach(
+        cartItem => {
+          // @ts-expect-error
+          if (cartItem.item._id === item._id || cartItem.item?.itemid === item._id) {
+            itemCountInCart = itemCountInCart + cartItem.quantity
+          }
+
+          if (cartItem.item._id === subitem._id) {
+            subitemCountInCart = subitemCountInCart + cartItem.quantity
+          }
+        }
+      )
+
+      cart.forEach(
+        cartItem => {
+          // @ts-expect-error
+          if (cartItem.item._id === item._id || cartItem.item?.itemid === item._id) {
+            itemCountInCart = itemCountInCart + cartItem.quantity
+          }
+
+          if (cartItem.item._id === subitem._id) {
+            subitemCountInCart = subitemCountInCart + cartItem.quantity
+          }
+        }
+      )
+
+      // If Item have no stock
+      if ((item?.stock || 0) - itemCountInCart === 0) { return false }
+      // if Sub-Item have no stock
+      if (subitem.stock - subitemCountInCart === 0) { return false } 
+      return true
+    },
+    [mainCart, cart, item]
+  )
+
   return isShowing ? (
     <SubmenuModalWrapper>
       <Overlay onClick={handleCloseSubmenuModal} type={animationType} />
       <StyledSubmenuModal type={animationType}>
         <DetailContainer>
-          <img src={`${item?.imagelink}`} alt="Item" />
           <h2 className="title">{item?.name}</h2>
-          <p className="desc">
+          <div className="desc">
             {!!cart.length ?
               cart.map(({ item, quantity }) => <div>
                 <CartInfoContainer key={`${item._id}-${quantity}`}>
                   <div className="cart-name">{item.name}</div>
                   <div className="cart-quantity">
-                    <span
-                      className="cart-quantity-minus"
+                    <CartQuantityButton
+                      className="minus"
                       onClick={() => handleRemoveCart(item as Subitem)}
                     >
                       <AiFillMinusCircle />
-                    </span>
+                    </CartQuantityButton>
                     <span className="cart-quantity-total">{quantity}</span>
-                    <span
-                      className="cart-quantity-plus"
+                    <CartQuantityButton
+                      className="plus"
                       onClick={() => handleAddCart(item as Subitem)}
+                      isOut={!checkStock(item)}
                     >
                       <AiFillPlusCircle />
-                    </span>
+                    </CartQuantityButton>
                   </div>
                 </CartInfoContainer>
               </div>)
               : item?.desc
             }
-          </p>
+          </div>
 
           <CartInfoFooter>
             <div className="total-price">
@@ -364,17 +468,20 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
               {layout.currency}
             </div>
             <div className="button-container">
-              <RoundedButton
+              <Button
                 onClick={onCancel}
+                margin="0 10px 0 0"
               >
                 {t('Cancel')}
-              </RoundedButton>
-              <RoundedButtonPrimary
+              </Button>
+              <Button
                 disabled={!cart.length}
                 onClick={handleSubmit}
+                color={color.white}
+                backgroundColor={color.green}
               >
                 {t('Add to cart')}
-              </RoundedButtonPrimary>
+              </Button>
             </div>
           </CartInfoFooter>
 
@@ -382,29 +489,32 @@ export const SubmenuModal: React.FC<iSubmenuModal> = ({
         <VariationContainer>
           <VariationTitle>
             {t('Variation')}
+            <img src={`${item?.imagelink}`} alt="Item" />
           </VariationTitle>
           <div className="subitem-inner">
             {!!item.subitems.length ? item?.subitems.map(subitem => (
-              <FrostedBox
+              <ItemContainer
                 key={subitem._id}
                 onClick={() => handleAddCart(subitem)}
+                isAvailable={checkStock(subitem)}
               >
                 <h3 className="subitem-title">
                   {subitem.name}
                   <span className="subitem-price">{subitem.price.toLocaleString()} {layout.currency}</span>
                 </h3>
                 <p className="subitem-desc">{subitem.desc}</p>
-              </FrostedBox>
+              </ItemContainer>
             )) :
-              <FrostedBox
+              <ItemContainer
                 onClick={() => handleAddCart(item)}
+                isAvailable={checkStock(item)}
               >
                 <h3 className="subitem-title">
                   {item.name}
                   <span className="subitem-price">{item.price.toLocaleString()} {layout.currency}</span>
                 </h3>
                 <p className="subitem-desc">{item.desc}</p>
-              </FrostedBox>
+              </ItemContainer>
             }
           </div>
         </VariationContainer>

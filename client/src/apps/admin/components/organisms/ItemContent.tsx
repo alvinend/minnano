@@ -19,7 +19,7 @@ const OuterTableWrapper = styled.div`
 
 const TableWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(6, auto);
+  grid-template-columns: repeat(7, auto);
   grid-auto-flow: row;
   margin-bottom: 30px;
 `
@@ -234,6 +234,7 @@ export const ItemContent: React.FC<iItemContent> = ({
             <TableHeader>{t('Image')}</TableHeader>
             <TableHeader>{t('Price')}</TableHeader>
             <TableHeader>{t('Category')}</TableHeader>
+            <TableHeader>Stock</TableHeader>
             <TableHeader>{t('Action')}</TableHeader>
             {items.map(item => (
               <React.Fragment key={item._id}>
@@ -242,6 +243,7 @@ export const ItemContent: React.FC<iItemContent> = ({
                 <TableItem>{<img src={item.imagelink} alt="item" />}</TableItem>
                 <TableItem>{item.price}</TableItem>
                 <TableItem>{getCategoryName(item.categoryid)}</TableItem>
+                <TableItem>{item.stock === -1 ? 'Unlimited' : item.stock}</TableItem>
                 <TableItem>
                   <span onClick={() => handleEditItem({ ...item })}><RiEditBoxLine /></span>
                   <span onClick={() => setDeletingItem({ ...item })}><IoIosTrash /></span>

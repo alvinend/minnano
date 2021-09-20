@@ -309,7 +309,7 @@ const StaffTablePage: React.FC<iStaffTablePage> = () => {
               backgroundColor={currentStatus === 'idle' ? color.yellow : ''}
               color={currentStatus === 'idle' ? color.white : ''}
             >
-              {t('Idle')}
+              Open
             </Button>
             <Button
               size="small"
@@ -317,7 +317,7 @@ const StaffTablePage: React.FC<iStaffTablePage> = () => {
               backgroundColor={currentStatus === 'started' ? color.yellow : ''}
               color={currentStatus === 'started' ? color.white : ''}
             >
-              {t('Started')}
+              Filled
             </Button>
             <Button
               size="small"
@@ -325,7 +325,7 @@ const StaffTablePage: React.FC<iStaffTablePage> = () => {
               backgroundColor={currentStatus === 'pending' ? color.yellow : ''}
               color={currentStatus === 'pending' ? color.white : ''}
             >
-              {t('Pending')}
+              Finishing
             </Button>
           </StaffProcessContainer>
           {isLoading ?

@@ -4,6 +4,7 @@ import {
   adminItemRouter
 } from 'routes/api/admin/index'
 import { adminLayoutRouter } from './admin/layout'
+import { adminSalesRouter } from './admin/sales'
 import { adminSubitemRouter } from './admin/subitem'
 
 const app = express()
@@ -18,6 +19,7 @@ app.use('/category', adminCategoryRouter)
 app.use('/item', adminItemRouter)
 app.use('/layout', adminLayoutRouter)
 app.use('/subitem', adminSubitemRouter)
+app.use('/sales', adminSalesRouter)
 // app.use('/sales', adminSalesRouter)
 
 

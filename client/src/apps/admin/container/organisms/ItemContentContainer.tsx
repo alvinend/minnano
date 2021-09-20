@@ -38,7 +38,7 @@ export const ItemContentContainer: React.FC = () => {
         const oldItem = items[index]
         items[index] = { ...oldItem, ...newItem }
         setItems([...items])
-        notifySuccess('アイテムの更新が成功しました')
+        notifySuccess('Item Updated Successfully')
       } catch (e) {
         notifyAxiosError(e)
       }
@@ -54,7 +54,7 @@ export const ItemContentContainer: React.FC = () => {
         const index = items.findIndex(item => item._id === deletedItem._id)
         items.splice(index, 1)
         setItems([...items])
-        notifySuccess('アイテムの削除が成功しました')
+        notifySuccess('Item Deleted Successfully')
       } catch (e) {
         notifyAxiosError(e)
       }
@@ -69,7 +69,7 @@ export const ItemContentContainer: React.FC = () => {
         const createdItem = res.data
         items.unshift(createdItem)
         setItems([...items])
-        notifySuccess('アイテムの作成が成功しました')
+        notifySuccess('Item Created Successfully')
       } catch (e) {
         notifyAxiosError(e)
       }
@@ -108,7 +108,7 @@ export const ItemContentContainer: React.FC = () => {
         items[index] = parentItem
 
         setItems([...items])
-        notifySuccess('サブアイテムの更新が成功しました')
+        notifySuccess('Sub-Item Updated Successfully')
 
         return parentItem.subitems
       } catch (e) {
@@ -133,7 +133,7 @@ export const ItemContentContainer: React.FC = () => {
         }
 
         setItems([...items])
-        notifySuccess('サブアイテムの削除が成功しました')
+        notifySuccess('Sub-Item Deleted uccessfully')
 
         return newSubitems
       } catch (e) {
@@ -157,7 +157,7 @@ export const ItemContentContainer: React.FC = () => {
         items[index] = parentItem
 
         setItems([...items])
-        notifySuccess('サブアイテムの削除が成功しました')
+        notifySuccess('Sub-Item Created Successfully')
 
         return newSubitems
       } catch (e) {

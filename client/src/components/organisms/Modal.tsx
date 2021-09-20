@@ -52,9 +52,10 @@ const Overlay = styled.div<{ type: string }>`
 `
 
 const StyledModal = styled.div<{ type: string }>`
-  width: 50vw;
+  width: 60vw;
   max-height: 90vh;
-  padding: 20px;
+  padding: 20px 30px;
+  border-radius: 25px;
   background-color: ${color.white};
   font-size: 24px;
   text-align: center;

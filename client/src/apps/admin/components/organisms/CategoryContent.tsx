@@ -215,6 +215,7 @@ export const CategoryContent: React.FC<iCategoryContent> = ({
         onChangeCategory={handleChangeEditingCategory}
         categoryData={editingCategory}
         changeImage={changeImage}
+        type="edit"
       />
 
       {/* 削除モーダル */}
@@ -238,6 +239,7 @@ export const CategoryContent: React.FC<iCategoryContent> = ({
         onChangeCategory={handleChangeCreatingCategory}
         categoryData={creatingCategory}
         changeImage={changeImage}
+        type="create"
       />
     </>
   )

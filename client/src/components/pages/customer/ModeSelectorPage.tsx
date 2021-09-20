@@ -5,14 +5,14 @@ import { FiShoppingBag } from 'react-icons/fi'
 import { GiTable } from 'react-icons/gi'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import dineInLogo from 'components/img/dine_in_logo.png'
+import takeawayLogo from 'components/img/takeaway_logo.png'
 
 const ModeSelectorWrapper = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-around;
   width: 100%;
   height: 100vh;
-  background-color: ${color.gray};
+
 
   & .main-icon {
     font-size: 210px;
@@ -25,65 +25,84 @@ const ModeSelectorWrapper = styled.div`
     justify-content: center;
     font-size: 16px;
     text-align: center;
-    padding: 0 40px;
-
-    & > h1 {
-      font-size: 62px;
-    }
+    padding: 0 20px;
   }
 `
 
 const TableModeContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   width: 60%;
-  height: 700px;
-  margin: 20px 0;
-  padding: 0 5px;
-  background-color: ${color.secondary};
-  border: 2px ${color.lightGray} solid;
-  border-radius: 5px;
-	animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-
-  @keyframes slide-in-top {
-    0% {
-      transform: translateY(-1000px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
+  height: 100%;
+  background-color: ${color.yellow};
 
   & .table-desc-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 49%;
-    margin: 30px 0;
-    border-left: 10px dotted ${color.black};
-  }
+    padding: 10px 10px 0 10px;
+    margin: 20px 0;
 
-  & .number-input-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 51%
+    & > img {
+      width: 300px;
+    }
+
+    & > h1 {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 0.8;
+    }
   }
 `
 
-const NumberModeContainer = styled.div`
+const TableModeInnerContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  min-width: 550px;
+  width: 85%;
+  height: 80%;
+  max-width: 900px;
+  max-height: 600px;
+  margin: 20px 0;
+  background-color: ${color.secondary};
+  border: 2px ${color.lightGray} solid;
+  border-radius: 25px;
+	animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+
+  @keyframes slide-in-top {
+    0% {
+      transform: translateY(-1000px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+`
+
+const NumberInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 30%;
-  height: 700px;
-  margin: 20px 0;
-  padding: 0 5px;
+  width: 51%;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  background-color: ${color.white};
+  border-radius: 25px 0 0 25px;
+`
+
+const OrderModeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  height: 100%;
   background-color: ${color.secondary};
   border: 2px ${color.lightGray} solid;
   border-radius: 5px;
@@ -98,6 +117,43 @@ const NumberModeContainer = styled.div`
       transform: translateY(0);
       opacity: 1;
     }
+  }
+`
+
+const OrderModeInnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 85%;
+  height: 80%;
+  max-width: 350px;
+  max-height: 600px;
+  margin: 20px 0;
+  padding-top: 80px;
+  background-color: ${color.white};
+  border-radius: 25px;
+	animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+
+  @keyframes slide-in-top {
+    0% {
+      transform: translateY(-1000px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  & > img {
+    width: 300px;
+  }
+
+  & > h1 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 0.8;
   }
 `
 
@@ -105,51 +161,44 @@ const NumberDisplay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 380px;
-  height: 100px;
-  background-color: ${color.primary};
-  border: 5px ${color.white} solid;
+  width: 80%;
+  height: 65px;
+  background-color: ${color.white};
+  border: 2px solid ${color.black};
   color: ${color.black};
-  font-size: 72px;
+  font-size: 48px;
+  border-radius: 15px;
   font-weight: bold;
-`
-
-const DescWrapper = styled.div`
-  display: flex;
-  font-size: 24px;
 `
 
 const ButtonWrapper = styled.div`
   display:flex;
-  justify-content: flex-start;
-
-  & > div {
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 380px;
-  }
+  justify-content: center;
+  width: 320px;
 `
 
 const ButtonGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 420px;
+  width: 80%;
+  justify-content: center;
   margin-top: 30px;
-  margin-left: 30px;
+  margin-left: 15px;
 
   & button {
-    width: 80px;
-    height: 80px;
-    border: 2px #eee solid;
-    background: ${color.lightGray};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border: 1px solid ${color.black};
+    background: ${color.white};
     color: ${color.black};
     font-size: 24px;
-    margin-bottom: 30px;
-    margin-right: 30px;
-    padding: 8px 0;
-    font-size: 24px;
+    margin-bottom: 15px;
+    margin-right: 15px;
     font-weight: bold;
+    border-radius: 15px;
 
     &:hover {
       color: #333;
@@ -217,49 +266,46 @@ const ModeSelectorPage: React.FC<iModeSelectorPage> = ({
   return (
     <ModeSelectorWrapper>
       <TableModeContainer>
-        <div className="number-input-container">
-          <DescWrapper>
-            {t('Please enter the table number')}
-          </DescWrapper>
-          <NumberDisplay>{number}</NumberDisplay>
-          <ButtonWrapper>
-            <ButtonGroup>
-              <button onClick={inputNumber(1)} disabled={number.length === 3}>1</button>
-              <button onClick={inputNumber(2)} disabled={number.length === 3}>2</button>
-              <button onClick={inputNumber(3)} disabled={number.length === 3}>3</button>
-              <button onClick={inputNumber(4)} disabled={number.length === 3}>4</button>
-              <button onClick={inputNumber(5)} disabled={number.length === 3}>5</button>
-              <button onClick={inputNumber(6)} disabled={number.length === 3}>6</button>
-              <button onClick={inputNumber(7)} disabled={number.length === 3}>7</button>
-              <button onClick={inputNumber(8)} disabled={number.length === 3}>8</button>
-              <button onClick={inputNumber(9)} disabled={number.length === 3}>9</button>
-              <button onClick={delNumber} disabled={!number.length}>DEL</button>
-              <button onClick={inputNumber(0)} disabled={number.length === 3}>0</button>
-              <button onClick={handleOrder} disabled={number.length !== 3}>OK</button>
-            </ButtonGroup>
-          </ButtonWrapper>
-        </div>
-        <div className="table-desc-container">
-          <span className="main-icon">
-            <GiTable />
-          </span>
-          <div className="mode-desc">
-            <h1>{t('Table')}</h1>
-            {t('Select this if you want to enable multiple orders in one session')} <br />
-            {t('Enter the table number and press "OK"')}
+        <TableModeInnerContainer>
+          <NumberInputContainer>
+            <NumberDisplay>{number}</NumberDisplay>
+            <ButtonWrapper>
+              <ButtonGroup>
+                <button onClick={inputNumber(1)} disabled={number.length === 3}>1</button>
+                <button onClick={inputNumber(2)} disabled={number.length === 3}>2</button>
+                <button onClick={inputNumber(3)} disabled={number.length === 3}>3</button>
+                <button onClick={inputNumber(4)} disabled={number.length === 3}>4</button>
+                <button onClick={inputNumber(5)} disabled={number.length === 3}>5</button>
+                <button onClick={inputNumber(6)} disabled={number.length === 3}>6</button>
+                <button onClick={inputNumber(7)} disabled={number.length === 3}>7</button>
+                <button onClick={inputNumber(8)} disabled={number.length === 3}>8</button>
+                <button onClick={inputNumber(9)} disabled={number.length === 3}>9</button>
+                <button onClick={delNumber} disabled={!number.length}>DEL</button>
+                <button onClick={inputNumber(0)} disabled={number.length === 3}>0</button>
+                <button onClick={handleOrder} disabled={number.length !== 3}>OK</button>
+              </ButtonGroup>
+            </ButtonWrapper>
+          </NumberInputContainer>
+          <div className="table-desc-container">
+            <img src={dineInLogo} />
+            <h1>DINE IN</h1>
+            <div className="mode-desc">
+              {t('Select this if you want to enable multiple orders in one session')} <br />
+              {t('Enter the table number and press "OK"')}
+            </div>
           </div>
-        </div>
+        </TableModeInnerContainer>
       </TableModeContainer>
 
-      <NumberModeContainer onClick={handleNoTable}>
-        <span className="main-icon">
-          <FiShoppingBag />
-        </span>
-        <div className="mode-desc">
+      <OrderModeContainer onClick={handleNoTable}>
+        <OrderModeInnerContainer>
+          <img src={takeawayLogo} />
           <h1>{t('Takeaway')}</h1>
-          {t('Select this if you want this machine to accept a single order')}
-        </div>
-      </NumberModeContainer>
+          <div className="mode-desc">
+            {t('Select this if you want this machine to accept a single order')}
+          </div>
+        </OrderModeInnerContainer>
+      </OrderModeContainer>
     </ModeSelectorWrapper>
   )
 }

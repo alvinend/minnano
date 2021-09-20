@@ -22,7 +22,10 @@ const ItemSchema = new Schema<IItem>({
   desc: String,
   imagelink: String,
   price: Number,
-  stock: Number,
+  stock: {
+    type: Number,
+    default: -1
+  },
   categoryid: {
     type: String,
     required: true

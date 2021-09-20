@@ -2,13 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { color } from 'components/atoms/color'
 import { OrderCart, OrderStatuses } from 'models/common'
-import { FrostedBox } from 'components/atoms/FrostedBox'
-import { RoundedButton } from 'components/atoms/button/RoundedButton'
-import { RoundedButtonPrimary } from 'components/atoms/button/RoundedButtonPrimary'
-import { RoundedButtonDanger } from 'components/atoms/button/RoundedButtonDanger'
 import { useTranslation } from 'react-i18next'
 import { capitalize } from 'utils'
 import moment from 'moment'
+import { Button } from 'components/atoms/button'
 
 const OrderDetailModalWrapper = styled.div`
   position: fixed;
@@ -65,6 +62,7 @@ const StyledOrderDetailModal = styled.div<{ type: string }>`
   background-color: ${color.white};
   font-size: 16px;
   z-index: 3;
+  border-radius: 25px;
   animation: ${({ type }) => type === 'in' ?
     'slide-in-bck-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both' :
     type === 'out' && 'slide-out-bck-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both'
@@ -96,131 +94,154 @@ const StyledOrderDetailModal = styled.div<{ type: string }>`
 `
 
 const DetailContainer = styled.div`
-  width: 40%;
-  padding: 40px;
-  background-color: ${color.primary};
+  width: 30%;
+  padding: 45px 25px;
+  background-color: ${color.secondary};
+  border-radius: 25px;
+`
 
-  & > .detail-body {
-    height: calc(100% - 300px);
+const DetailBody = styled.div`
+  height: calc(100% - 250px);
+`
 
-    & .title-desc {
-      margin-bottom: 0
-    }
+const DetailBodyItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
 
-    & .title {
-      font-size: 24px;
-      margin-bottom: 15px;
-    }
+  & .title-desc {
+    margin-bottom: 0;
+    font-weight: 700;
+  }
+
+  & .title {
+    margin-bottom: 15px;
   }
 `
 
-const VariationContainer = styled.div`
-  width: 60%;
-  padding: 40px;
-  margin-top: 30px;
-  
-  & > .subitem-inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    justify-content: space-between;
+const DetailFooterItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 18px;
+
+  & .title-desc {
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+
+  & .title {
+    margin-bottom: 15px;
+  }
+
+`
+
+const DetailFooterButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  line-height: 1.2;
+  font-size: 16px;
+
+  & > button:nth-child(2) {
+    margin-left: 30px;
+  }
+
+  & > button {
+    min-width: calc(50% - 15px);
     width: 100%;
-    height: 80%;
-    margin-top: 20px;
-    overflow: auto;
-
-    & ${FrostedBox} {
-      width: 48%;
-      margin-bottom: 20px;
-      transition: .3s all ease-in-out;
-
-      &:hover {
-        background: linear-gradient(130deg, ${color.pink} 0%, ${color.secondary} 100%);
-        box-shadow: none;
-        transition: .3s all ease-in-out;
-        cursor: pointer;
-
-        & .subitem-price {
-          border: 2px solid ${color.black};
-        }
-      }
-    }
   }
+`
 
-  & .subitem-title {
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-
-    & > .subitem-price {
-      margin-left: 20px;
-      padding: 2px 8px;
-      border-radius: 20px;
-      border: 2px solid ${color.secondary};
-      font-size: 16px;
-    }
-  }
-
-  & .subitem-desc {
-    font-size: 16px;
-  }
+const OrderContainer = styled.div`
+  width: 70%;
+  padding: 40px;
+  height: 100%;
 `
 
 const OrderWrapper = styled.div`
   overflow-y: auto;
+  height: 100%;
 
   & .order-header {
-    padding: 10px 0;
     font-size: 20px;
-    font-weight: bold;
-    border-top: 1px solid ${color.black};
-    border-bottom: 1px solid ${color.black};
+    text-align: center;
+    font-weight: 700;
+  }
+`
+
+const OrderListHeader = styled.div`
+  width: 100%;
+  background-color: ${color.secondary};
+  margin-bottom: 20px;
+  border-radius: 10px;
+  padding: 8px 20px;
+  font-weight: 700;
+
+  & > .header-name {
+    display: inline-block;
+    width: 50%;
+    border-right: 1px solid ${color.black};
+  }
+  
+  & > .header-qty {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+    border-right: 1px solid ${color.black};
   }
 
-  & .order-footer {
-    margin-top: 20px;
-    padding: 10px 0;
-    font-size: 20px;
-    font-weight: bold;
-    border-top: 1px solid ${color.black};
-    border-bottom: 1px solid ${color.black};
+  & > .header-price {
+    display: inline-block;
+    text-align: end;
+    width: calc(50% - 100px);
+    padding: 0 20px;
   }
+`
+
+const OrderListContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background: ${color.secondary};
+  height: calc(100% - 110px);
+  border-radius: 10px;
+  padding-top: 10px;
 `
 
 const OrderList = styled.div`
   display: flex;
-  justify-content: space-between;
   margin: 0 20px;
   font-size: 16px;
+  padding: 10px 10px 10px 0;
+  border-bottom: 1px solid ${color.black};
 
-  & .order-quantity {
-    margin-left: 20px;
+  & > .order-name {
+    display: inline-block;
+    width: 50%;
+  }
+
+  & > .order-qty {
+    width: 100px;
+    text-align: center;
+
+  }
+
+  & > .order-price {
+    width: calc(50% - 100px);
+    text-align: end;
   }
 `
 
-const CartInfoFooter = styled.div`
-  border-top: 10px dotted ${color.black};
-  padding: 20px;
-
-  & .button-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin: 20px 0;
-    font-size: 16px;
-
-    & > button {
-      width: 100%;
-      margin-bottom: 20px;
-    }
-
-    & .main-button {
-      font-size: 24px;
-      font-weight: bold;
-    }
-  }
-
+const OrderFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: bold;
 `
+
 
 type iOrderDetailModal = {
   isShowing: boolean
@@ -327,68 +348,92 @@ export const OrderDetailModal: React.FC<iOrderDetailModal> = ({
       <Overlay onClick={handleCloseOrderDetailModal} type={animationType} />
       <StyledOrderDetailModal type={animationType}>
         <DetailContainer>
-          <div className="detail-body">
-            <p className="title-desc">{t('Order no')}</p>
-            <h2 className="title">{orderCart.label}</h2>
+          <DetailBody>
+            <DetailBodyItem>
+              <p className="title-desc">{t('Order no')}</p>
+              <h2 className="title">{orderCart.label}</h2>
+            </DetailBodyItem>
+            
+            <DetailBodyItem>
+              <p className="title-desc">{t('Status')}</p>
+              <h2 className="title">{apiT(capitalize(orderCart.status))}</h2>
+            </DetailBodyItem>
+          </DetailBody>
 
-            <p className="title-desc">{t('Status')}</p>
-            <h2 className="title">{apiT(capitalize(orderCart.status))}</h2>
+          <div>
+            <DetailFooterItem>
+              <p className="title-desc">{t('Created At')}</p>
+              <h2 className="title">{moment(orderCart.createdAt).format('YYYY/MM/DD HH:mm:ss')}</h2>
+            </DetailFooterItem>
 
-            <p className="title-desc">{t('Created At')}</p>
-            <h2 className="title">{moment(orderCart.createdAt).format('YYYY/MM/DD HH:mm:ss')}</h2>
-          </div>
-
-          <CartInfoFooter>
-            <div className="button-container">
-              <RoundedButtonDanger
-                onClick={handleDeleteOrder}
-              >
-                {t('Delete Order')}
-              </RoundedButtonDanger>
-
-              {!!prevStatus &&
-                <RoundedButton
-                  onClick={handleChangePrevStatus}
-                >
-                  {t('Change Status Back to')} "{apiT(prevStatus)}"
-                </RoundedButton>
-              }
-
-              {!!nextStatus &&
-                <RoundedButtonPrimary
-                  onClick={handleChangeNextStatus}
-                  className="main-button"
-                >
-                  {t('Change Status to')} "{apiT(nextStatus)}"
-                </RoundedButtonPrimary>
-              }
-
-              <RoundedButton
+            <DetailFooterButtonContainer>
+              <Button
                 onClick={handleChangeCompletedStatus}
+                size="large"
               >
                 {t('Complete Order')}
-              </RoundedButton>
-            </div>
-          </CartInfoFooter>
+              </Button>
+
+              {!!nextStatus &&
+                <Button
+                  onClick={handleChangeNextStatus}
+                  size="large"
+                  backgroundColor={color.blue}
+                  color={color.white}
+                >
+                  Change To "{apiT(nextStatus)}"
+                </Button>
+              }
+            </DetailFooterButtonContainer>
+            <DetailFooterButtonContainer>
+              <Button
+                onClick={handleDeleteOrder}
+                size="large"
+                backgroundColor={color.red}
+                color={color.white}
+              >
+                {t('Delete Order')}
+              </Button>
+              {!!prevStatus &&
+                <Button
+                  onClick={handleChangePrevStatus}
+                  size="large"
+                >
+                  Change Back "{apiT(prevStatus)}"
+                </Button>
+              }
+            </DetailFooterButtonContainer>
+          </div>
 
         </DetailContainer>
-        <VariationContainer>
+        <OrderContainer>
           <OrderWrapper>
             <h3 className="order-header">
               {t('Order Detail')}
             </h3>
-            {orderCart?.cart?.map(({ item, quantity }) => <OrderList key={item._id}>
-              <span>
-                {item.name} ({item.price.toLocaleString()} {apiT('USD')})
-                <span className="order-quantity">X {quantity}</span>
-              </span>
-              <span>{(item.price * quantity).toLocaleString()} {apiT('USD')}</span>
-            </OrderList>)}
-            <h3 className="order-footer">
-              {t('Total')}: {totalPrice} {apiT('USD')}
-            </h3>
+            
+            <OrderListHeader>
+              <span className="header-name">Name</span>
+              <span className="header-qty">Qty</span>
+              <span className="header-price">Price</span>
+            </OrderListHeader>
+
+            <OrderListContainer>
+              <div>
+                {orderCart?.cart?.map(({ item, quantity }) => <OrderList key={item._id}>
+                  <span className="order-name">{item.name} ({item.price.toLocaleString()} {apiT('USD')})</span>
+                  <span className="order-qty">{quantity}x</span>
+                  <span className="order-price">{(item.price * quantity).toLocaleString()} {apiT('USD')}</span>
+                </OrderList>)}
+              </div>
+
+              <OrderFooter>
+                <span>{t('Total')}</span>
+                <span>{totalPrice} {apiT('USD')}</span>
+              </OrderFooter>
+            </OrderListContainer>
           </OrderWrapper>
-        </VariationContainer>
+        </OrderContainer>
       </StyledOrderDetailModal>
     </OrderDetailModalWrapper>
   ) : null
