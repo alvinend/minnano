@@ -342,7 +342,6 @@ const StaffOrderPage: React.FC<iStaffOrderPage> = () => {
           </StaffModeContainer>
         </HeaderContainer>
 
-
         <InnerContainer>
           <StaffProcessContainer>
             <Button
