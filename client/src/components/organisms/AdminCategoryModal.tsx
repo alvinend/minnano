@@ -22,6 +22,7 @@ const InputGroup = styled.div`
 
 const InputDescGroup = styled.div`
   flex-shrink: 0;
+  width: 300px;
   margin-right: 30px;
   text-align: left;
 `
@@ -39,6 +40,7 @@ type iAdminCategoryModal = {
   categoryData: Category | null
   onChangeCategory: (e: any) => void
   changeImage: (file: any) => void
+  type: 'create' | 'edit'
 }
 
 
@@ -48,7 +50,8 @@ export const AdminCategoryModal: React.FC<iAdminCategoryModal> = ({
   onCancel,
   categoryData,
   onChangeCategory,
-  changeImage
+  changeImage,
+  type
 }) => {
   const { t: rawT } = useTranslation('admin')
 
@@ -70,7 +73,7 @@ export const AdminCategoryModal: React.FC<iAdminCategoryModal> = ({
       onSubmit={onSubmit}
       onCancel={onCancel}
     >
-      <ModalTitle>{t('Edit Category Details')}</ModalTitle>
+      <ModalTitle>{type === 'create' ? 'Create Category' : t('Edit Category Details')}</ModalTitle>
       <InputGroup>
         <InputDescGroup>
           <InputTitle>{t('Category Name')}</InputTitle>

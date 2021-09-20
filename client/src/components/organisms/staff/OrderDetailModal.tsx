@@ -2,10 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { color } from 'components/atoms/color'
 import { OrderCart, OrderStatuses } from 'models/common'
-import { FrostedBox } from 'components/atoms/FrostedBox'
-import { RoundedButton } from 'components/atoms/button/RoundedButton'
-import { RoundedButtonPrimary } from 'components/atoms/button/RoundedButtonPrimary'
-import { RoundedButtonDanger } from 'components/atoms/button/RoundedButtonDanger'
 import { useTranslation } from 'react-i18next'
 import { capitalize } from 'utils'
 import moment from 'moment'
@@ -403,7 +399,7 @@ export const OrderDetailModal: React.FC<iOrderDetailModal> = ({
                   onClick={handleChangePrevStatus}
                   size="large"
                 >
-                  {t('Change Status Back to')} "{apiT(prevStatus)}"
+                  Change Back "{apiT(prevStatus)}"
                 </Button>
               }
             </DetailFooterButtonContainer>

@@ -35,8 +35,9 @@
     "Processing": "Processing",
     "Waiting": "Waiting",
     "Completed": "Completed",
-    "Idle": "Idle",
-    "Started": "Started",
-    "Pending": "Pending"
+    "Idle": "Open",
+    "Started": "Filled",
+    "Pending": "Finishing",
+    "Finished": "Finished"
   }
 }
