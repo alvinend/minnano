@@ -140,4 +140,54 @@ router.put(
   }
 )
 
+// @router    GET api/admin/item/stock/args
+// @desc      Get Overview of Stocks status
+router.get(
+  '/stock/args',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const goodStockCount = await Item.find({
+        stock: { $gte: 10 }
+      }).count()
+
+      const warningStockCount = await Item.find({
+        stock: {
+          $lt: 10,
+          $gt: 0
+        }
+      }).count()
+
+      const outStockCount = await Item.find({
+        stock: {
+          $eq: 0
+        }
+      }).count()
+
+      const unlimitedStockCount = await Item.find({
+        $or: [
+          { stock: { $eq: -1 } },
+          { stock: undefined }
+        ]
+      }).count()
+
+      const totalItemCount = await Item.find().count()
+
+      res.json({
+        goodStockCount,
+        warningStockCount,
+        outStockCount,
+        unlimitedStockCount,
+        totalItemCount
+      })
+    } catch (err) {
+      return res.status(400).json(err)
+    }
+  }
+)
+
+
+// @router    GET api/admin/item/stocks
+// @desc      Get List of Stock
+
 export const adminItemRouter = router

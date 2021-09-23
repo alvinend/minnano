@@ -48,7 +48,7 @@ export const AdminApps: React.FC = () => {
             <ItemPage />
           </Route>
           <Route path="/">
-            <Redirect to="/admin/items" />
+            <Redirect to="/admin/dashboard" />
           </Route>
         </Switch>
       </AdminContentContainer>

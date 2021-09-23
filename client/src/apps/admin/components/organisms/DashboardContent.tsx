@@ -9,6 +9,8 @@ import { AlertModal } from 'components/organisms/AlertModal'
 import { AdminItemModal } from 'components/organisms/AdminItemModal'
 import { useTranslation } from 'react-i18next'
 import { Bar } from 'react-chartjs-2';
+import { ISalesData, IStockArgs } from 'apps/admin/container/organisms/DashboardContentContainer'
+import moment from 'moment'
 
 const DashboardContentWrapper = styled.div`
   width: 90%;
@@ -63,37 +65,82 @@ const BarContainer = styled.div`
   margin-top: 50px;
 `
 
-type iDashboardContent = {
+
+
+type IDashboardContent = {
+  salesData: ISalesData
+  stockArgs: IStockArgs
 }
 
-const data = {
-  labels: ['March', 'April', 'May', 'June', 'July', 'August'],
-  datasets: [
-    {
-      label: 'Sales',
-      data: [120000000, 190000000, 30000000, 50000000, 20000000, 30000000],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
+export const DashboardContent: React.FC<IDashboardContent> = ({
+  salesData,
+  stockArgs
+}) => {
+  const {
+    dailySales,
+    monthlySales,
+    productsSold,
+    transactionsCount,
+    sales
+  } = salesData
 
-export const DashboardContent: React.FC<iDashboardContent> = () => {
+  const {
+    goodStockCount,
+    warningStockCount,
+    outStockCount,
+    unlimitedStockCount,
+    totalItemCount
+  } = stockArgs
+
+  const currentMonth = React.useMemo(
+    () => moment().startOf("month").format('MMMM'),
+    []
+  )
+
+  const currentDay = React.useMemo(
+    () => moment().format('DD'),
+    []
+  )
+
+  const data = React.useMemo(
+    () => {
+      const reversedSales = sales.map((item,idx) => sales[sales.length-1-idx])
+      const labels = []
+
+      for (let i = 5; i >= 0; i--) {
+        labels.push(moment().subtract(i, 'month').startOf("month").format('MMMM'))
+      }
+
+      return {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Sales',
+            data: reversedSales,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+            ],
+            borderWidth: 1,
+          },
+        ],
+      }
+    },
+    [sales]
+  )
+
   return (
     <>
       <DashboardContentWrapper>
@@ -103,26 +150,26 @@ export const DashboardContent: React.FC<iDashboardContent> = () => {
         <BoxContainer>
           <BoxBorderWidget boxColor="yellowChart">
             Daily Sales <br />
-            <b>20.000.000 IDR</b><br />
-            <span>Per 19 August</span>
+            <b>{dailySales} USD</b><br />
+            <span>Per {currentMonth} {currentDay}</span>
           </BoxBorderWidget>
 
           <BoxBorderWidget boxColor="greenChart">
             Monthly Sales <br />
-            <b>130.000.000 IDR</b> <br />
-            <span>Per August</span>
+            <b>{monthlySales} USD</b><br />
+            <span>Per {currentMonth}</span>
           </BoxBorderWidget>
 
           <BoxBorderWidget boxColor="blueChart">
             Products Sold <br />
-            <b>232</b> <br />
-            <span>Per August</span>
+            <b>{productsSold}</b> <br />
+            <span>Per {currentMonth}</span>
           </BoxBorderWidget>
 
           <BoxBorderWidget boxColor="redChart">
             Transactions Count <br />
-            <b>150</b> <br />
-            <span>Per August</span>
+            <b>{transactionsCount}</b> <br />
+            <span>Per {currentMonth}</span>
           </BoxBorderWidget>
         </BoxContainer>
         <BarContainer>
@@ -136,27 +183,27 @@ export const DashboardContent: React.FC<iDashboardContent> = () => {
         </HeadTitle>
         <BoxContainer>
           <BoxWidget boxColor="greenChart">
-            Well Stocked <br />
-            <b>200</b><br />
-            <span>/ 252 Items</span>
+            Well Stocked<br />
+            <b>{goodStockCount}</b><br />
+            <span>/ {totalItemCount} Items</span>
           </BoxWidget>
 
           <BoxWidget boxColor="yellowChart">
-            Almost Out of Stock <br />
-            <b>40</b> <br />
-            <span>/ 252 Items</span>
+            Less than 10 Stock<br />
+            <b>{warningStockCount}</b> <br />
+            <span>/ {totalItemCount} Items</span>
           </BoxWidget>
 
           <BoxWidget boxColor="redChart">
             Out of Stock<br />
-            <b>12</b> <br />
-            <span>/ 252 Items</span>
+            <b>{outStockCount}</b> <br />
+            <span>/ {totalItemCount} Items</span>
           </BoxWidget>
 
           <BoxWidget boxColor="blueChart">
-            Categories Count <br />
-            <b>5</b> <br />
-            <span>Categories</span>
+            Unlimited Stock <br />
+            <b>{unlimitedStockCount}</b> <br />
+            <span>/ {totalItemCount} Items</span>
           </BoxWidget>
         </BoxContainer>
       </DashboardContentWrapper>
