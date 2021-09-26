@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 
-const getActualRequestDurationInMilliseconds = start => {
+const getActualRequestDurationInMilliseconds = (start: any) => {
   const NS_PER_SEC = 1e9 //  convert to nanoseconds
   const NS_TO_MS = 1e6 // convert to milliseconds
   const diff = process.hrtime(start)
