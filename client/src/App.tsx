@@ -17,6 +17,48 @@ import Cookies from 'js-cookie'
 import { useTranslation } from 'react-i18next'
 import 'antd/dist/antd.css'
 import { AdminApps } from 'apps/admin/AdminApps'
+import styled from 'styled-components'
+import { color } from 'components/atoms/color'
+
+const Overlay = styled.div`
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  text-align: center;
+  color: ${color.white};
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  animation: scale-in-ver-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  z-index: 5;
+
+  @keyframes scale-in-ver-center {
+    0% {
+      transform: scaleY(0);
+      opacity: 1;
+    }
+
+    100% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scale-out-ver-center {
+    0% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+
+    100% {
+      transform: scaleY(0);
+      opacity: 1;
+    }
+  }
+`
 
 const App = () => {
   // eslint-disable-next-line
@@ -85,8 +127,17 @@ const App = () => {
     []
   )
 
+  const isMobile = React.useMemo(
+    () => window.innerWidth < 900,
+    [window]
+  )
+
   return <>
     <ToastContainer />
+    {isMobile && <Overlay>
+      Screen size not supported yet. Use landscaped tablet or PC 
+    </Overlay>}
+
     {!!user ? (
       <Router>
         <Switch>
