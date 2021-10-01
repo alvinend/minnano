@@ -42,11 +42,4 @@ Is Cheap, is Secure, is Fast, what else do you need. Many ordering system have f
 
 # Wiki
 
-- [User](/docs/wiki/user.md)
-- [Item](/docs/wiki/item.md)
-- [Category](/docs/wiki/category.md)
-
-# Developer Guides
-
-- [Setup](/docs/setup.md)
-- [Production Infrastructure](/docs/structure.md)
+Check out our [Wiki](https://github.com/alvinend/minnano/wiki)!
