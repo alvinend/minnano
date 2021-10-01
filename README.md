@@ -43,3 +43,7 @@ Is Cheap, is Secure, is Fast, what else do you need. Many ordering system have f
 # Wiki
 
 Check out our [Wiki](https://github.com/alvinend/minnano/wiki)!
+
+# Demo
+
+Fancy [Google Slides](https://docs.google.com/presentation/d/1WknxE1t07SnBIOKNMgyx7ow9JQA9hC2p5BtIu2YuxBY/edit?usp=sharing)?
