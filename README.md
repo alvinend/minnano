@@ -6,14 +6,39 @@ Minnano is a system that allows restaurants to accept orders from customers. Wit
 Commercial Video:
 [![Minnano](https://res.cloudinary.com/marcomontalbano/image/upload/v1622611051/video_to_markdown/images/youtube--hahTf0bbHhg-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://www.youtube.com/watch?v=hahTf0bbHhg "Minnano")
 
-Minnano have 2 ways to operate:
+## About Cloud Self Ordering System
 
-1. Tableside ordering technology – the ability to take orders and collect payment directly at the table – is one way restaurant operators are looking to meet their guests' needs, and meet these higher consumer expectations.
-2. Token machines may dispense the ticket in the form of a token which has the same function as a paper or electronic ticket. The typical transaction consists of a user using the display interface to select the type and quantity of tickets and then choosing a payment method of either cash, credit/debit card or smartcard.
+The self-order system is a system in which customers who come to the store use the touch panel to order what they want to order.
+
+Self Ordering System is used to be solution of this kind of problems
+
+1. A Store that short on staff.
+2. Want to cut off human cost.
+3. Increase customers 's stratification
+
+### Ok. so what with the "Cloud" ?
+
+"Cloud" means no need to build local server !
+
+To implement Self Ordering System usually you ask some company to build that system locally for you. It works fine but: 
+
+1. It is expensive
+2. It takes usually long time
+3. No Trial
+
+And so on.
+
+With "Cloud" Server will be built in secure, cheap and fast environment. So you can try it immediately.
+
+## Tell me more about Minnano !
+
+Minnano is built for cloud. it can support your store in lowest price possible without dropping any quality, like speed! Also Minnao is built in many language such as English, Japanese and Indonesia, so you can server customer that does not speak yours language.
+
+Minnano also support you as staff and admin, with real-time update of orders and easy to manage layout, job never get this easier.
 
 # Why Minnano?
 
-Is Cheap! Many ordering system have for feature, but it expect the store to have certain sales going on. But Minnano is Cheap, even if your store have no employee, Minnano can support and make ordering easy.
+Is Cheap, is Secure, is Fast, what else do you need. Many ordering system have for feature, but it expect the store to have certain sales going on.
 
 # Wiki
 
